@@ -1,8 +1,8 @@
 <template>
-  <div class="tw-mx-auto tw-mt-20 lg:tw-w-2/6">
+  <div class="tw-mx-auto tw-mt-20 sm:tw-w-2/3 md:tw-w-2/4 lg:tw-w-2/6 xl:tw-w-1/3">
     <form>
       <q-card-section class="text-center">
-        <div class="tw-text-2xl tw-text-gray-500 tw-font-mono">Login your account.</div>
+        <div class="tw-text-lg sm:tw-text-xl md:tw-text-2xl tw-text-gray-500 tw-font-mono">Login your account.</div>
       </q-card-section>
       <q-card-section>
         <q-input
@@ -18,6 +18,7 @@
       </q-card-section>
       <q-card-section>
         <q-input
+          class="tw--mt-6 sm:tw--mt-0"
           outlined
           lazy-rules
           label="Password"
@@ -39,7 +40,7 @@
           label="Login"
           type="submit"
           color="primary"
-          class="full-width tw-text-lg"
+          class="full-width tw-text-base sm:tw-text-lg tw-rounded-full sm:tw-rounded-lg tw--mt-6 sm:tw--mt-0"
         />
       </q-card-section>
     </form>
