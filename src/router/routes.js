@@ -2,7 +2,12 @@
 const routes = [
   {
     path: '/',
-    component: () => import('pages/account/Login.vue')
+    component: () => import('pages/account/Login')
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('layouts/MainLayout.vue')
   },
 
   // Always leave this as last one,
