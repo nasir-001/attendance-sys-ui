@@ -11,8 +11,9 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class="tw-text-lg sm:tw-text-xl">
+          Attendance
+          <!-- <q-badge label="Administrator" class="q-pa-xs tw-text-xs" color="white" text-color="primary" /> -->
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
@@ -25,19 +26,44 @@
       bordered
       class="bg-grey-1"
     >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
+      <div class="tw-mt-4 tw-text-lg tw-text-gray-700 tw-text-center">Attendance System</div>
+      <q-list class="q-pt-md">
+        <q-expansion-item
+          class="tw-text-sm sm:tw-text-base tw-text-gray-600"
+          expand-separator
+          icon="groups"
+          label="Manage Visitors"
         >
-          Essential Links
-        </q-item-label>
+          <q-item 
+            exact
+            clickable
+          >
+            <q-item-section class="tw-ml-5" avatar>
+              <q-icon name="house" />
+            </q-item-section>
+            <q-item-section>New Visitor</q-item-section>
+          </q-item>
+          <q-item 
+            exact
+            clickable
+          >
+            <q-item-section class="tw-ml-5" avatar>
+              <q-icon name="groups" />
+            </q-item-section>
+            <q-item-section>List Visitors</q-item-section>
+          </q-item>
+        </q-expansion-item>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item
+          v-ripple
+          clickable
+        >
+          <q-item-section avatar>
+            <q-icon name="logout" />
+          </q-item-section>
+
+          <q-item-section class="tw-text-sm sm:tw-text-base tw-text-gray-600">Logout</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -48,7 +74,6 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
@@ -99,10 +124,6 @@ import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
 
   setup () {
     const leftDrawerOpen = ref(false)

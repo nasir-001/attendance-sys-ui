@@ -77,7 +77,7 @@ export default defineComponent({
       api.post(`/`)
         .then((response) => {
           console.log(response.data)
-          $router.push({ name: 'dashboard' })
+          $router.push('/dashboard')
         })
         .catch(() => {
           $q.notify({
