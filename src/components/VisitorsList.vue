@@ -1,6 +1,6 @@
 <template>
   <div>
-    all attendance
+    Vistitors Lists
   </div>
 </template>
 
@@ -8,6 +8,6 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'ListAllAttendance'
+  name: 'VisitorsList'
 })
 </script>
