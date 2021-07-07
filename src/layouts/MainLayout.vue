@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header class="bg-purple" elevated>
       <q-toolbar>
         <q-btn
           flat
@@ -22,10 +22,10 @@
       bordered
       class="bg-grey-1"
     >
-      <div class="tw-mt-4 tw-text-lg tw-text-gray-500 tw-text-center">Attendance System</div>
+      <div class="tw-mt-4 tw-text-lg text-purple tw-text-center">Attendance System</div>
       <q-list class="q-pt-md">
         <q-expansion-item
-          class="tw-text-sm sm:tw-text-base tw-text-gray-600"
+          class="tw-text-sm sm:tw-text-base text-purple"
           v-for="link in links"
           :key="link.title"
           :icon="link.icon"
@@ -50,38 +50,36 @@
           v-ripple
           clickable
         >
-          <q-item-section class="tw-text-gray-600" avatar>
+          <q-item-section class="text-purple" avatar>
             <q-icon name="logout" />
           </q-item-section>
-          <q-item-section class="tw-text-sm sm:tw-text-base tw-text-gray-600">Logout</q-item-section>
+          <q-item-section class="tw-text-sm sm:tw-text-base text-purple">Logout</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>  
     <q-page-container>
       <div v-if="attendances" class="tw-mt-8 md:tw-mt-0">
           <div v-for="attendance in attendances" :key="attendance.id" class="tw-my-2 md:tw-my-10 tw-mx-4 md:tw-w-3/5 md:tw-mx-auto">
-            <div class="tw-flex tw-justify-between tw-border-b-2 tw-border-gray-200">
+            <div class="tw-flex tw-justify-between tw-border-b-2 twtext-purple">
               <div class="tw-flex tw-justify-start">
                 <q-item-section avatar>
                   <img class="tw-w-16 tw-object-cover tw-h-16 tw-rounded-full" :src="attendance.image" >
                   <div class="tw-w-4 tw-h-4 tw-border-green-600 tw-rounded-full"></div>
                 </q-item-section>
                 <div class="tw-mt-2">
-                  <div class="tw-text-sm md:tw-text-lg tw-text-gray-600 tw-font-serif">
+                  <div class="tw-text-sm md:tw-text-lg text-purple tw-font-serif">
                     {{ attendance.title }}
                   </div>
-                  <div class="md:tw-text-base tw-text-gray-400 tw-font-mono">
+                  <div class="md:tw-text-base text-purple tw-font-mono">
                     {{ attendance.first_name }} {{ attendance.last_name }}
+                    <p class="text-purple tw-mb-4 tw-text-xs">{{ attendance.status }} at 12:45 am</p>                
                   </div>
                 </div>
               </div>
               <div class="tw-mt-5">
-                <div class="tw-right-0">
-                  <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="attendance.status === 'admitted'" color="positive" label="Approved" />
-                  <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="attendance.status === 'cancel'" color="negative" label="Cancelled" />
-                  <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="attendance.status == 'pending' " color="warning" label="Pending" /> 
-                </div>
-                <p class="tw-text-gray-400 tw-text-xs">{{ attendance.status }} at 12:45 am</p>                
+                <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="attendance.status === 'admitted'" color="positive" label="Approved" />
+                <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="attendance.status === 'cancel'" color="negative" label="Cancelled" />
+                <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="attendance.status == 'pending' " color="warning" label="Pending" /> 
               </div>
             </div>
           </div>
@@ -93,21 +91,22 @@
             />
           </div>
       </div>
-      <div v-else>
-        no attendance yet
-      </div>
+      <visitors-list
+        
+      ></visitors-list>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import { useAttendanceService } from '../composables/attendanceService'
+import { defineComponent, ref } from 'vue';
+import { useAttendanceService } from '../composables/attendanceService';
+import VisitorsList from '../components/VisitorsList.vue'
 
 const attendanceList = [
   {
-    id: 1,    
+    id: "1",    
     title: "Senator",
     first_name: "Musa",    
     last_name: "Muhammad",    
@@ -118,7 +117,7 @@ const attendanceList = [
     status: 'admitted'
   },
   {
-    id: 2,    
+    id: "2",    
     title: "Mr",
     first_name: "Nasir",    
     last_name: "Lawal",    
@@ -129,7 +128,7 @@ const attendanceList = [
     status: "pending"
   },
   {
-    id: 3,    
+    id: "3",    
     title: "Governor",
     first_name: "Ibrahim",    
     last_name: "Muazu",    
@@ -140,7 +139,7 @@ const attendanceList = [
     status: 'admitted'
   },
   {
-    id: 4,    
+    id: "4",    
     title: "Chairman",
     first_name: "Isah",    
     last_name: "Ahmad",    
@@ -151,7 +150,7 @@ const attendanceList = [
     status: 'cancel'
   },
   {
-    id: 5,    
+    id: "5",    
     title: "Rep",
     first_name: "Muhammada",    
     last_name: "Junaid",    
@@ -162,7 +161,7 @@ const attendanceList = [
     status: 'cancel'
   },
   {
-    id: 6,    
+    id: "6",    
     title: "Mrs",
     first_name: "Farida",    
     last_name: "Aliyu",    
@@ -173,7 +172,7 @@ const attendanceList = [
     status: "pending"
   },
   {
-    id: 7,    
+    id: "7",    
     title: "Developer",
     first_name: "Nasir",    
     last_name: "Ibrahim",    
@@ -211,6 +210,9 @@ const linksData = [
 
 export default defineComponent({
   name: 'MainLayout',
+  components: {
+    VisitorsList
+  },
 
   setup () {
     const leftDrawerOpen = ref(false);

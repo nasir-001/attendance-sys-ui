@@ -1,13 +1,14 @@
 <template>
   <div class="tw-mx-2">
-    <div class="tw-mx-auto tw-rounded-lg tw-border-2 tw-border-gray-200 tw-mt-20 sm:tw-w-2/3 md:tw-w-2/4 lg:tw-w-2/6 xl:tw-w-1/3">
+    <div class="tw-mx-auto tw-rounded-lg tw-border-2 text-purple tw-mt-20 sm:tw-w-2/3 md:tw-w-2/4 lg:tw-w-2/6 xl:tw-w-1/3">
       <form class="tw-my-10 tw-mx-2">
         <q-card-section class="text-center">
-          <div class="tw-text-lg sm:tw-text-xl md:tw-text-2xl tw-text-gray-500 tw-font-mono">Login your account.</div>
+          <div class="tw-text-lg sm:tw-text-xl md:tw-text-2xl text-purple tw-font-mono">Login</div>
         </q-card-section>
         <q-card-section>
           <q-input
             outlined
+            color="purple"
             auto-focus
             lazy-rules
             type="text"
@@ -21,6 +22,7 @@
           <q-input
             class="tw--mt-6 sm:tw--mt-0 tw-overflow-hidden"
             outlined
+            color="purple"
             lazy-rules
             label="Password"
             v-model="password"
@@ -30,7 +32,7 @@
             <template v-slot:append>
               <q-icon
                 :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer text-primary"
+                class="cursor-pointer text-purple"
                 @click="isPwd = !isPwd"
               />
             </template>
@@ -40,7 +42,7 @@
           <q-btn
             label="Login"
             type="submit"
-            color="primary"
+            color="purple"
             class="full-width tw-text-base sm:tw-text-lg tw-rounded-full sm:tw-rounded-lg tw--mt-6 sm:tw--mt-0"
             @click="loadData()"            
             :disable="disableState"
