@@ -58,15 +58,19 @@
       </q-list>
     </q-drawer>  
     <q-page-container>
+      <div v-for="attendance in attendances" :key="attendance.id">
+        {{ attendance.name }}
+      </div>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
+import { useAttendanceService } from '../composables/attendanceService'
 
 const linksData = [
   {
@@ -96,32 +100,17 @@ export default defineComponent({
   name: 'MainLayout',
 
   setup () {
-    const $q = useQuasar()
     const leftDrawerOpen = ref(false);
-    
-    const loadData = () => {
-      alert('yesssss')
-      api.get(`/api/attendance`)
-        .then((response) => {
-          console.log(response.data)
-        })
-        .catch(() => {
-          $q.notify({
-            color: 'negative',
-            position: 'top',
-            message: 'Failed to load visitors',
-            icon: 'report_problem'
-          })
-        })
-    }
+    const attendance = useAttendanceService()
+    const attendances = ref(null)
 
+    attendances.value = attendance.list()
+    const toggleLeftDrawer = () => { leftDrawerOpen.value = !leftDrawerOpen.value }
     return {
       links: linksData,
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      },
-      loadData
+      toggleLeftDrawer,
+      attendances
     }
   }
 })
