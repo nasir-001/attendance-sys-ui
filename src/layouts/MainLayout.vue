@@ -63,8 +63,53 @@
           <visitors-list></visitors-list>
         </template>
         <template #fallback>
-          <div>
-            Loading...
+          <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-h-5/6 tw-mx-auto">
+            <q-markup-table>
+              <thead>
+                <tr>
+                  <th class="text-left" style="width: 100px">
+                    <q-skeleton animation="blink" type="text" />
+                  </th>
+                  <th class="text-right">
+                    <q-skeleton animation="blink" type="text" />
+                  </th>
+                  <th class="text-right">
+                    <q-skeleton animation="blink" type="text" />
+                  </th>
+                  <th class="text-right">
+                    <q-skeleton animation="blink" type="text" />
+                  </th>
+                  <th class="text-right">
+                    <q-skeleton animation="blink" type="text" />
+                  </th>
+                  <th class="text-right">
+                    <q-skeleton animation="blink" type="text" />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="n in 5" :key="n">
+                  <td class="text-left">
+                    <q-skeleton animation="blink" type="QAvatar" />
+                  </td>
+                  <td class="text-right">
+                    <q-skeleton animation="blink" type="text" width="50px" />
+                  </td>
+                  <td class="text-right">
+                    <q-skeleton animation="blink" type="text" width="35px" />
+                  </td>
+                  <td class="text-right">
+                    <q-skeleton animation="blink" type="text" width="65px" />
+                  </td>
+                  <td class="text-right">
+                    <q-skeleton animation="blink" type="text" width="25px" />
+                  </td>
+                  <td class="text-right">
+                    <q-skeleton animation="blink" type="text" width="85px" />
+                  </td>
+                </tr>
+              </tbody>
+            </q-markup-table>
           </div>
         </template>
       </suspense>      

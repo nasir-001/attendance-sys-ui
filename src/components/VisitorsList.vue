@@ -55,15 +55,14 @@ const columns = [
     required: true,
     label: 'IMAGE',
     align: 'left',
-    field: row => row.image,
   },
-  { name: 'title', label: 'TITLE', align: 'left', field: 'title' },
-  { name: 'first_name', label: 'FIRST NAME', align: 'left', field: 'first_name' },
-  { name: 'last_name', label: 'LAST NAME', align: 'left', field: 'last_name' },
-  { name: 'phone', label: 'PHONE', align: 'left', field: 'phone' },
-  { name: 'email', label: 'EMAIL', align: 'left', field: 'email' },
-  { name: 'status', label: 'STATUS', align: 'left', field: 'status' },
-  { name: 'view', label: '', align: 'righ', field: 'view' }
+  { name: 'title', label: 'TITLE', align: 'left', },
+  { name: 'first_name', label: 'FIRST NAME', align: 'left', },
+  { name: 'last_name', label: 'LAST NAME', align: 'left', },
+  { name: 'phone', label: 'PHONE', align: 'left', },
+  { name: 'email', label: 'EMAIL', align: 'left', },
+  { name: 'status', label: 'STATUS', align: 'left', },
+  { name: 'view', label: '', align: 'righ', }
 ]
 
 const rows = [
