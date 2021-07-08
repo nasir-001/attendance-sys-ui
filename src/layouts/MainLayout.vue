@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-purple" elevated>
+    <q-header elevated>
       <q-toolbar>
         <q-btn
           flat
@@ -22,10 +22,10 @@
       bordered
       class="bg-grey-1"
     >
-      <div class="tw-mt-4 tw-text-lg tw-text-gray-600 tw-text-center">Attendance System</div>
+      <div class="tw-mt-4 tw-text-base tw-text-gray-600 tw-text-center tw-uppercase tw-font-sans">Attendance System</div>
       <q-list class="q-pt-md">
         <q-expansion-item
-          class="tw-text-sm sm:tw-text-base tw-text-gray-600"
+          class="tw-text-xs sm:tw-text-sm tw-text-gray-600"
           v-for="link in links"
           :key="link.title"
           :icon="link.icon"
@@ -53,7 +53,7 @@
           <q-item-section class="tw-text-gray-600" avatar>
             <q-icon name="logout" />
           </q-item-section>
-          <q-item-section class="tw-text-sm sm:tw-text-base tw-text-gray-600">Logout</q-item-section>
+          <q-item-section class="tw-text-xs sm:tw-text-sm tw-text-gray-600">Logout</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>  
@@ -90,12 +90,12 @@ const linksData = [
       },
       {
         title: 'Visitors List',
-        icon: 'people_outline',
+        icon: 'people',
         to: { name: 'visitors' }
       },
       {
         title: 'Search Visitor',
-        icon: 'search',
+        icon: 'person_search',
         to: { name: 'visitors' }
       }
     ]

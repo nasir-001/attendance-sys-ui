@@ -1,17 +1,19 @@
 <template>
-  <div class="q-pa-md q-mt-lg xl:tw-w-5/6 tw-mx-auto">
+  <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
     <q-table
       title="Expected Visitors"
       :rows="rows"
       :columns="columns"
+      no-route-fullscreen-exit
       :visibleColumns="visibleColumns"
       row-key="name"
       binary-state-sort
+      class="tw-text-gray-700"
     >
-      <template v-slot:body="props">
+      <template class="tw-text-2xl" v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" :props="props">
-            <q-img class="tw-w-12 tw-h-12 md:tw-w-16 md:tw-h-16 tw-object-cover tw-rounded-lg hover:tw-shadow-md" :src="props.row.image" />
+            <q-img class="tw--ml-3 sm:tw--ml-2 tw-w-12 tw-h-12 tw-border-gray-200 tw-border md:tw-w-16 md:tw-h-16 tw-object-cover tw-rounded-full sm:tw-rounded-lg hover:tw-shadow-md" :src="props.row.image" />
           </q-td>
           <q-td key="title" :props="props">
             {{ props.row.title }}
@@ -29,12 +31,12 @@
             {{ props.row.email }}
           </q-td>
           <q-td key="status" :props="props">
-            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status === 'admitted'" color="positive" label="Approved" />
+            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
             <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status === 'cancel'" color="negative" label="Cancelled" />
-            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status == 'pending' " color="warning" label="Pending" /> 
+            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status == 'pending' " color="warning" label="Pending..." /> 
           </q-td>
-          <q-td>
-            VIEW            
+          <q-td class="tw-mr-4">
+            <q-btn dense color="primary" class="tw-text-xs tw-px-2 tw--mr-2">View</q-btn>            
           </q-td>
         </q-tr>
       </template>
@@ -61,7 +63,7 @@ const columns = [
   { name: 'phone', label: 'PHONE', align: 'left', field: 'phone' },
   { name: 'email', label: 'EMAIL', align: 'left', field: 'email' },
   { name: 'status', label: 'STATUS', align: 'left', field: 'status' },
-  { name: 'view', label: 'VIEW', align: 'left', field: 'view' }
+  { name: 'view', label: '', align: 'righ', field: 'view' }
 ]
 
 const rows = [
@@ -155,7 +157,7 @@ export default defineComponent({
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
         ? ['image', 'title', 'first_name', 'last_name', 'phone', 'email', 'status', 'view']
-        : ['image', 'title', 'first_name', 'view']
+        : ['image', 'first_name', 'last_name', 'view']
     })
 
     attendances.value = await attendance.list()
