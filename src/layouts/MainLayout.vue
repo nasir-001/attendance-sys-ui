@@ -60,14 +60,14 @@
     <q-page-container>
       <suspense>
         <template #default>
-          <visitors-list></visitors-list>
+          <!-- <visitors-list></visitors-list> -->
         </template>
         <template #fallback>
           <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-h-5/6 tw-mx-auto">
             <q-markup-table>
               <thead>
                 <tr>
-                  <th class="text-left" style="width: 100px">
+                  <th class="text-left">
                     <q-skeleton animation="blink" type="text" />
                   </th>
                   <th class="text-right">
@@ -88,7 +88,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="n in 5" :key="n">
+                <tr v-for="n in 6" :key="n">
                   <td class="text-left">
                     <q-skeleton animation="blink" type="QAvatar" />
                   </td>
@@ -96,13 +96,13 @@
                     <q-skeleton animation="blink" type="text" width="50px" />
                   </td>
                   <td class="text-right">
-                    <q-skeleton animation="blink" type="text" width="35px" />
+                    <q-skeleton animation="blink" type="text" width="50px" />
                   </td>
                   <td class="text-right">
                     <q-skeleton animation="blink" type="text" width="65px" />
                   </td>
                   <td class="text-right">
-                    <q-skeleton animation="blink" type="text" width="25px" />
+                    <q-skeleton animation="blink" type="text" width="40px" />
                   </td>
                   <td class="text-right">
                     <q-skeleton animation="blink" type="text" width="85px" />
@@ -120,7 +120,6 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { useAttendanceService } from '../composables/attendanceService';
 import VisitorsList from '../components/VisitorsList.vue'
 
 const linksData = [
@@ -150,7 +149,7 @@ const linksData = [
 export default defineComponent({
   name: 'MainLayout',
   components: {
-    VisitorsList
+    // VisitorsList
   },
 
   setup () {

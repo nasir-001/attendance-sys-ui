@@ -13,7 +13,7 @@
       <template class="tw-text-2xl" v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" :props="props">
-            <q-img class="tw--ml-3 sm:tw--ml-2 tw-w-12 tw-h-12 tw-border-gray-200 tw-border md:tw-w-16 md:tw-h-16 tw-object-cover tw-rounded-full sm:tw-rounded-lg hover:tw-shadow-md" :src="props.row.image" />
+            <div class="tw--ml-3 sm:tw--ml-2 tw-bg-transparent tw-text-center tw-text-xl tw-pt-3 tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full sm:tw-rounded-2xl hover:tw-shadow-md" :style="{'background-color': nameHasing(props.row.first_name[1], props.row.first_name[-1]), 'color': nameHasing(props.row.first_name, props.row.first_name[-1])}">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</div>
           </q-td>
           <q-td key="title" :props="props">
             {{ props.row.title }}
@@ -34,9 +34,10 @@
             <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
             <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status === 'cancel'" color="negative" label="Cancelled" />
             <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status == 'pending' " color="warning" label="Pending..." /> 
+            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status == 'finish' " color="primary" label="Finished" /> 
           </q-td>
           <q-td class="tw-mr-4">
-            <q-btn dense color="primary" class="tw-text-xs tw-px-2 tw--mr-2">View</q-btn>            
+            <q-btn dense color="primary" class="tw-text-xs tw-px-2 tw--mr-2">View</q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -48,6 +49,7 @@
 import { computed, defineComponent, ref} from 'vue';
 import { useAttendanceService } from '../composables/attendanceService';
 import { useQuasar } from 'quasar';
+import ColorHash from 'color-hash';
 
 const columns = [
   {
@@ -65,92 +67,12 @@ const columns = [
   { name: 'view', label: '', align: 'righ', }
 ]
 
-const rows = [
-  {
-    id: "1",    
-    title: "Senator",
-    first_name: "Musa",    
-    last_name: "Muhammad",    
-    email: "musamohd@gmail.com",
-    phone: "08109342356",
-    gender: "male",
-    image: "/img/pexels-public-domain-pictures-42059.jpg",
-    status: 'admitted'
-  },
-  {
-    id: "2",    
-    title: "Mr",
-    first_name: "Nasir",    
-    last_name: "Lawal",    
-    email: "nla@gmail.com",
-    phone: "08109342356",
-    gender: "male",
-    image: "/img/pexels-polina-tankilevitch-4518599.jpg",
-    status: "pending"
-  },
-  {
-    id: "3",    
-    title: "Governor",
-    first_name: "Ibrahim",    
-    last_name: "Muazu",    
-    email: "ibrahimmuaz@gmail.com",
-    phone: "08109342356",
-    gender: "male",
-    image: "/img/pexels-naman-nayar-922764.jpg",
-    status: 'admitted'
-  },
-  {
-    id: "4",    
-    title: "Chairman",
-    first_name: "Isah",    
-    last_name: "Ahmad",    
-    email: "isah2312@gmail.com",
-    phone: "08109342356",
-    gender: "male",
-    image: "/img/pexels-ready-made-3850652.jpg",
-    status: 'cancel'
-  },
-  {
-    id: "5",    
-    title: "Rep",
-    first_name: "Muhammadu",    
-    last_name: "Junaid",    
-    email: "mohdjunnaid@gmail.com",
-    phone: "08109342356",
-    gender: "male",
-    image: "/img/pexels-pixabay-161559.jpg",
-    status: 'cancel'
-  },
-  {
-    id: "6",    
-    title: "Mrs",
-    first_name: "Farida",    
-    last_name: "Aliyu",    
-    email: "farido@gmail.com",
-    phone: "08109342356",
-    gender: "female",
-    image: "/img/pexels-wendy-wei-1656666.jpg",
-    status: "pending"
-  },
-  {
-    id: "7",    
-    title: "Developer",
-    first_name: "Nasir",    
-    last_name: "Ibrahim",    
-    email: "nasirib@gmail.com",
-    phone: "08109342356",
-    gender: "male",
-    image: "/img/pexels-julia-volk-5273044.jpg",
-    status: 'admitted',
-  }
-]
-
 export default defineComponent({
   name: 'VisitorsList',
 
   async setup () {
     const attendance = useAttendanceService()
-    const attendances = ref([])
+    const rows = ref([])
     const $q = useQuasar()
 
     const visibleColumns = computed(() => {
@@ -159,11 +81,19 @@ export default defineComponent({
         : ['image', 'first_name', 'last_name', 'view']
     })
 
-    attendances.value = await attendance.list()
+    rows.value = await attendance.list()
+
+    function nameHasing(first, last) {
+      const colorHash = new ColorHash()
+      const fullName = `${first} ${last}`
+      return `rgb(${colorHash.rgb(fullName)})`
+    }
+
     return {
       columns,
       rows,
-      visibleColumns
+      visibleColumns,
+      nameHasing
     }
   }
 })
