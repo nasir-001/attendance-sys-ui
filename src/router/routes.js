@@ -15,6 +15,11 @@ const routes = [
         path: 'new-visitor',
         name: 'new-visitor',
         component: () => import('components/NewVisitor'),
+      },
+      {
+        path: 'search-visitors',
+        name: 'search-visitors',
+        component: () => import('components/SearchVisitors'),
       }
     ]
   },

@@ -137,7 +137,7 @@ const linksData = [
       {
         title: 'Search Visitor',
         icon: 'person_search',
-        to: { name: 'visitors-list' }
+        to: { name: 'search-visitors' }
       }
     ]
   },
