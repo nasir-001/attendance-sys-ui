@@ -42,6 +42,14 @@
         </q-tr>
       </template>
     </q-table>
+   <q-btn
+      round
+      class="tw-float-right tw-mt-4 tw-bottom-0"
+      color="primary"
+      size="16px"
+      icon="add"
+      to="new-visitor"
+    />
   </div>
 </template>
 
@@ -74,6 +82,7 @@ export default defineComponent({
     const attendance = useAttendanceService()
     const rows = ref([])
     const $q = useQuasar()
+    const sizes = [ 'xs', 'sm', 'md', 'lg', 'xl' ]
 
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
