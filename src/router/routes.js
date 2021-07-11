@@ -1,23 +1,26 @@
 
 const routes = [
   {
-    path: '/',
-    component: () => import('pages/account/Login'),
-  },
-  {
-    path: '/visitors',
-    name: 'visitors',
-    component: () => import('components/VisitorsList'),
-  },
-  {
-    path: '/new-visitor',
-    name: 'new-visitor',
-    component: () => import('components/NewVisitor'),
-  },
-  {
     path: '/dashboard',
-    name: 'dashboard',
     component: () => import('layouts/MainLayout.vue'),
+    redirect: { name: 'visitors-list' },
+    children: [
+      {
+        path: 'visitors',
+        name: 'visitors-list',
+        component: () => import('components/VisitorsList'),
+      },
+      {
+        path: 'new-visitor',
+        name: 'new-visitor',
+        component: () => import('components/VisitorsList'),
+      }
+    ]
+  },
+  {
+    path: '/',
+    name: 'login',
+    component: () => import('pages/account/Login'),
   },
   
   // Always leave this as last one,
