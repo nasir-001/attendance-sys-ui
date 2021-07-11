@@ -59,9 +59,7 @@
     </q-drawer>  
     <q-page-container>
       <suspense>
-        <template #default>
-          <visitors-list></visitors-list>
-        </template>
+        <router-view />
         <template #fallback>
           <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-h-5/6 tw-mx-auto">
             <q-markup-table>
@@ -111,9 +109,8 @@
               </tbody>
             </q-markup-table>
           </div>
-        </template>
+        </template>      
       </suspense>      
-      <router-view />
     </q-page-container>
   </q-layout>
 </template>
@@ -148,9 +145,6 @@ const linksData = [
 
 export default defineComponent({
   name: 'MainLayout',
-  components: {
-    VisitorsList
-  },
 
   setup () {
     const leftDrawerOpen = ref(false);

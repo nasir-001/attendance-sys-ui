@@ -2,6 +2,7 @@
 const routes = [
   {
     path: '/dashboard',
+    name: 'dashborad',
     component: () => import('layouts/MainLayout.vue'),
     redirect: { name: 'visitors-list' },
     children: [
@@ -13,7 +14,7 @@ const routes = [
       {
         path: 'new-visitor',
         name: 'new-visitor',
-        component: () => import('components/VisitorsList'),
+        component: () => import('components/NewVisitor'),
       }
     ]
   },
