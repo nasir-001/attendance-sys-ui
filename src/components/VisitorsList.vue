@@ -13,7 +13,7 @@
       <template class="tw-text-2xl" v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" :props="props">
-            <div class="tw--ml-3 sm:tw--ml-2 tw-bg-transparent tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full sm:tw-rounded-2xl hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
+            <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full sm:tw-rounded-2xl hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
               <p class="tw-text-xl tw-pt-2 sm:tw-pt-3 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
             </div>
           </q-td>
