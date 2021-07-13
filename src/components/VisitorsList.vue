@@ -93,7 +93,7 @@ export default defineComponent({
     rows.value = await attendance.list()
 
     function nameHasing(first, last) {
-      const colorHash = new ColorHash({saturation: [0.20, 0.40, 0.10]})
+      const colorHash = new ColorHash()
       const fullName = `${first} ${last}`
       return `rgb(${colorHash.rgb(fullName)})`
     }

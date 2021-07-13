@@ -117,7 +117,6 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import VisitorsList from '../components/VisitorsList.vue'
 
 const linksData = [
   {

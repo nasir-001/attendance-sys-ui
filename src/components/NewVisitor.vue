@@ -1,7 +1,7 @@
 <template>
-  <div>
-    New Visitor
-  </div>
+  <transition name="fade">
+    <p>hello</p>
+  </transition>
 </template>
 
 <script>
