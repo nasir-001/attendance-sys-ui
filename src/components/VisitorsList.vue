@@ -13,7 +13,9 @@
       <template class="tw-text-2xl" v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" :props="props">
-            <div class="tw--ml-3 sm:tw--ml-2 tw-bg-transparent tw-text-center tw-text-xl tw-pt-3 tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full sm:tw-rounded-2xl hover:tw-shadow-md" :style="{'background-color': nameHasing(props.row.first_name[1], props.row.first_name[-1]), 'color': nameHasing(props.row.first_name, props.row.first_name[-1])}">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</div>
+            <div class="tw--ml-3 sm:tw--ml-2 tw-bg-transparent tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full sm:tw-rounded-2xl hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
+              <p class="tw-text-xl tw-pt-2 sm:tw-pt-3 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
+            </div>
           </q-td>
           <q-td key="title" :props="props">
             {{ props.row.title }}
@@ -57,7 +59,6 @@
 import { computed, defineComponent, ref} from 'vue';
 import { useAttendanceService } from '../composables/attendanceService';
 import { useQuasar } from 'quasar';
-import ColorHash from 'color-hash';
 
 const columns = [
   {
@@ -83,7 +84,20 @@ export default defineComponent({
     const rows = ref([])
     const $q = useQuasar()
     const sizes = [ 'xs', 'sm', 'md', 'lg', 'xl' ]
-
+    const colors = [
+      '#1abc9c',
+      '#2ecc71',
+      '#3498db',
+      '#3498db',
+      '#9b59b6',
+      '#34495e',
+      '#16a085',
+      '#27ae60',
+      '#2980b9',
+      '#8e44ad',
+      '#2c3e50',
+    ];
+    
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
         ? ['image', 'title', 'first_name', 'last_name', 'phone', 'email', 'status', 'view']
@@ -92,17 +106,16 @@ export default defineComponent({
 
     rows.value = await attendance.list()
 
-    function nameHasing(first, last) {
-      const colorHash = new ColorHash()
-      const fullName = `${first} ${last}`
-      return `rgb(${colorHash.rgb(fullName)})`
+    function getAvatarBackgroundColor(username) {
+      const index = username.length % colors.length;
+      return colors[index];
     }
 
     return {
       columns,
       rows,
       visibleColumns,
-      nameHasing
+      getAvatarBackgroundColor
     }
   }
 })
