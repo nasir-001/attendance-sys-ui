@@ -8,12 +8,12 @@
       :visibleColumns="visibleColumns"
       row-key="name"
       binary-state-sort
-      class="tw-text-gray-700"
+      class="text-blue-10"
     >
-      <template class="tw-text-2xl" v-slot:body="props">
+      <template class="tw-text-2xl tw-bg-white" v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" :props="props">
-            <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full sm:tw-rounded-2xl hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
+            <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
               <p class="tw-text-xl tw-pt-2 sm:tw-pt-3 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
             </div>
           </q-td>
@@ -33,13 +33,13 @@
             {{ props.row.email }}
           </q-td>
           <q-td key="status" :props="props">
-            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
-            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status === 'cancel'" color="negative" label="Cancelled" />
-            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status == 'pending' " color="warning" label="Pending..." /> 
-            <q-badge class="tw-py-1 tw-px-2 tw-right-0" v-if="props.row.status == 'finish' " color="primary" label="Finished" /> 
+            <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
+            <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'cancel'" color="negative" label="Cancelled" />
+            <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'pending' " color="warning" label="Pending..." /> 
+            <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'finish' " color="primary" label="Finished" /> 
           </q-td>
           <q-td class="tw-mr-4">
-            <q-btn dense color="primary" class="tw-text-xs tw-px-2 tw--mr-2">View</q-btn>
+            <q-btn dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2">View</q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -70,10 +70,10 @@ const columns = [
   { name: 'title', label: 'TITLE', align: 'left', },
   { name: 'first_name', label: 'FIRST NAME', align: 'left', },
   { name: 'last_name', label: 'LAST NAME', align: 'left', },
-  { name: 'phone', label: 'PHONE', align: 'left', },
-  { name: 'email', label: 'EMAIL', align: 'left', },
-  { name: 'status', label: 'STATUS', align: 'left', },
-  { name: 'view', label: '', align: 'righ', }
+  { name: 'phone', label: 'PHONE', align: 'center', },
+  { name: 'email', label: 'EMAIL', align: 'center', },
+  { name: 'status', label: 'STATUS', align: 'center', },
+  { name: 'view', label: '', align: 'right', }
 ]
 
 export default defineComponent({
