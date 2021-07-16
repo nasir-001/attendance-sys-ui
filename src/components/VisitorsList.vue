@@ -1,58 +1,67 @@
-<template>
-  <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
-    <q-table
-      title="Expected Visitors"
-      :rows="rows"
-      :columns="columns"
-      no-route-fullscreen-exit
-      :visibleColumns="visibleColumns"
-      row-key="name"
-      binary-state-sort
-      class="text-blue-10"
-    >
-      <template class="tw-text-2xl tw-bg-white" v-slot:body="props">
-        <q-tr :props="props">
-          <q-td key="image" :props="props">
-            <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
-              <p class="tw-text-xl tw-pt-2 sm:tw-pt-3 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
-            </div>
-          </q-td>
-          <q-td key="title" :props="props">
-            {{ props.row.title }}
-          </q-td>
-          <q-td key="first_name" :props="props">
-            {{ props.row.first_name }}
-          </q-td>
-          <q-td key="last_name" :props="props">
-            {{ props.row.last_name }}
-          </q-td>
-          <q-td key="phone" :props="props">
-            {{ props.row.phone }}
-          </q-td>
-          <q-td key="email" :props="props">
-            {{ props.row.email }}
-          </q-td>
-          <q-td key="status" :props="props">
-            <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
-            <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'cancel'" color="negative" label="Cancelled" />
-            <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'pending' " color="warning" label="Pending..." /> 
-            <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'finish' " color="primary" label="Finished" /> 
-          </q-td>
-          <q-td class="tw-mr-4">
-            <q-btn dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2">View</q-btn>
-          </q-td>
-        </q-tr>
-      </template>
-    </q-table>
-   <q-btn
-      round
-      class="tw-float-right tw-mt-4 tw-bottom-0"
-      color="primary"
-      size="16px"
-      icon="add"
-      to="new-visitor"
-    />
-  </div>
+<template>  
+  <transition
+    appear
+    enter-active-class="animated slideInRight"
+    leave-active-class="animated slideInRight"
+  >
+    <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
+      <q-table
+        :rows="rows"
+        bordered
+        :columns="columns"
+        no-route-fullscreen-exit
+        :visibleColumns="visibleColumns"
+        row-key="name"
+        binary-state-sort
+        class="my-sticky-header-table"
+        title-class="text-blue-10"
+        table-header-class="text-blue-10"
+        title="Expected Visitors"
+      >
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td key="image" :props="props">
+              <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
+                <p class="tw-text-xl tw-pt-2 sm:tw-pt-3 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
+              </div>
+            </q-td>
+            <q-td key="title" :props="props">
+              {{ props.row.title }}
+            </q-td>
+            <q-td key="first_name" :props="props">
+              {{ props.row.first_name }}
+            </q-td>
+            <q-td key="last_name" :props="props">
+              {{ props.row.last_name }}
+            </q-td>
+            <q-td key="phone" :props="props">
+              {{ props.row.phone }}
+            </q-td>
+            <q-td key="email" :props="props">
+              {{ props.row.email }}
+            </q-td>
+            <q-td key="status" :props="props">
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'cancel'" color="negative" label="Cancelled" />
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'pending' " color="warning" label="Pending..." /> 
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'finish' " color="primary" label="Finished" /> 
+            </q-td>
+            <q-td class="tw-mr-4">
+              <q-btn dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2">View</q-btn>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+    <q-btn
+        round
+        class="tw-float-right tw-mt-4 tw-bottom-0"
+        color="primary"
+        size="16px"
+        icon="add"
+        to="new-visitor"
+      />
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -120,3 +129,25 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="sass">
+.my-sticky-header-table
+  /* height or max-height is important */
+
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    /* bg color is important for th; just specify one */
+    background-color: rgb(220, 231, 255)
+
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:first-child th
+    top: 0
+
+  /* this is when the loading indicator appears */
+  &.q-table--loading thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
+</style>

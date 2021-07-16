@@ -1,5 +1,7 @@
 <template>
-  <transition name="fade">
+  <transition appear
+    enter-active-class="animated slideInRight"
+    leave-active-class="animated slideInRight">
     <p>hello</p>
   </transition>
 </template>
