@@ -47,12 +47,30 @@
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'finish' " color="primary" label="Finished" /> 
             </q-td>
             <q-td class="tw-mr-4">
-              <q-btn dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2">View</q-btn>
+              <q-btn dense @click="toolbar = true" color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2">View</q-btn>
             </q-td>
           </q-tr>
         </template>
       </q-table>
-    <q-btn
+      
+      <q-dialog v-model="toolbar">
+        <q-card>
+          <q-toolbar>
+            <q-avatar>
+              <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md">
+                <p class="tw-text-xl tw-pt-2 sm:tw-pt-3 tw-text-gray-300">d</p>
+              </div>
+            </q-avatar>
+            <q-toolbar-title><span class="text-weight-bold">Quasar</span> Framework</q-toolbar-title>
+            <q-btn flat round dense icon="close" v-close-popup />
+          </q-toolbar>
+          <q-card-section>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-btn
         round
         class="tw-float-right tw-mt-4 tw-bottom-0"
         color="primary"
@@ -92,7 +110,6 @@ export default defineComponent({
     const attendance = useAttendanceService()
     const rows = ref([])
     const $q = useQuasar()
-    const sizes = [ 'xs', 'sm', 'md', 'lg', 'xl' ]
     const colors = [
       '#1abc9c',
       '#2ecc71',
@@ -121,6 +138,10 @@ export default defineComponent({
     }
 
     return {
+      icon: ref(false),
+      bar: ref(false),
+      bar2: ref(false),
+      toolbar: ref(false),
       columns,
       rows,
       visibleColumns,
