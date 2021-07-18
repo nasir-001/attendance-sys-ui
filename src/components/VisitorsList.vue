@@ -41,10 +41,10 @@
               {{ props.row.email }}
             </q-td>
             <q-td key="status" :props="props">
-              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
-              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'cancel'" color="negative" label="Cancelled" />
-              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'pending' " color="warning" label="Pending..." /> 
-              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'finish' " color="primary" label="Finished" /> 
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'admitted'" color="positive" label="Admitted" />
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'cancel'" color="negative" label="Cancelled" />
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'pending' " color="warning" label="Pending..." /> 
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finish' " color="primary" label="Finished" /> 
             </q-td>
             <q-td key="view" :props="props" class="tw-mr-4">
               <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" />

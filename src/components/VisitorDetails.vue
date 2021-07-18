@@ -13,13 +13,13 @@
             </p>
           </div>
           <div class="tw--ml-6">
-            <div v-if="visitor.status === 'admitted' " class="bg-positive tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.status === 'cancel' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.status === 'finish' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.visit.status === 'admitted' " class="bg-positive tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.visit.status === 'cancel' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.visit.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.visit.status === 'finish' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
           </div>
           <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
-            <q-btn flat dense color="primary" icon="edit" />
+            <q-btn @click="showAddVisitor = true" flat dense color="primary" icon="edit" />
           </div>
         </div>
         <div class="tw--ml-8 md:tw--ml-10">
@@ -37,7 +37,111 @@
           <q-btn flat color="primary" class="q-mx-sm q-px-sm tw-w-32" dense label="admit visitor" />
           <q-btn color="negative" flat dense icon="delete" />
         </q-card-actions> 
-      </q-card>      
+      </q-card>
+
+      <q-dialog v-model="showAddVisitor">
+        <q-card class="sm:tw-w-3/6">
+          <q-card-section class="row">
+            <div class="text-h6 text-primary tw--mt-1">Edit</div>
+            <q-space />
+            <q-btn flat v-close-popup dense round icon="close" />
+          </q-card-section>
+          <q-form>
+            <q-card-section class="q-pt-none">
+              <q-input
+              outlined
+              auto-focus
+              lazy-rules
+              type="text"
+              v-model="visitor.title"
+              label="Title"
+              :rules="[
+                val => !!val || 'Field is required']"
+            />
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <q-input
+              outlined
+              auto-focus
+              lazy-rules
+              type="text"
+              v-model="visitor.first_name"
+              label="First Name"
+              :rules="[
+                val => !!val || 'Field is required']"
+            />
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <q-input
+              outlined
+              auto-focus
+              lazy-rules
+              type="text"
+              v-model="visitor.last_name"
+              label="Last Name"
+              :rules="[
+                val => !!val || 'Field is required']"
+            />
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <q-input
+              outlined
+              auto-focus
+              lazy-rules
+              type="text"
+              v-model="visitor.email"
+              label="Email"
+              :rules="[
+                val => !!val || 'Field is required']"
+            />
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <q-input
+              outlined
+              auto-focus
+              lazy-rules
+              type="text"
+              v-model="visitor.phone"
+              label="Phone"
+              :rules="[
+                val => !!val || 'Field is required']"
+            />
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <q-input
+              outlined
+              auto-focus
+              lazy-rules
+              type="text"
+              v-model="visitor.email"
+              label="Email"
+              :rules="[
+                val => !!val || 'Field is required']"
+            />
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <q-select 
+              outlined 
+              v-model="visitor.status" 
+              :options="options" 
+              label="Status" />
+            </q-card-section>
+            <q-card-section class="q-pt-lg sm:tw-mx-10 lg:tw-mx-28">
+              <q-date v-model="visitor.visit.date" />
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn 
+              flat 
+              label="Save" 
+              color="primary" 
+              v-close-popup 
+            />
+            </q-card-actions>
+          </q-form>
+        </q-card>
+      </q-dialog>
+
     </div>
   </transition>
 </template>
@@ -54,6 +158,7 @@ export default defineComponent({
     const route = useRoute()
     const data = useAttendanceService()
     const visitor = ref(null)
+    const showAddVisitor = ref(true)
 
     const colors = [
       '#1abc9c',
@@ -72,12 +177,16 @@ export default defineComponent({
     function getAvatarBackgroundColor(username) {
       const index = username.length % colors.length;
       return colors[index];
-    }
+    }    
 
     visitor.value = await data.attendance(route.params.id)
-    return { 
+    return {
+      options: [
+        'pending', 'admitted', 'cancelled', 'finished'
+      ],
       visitor,
-      getAvatarBackgroundColor
+      getAvatarBackgroundColor,
+      showAddVisitor
      }
   }
 })
