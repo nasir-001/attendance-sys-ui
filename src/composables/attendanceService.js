@@ -16,6 +16,18 @@ export function useAttendanceService() {
           })
         })
       return response.data;
+    },
+    async attendance(id) {
+      const response = await api.get(`/api/attendance/${id}`)
+        .catch(() => {
+          $q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'Failed to load visitors',
+            icon: 'report_problem'
+          })
+        })
+      return response.data;
     }
   };
 }

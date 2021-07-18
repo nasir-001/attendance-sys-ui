@@ -24,6 +24,7 @@ const routes = [
       {
         path: 'visitors/:id',
         name: 'visitor-details',
+        props: true,
         component: () => import('components/VisitorDetails'),
       }
     ]

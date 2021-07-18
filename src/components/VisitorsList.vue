@@ -46,8 +46,8 @@
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'pending' " color="warning" label="Pending..." /> 
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'finish' " color="primary" label="Finished" /> 
             </q-td>
-            <q-td class="tw-mr-4">
-              <q-btn dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2">View</q-btn>
+            <q-td key="view" :props="props" class="tw-mr-4">
+              <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" />
             </q-td>
           </q-tr>
         </template>
