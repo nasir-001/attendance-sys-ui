@@ -2,7 +2,7 @@
   <transition
     appear
     enter-active-class="animated slideInLeft"
-    leave-active-class="animated slideOutLeft"
+    leave-active-class="animated slideOutRight"
   >
     <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
       <q-table

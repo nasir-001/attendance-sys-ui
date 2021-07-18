@@ -2,7 +2,11 @@
   <transition appear
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
-    <p>{{visitor.title}}</p>
+    <div class="q-pa-md q-mt-lg tw-w-full">
+      <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(visitor.first_name)}">
+        <p class="tw-text-2xl tw-pt-2 sm:tw-pt-12 tw-text-gray-300">{{ visitor.first_name[0].toUpperCase() }}{{ visitor.last_name[0].toUpperCase() }}</p>
+      </div>
+    </div>
   </transition>
 </template>
 
@@ -17,10 +21,32 @@ export default defineComponent({
   async setup() {
     const route = useRoute()
     const data = useAttendanceService()
-    const visitor = ref(null)
+    const visitor = ref({})
+
+    const colors = [
+      '#1abc9c',
+      '#2ecc71',
+      '#3498db',
+      '#3498db',
+      '#9b59b6',
+      '#34495e',
+      '#16a085',
+      '#27ae60',
+      '#2980b9',
+      '#8e44ad',
+      '#2c3e50',
+    ];
+
+    function getAvatarBackgroundColor(username) {
+      const index = username.length % colors.length;
+      return colors[index];
+    }
 
     visitor.value = await data.attendance(route.params.id)
-    return { visitor }
+    return { 
+      visitor,
+      getAvatarBackgroundColor
+     }
   }
 })
 </script>
