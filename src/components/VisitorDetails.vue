@@ -1,7 +1,7 @@
 <template>
   <transition appear
-    enter-active-class="animated slideInRight"
-    leave-active-class="animated slideInRight">
+    enter-active-class="animated slideInLeft"
+    leave-active-class="animated slideOutRight">
     <p>{{visitor.title}}</p>
   </transition>
 </template>

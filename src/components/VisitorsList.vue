@@ -1,8 +1,8 @@
 <template>  
   <transition
     appear
-    enter-active-class="animated slideInRight"
-    leave-active-class="animated slideInRight"
+    enter-active-class="animated slideInLeft"
+    leave-active-class="animated slideOutLeft"
   >
     <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
       <q-table
