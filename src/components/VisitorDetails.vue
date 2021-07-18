@@ -2,39 +2,39 @@
   <transition appear
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
-    <div class="q-mt-lg tw-w-3/6 tw-mt-20 tw-mx-auto">
+    <div class="q-mt-lg tw-mx-3 md:tw-w-3/6 tw-mt-20 md:tw-mx-auto">
       <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
         <div class="tw-flex tw-pt-5 tw-justify-center">
-          <div class="tw--ml-3 sm:tw--ml-2 
-            tw-text-center tw-font-mono tw-w-12 tw-h-12 tw-shadow-lg 
+          <div class="sm:tw--ml-2 
+            tw-text-center tw-font-mono tw-w-20 tw-h-20 tw-shadow-lg 
             md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
             :style="{'background-color': getAvatarBackgroundColor(visitor.first_name)}">
-            <p class="tw-text-2xl tw-pt-2 sm:tw-pt-12 tw-text-gray-300">
+            <p class="tw-text-2xl tw-pt-6 md:tw-pt-12 tw-text-gray-300">
               {{ visitor.first_name[0].toUpperCase() }}{{ visitor.last_name[0].toUpperCase() }}
             </p>
           </div>
           <div class="tw--ml-6">
-            <div v-if="visitor.status === 'admitted' " class="bg-positive tw-mt-24 tw-border-white tw-border-2 tw-h-5 tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.status === 'cancel' " class="bg-negative tw-mt-24 tw-border-white tw-border-2 tw-h-5 tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.status === 'pending' " class="bg-warning tw-mt-24 tw-border-white tw-border-2 tw-h-5 tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.status === 'finish' " class="bg-primary tw-mt-24 tw-border-white tw-border-2 tw-h-5 tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.status === 'admitted' " class="bg-positive tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.status === 'cancel' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.status === 'finish' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
           </div>
-          <div class="tw-mt-24 tw-ml-2">
+          <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
             <q-btn flat dense color="primary" icon="edit" />
           </div>
         </div>
-        <div class="tw--ml-12">
-          <div class="tw-text-center tw-text-gray-600 tw-pt-2 tw-text-xl tw-font-semibold tw-uppercase">
+        <div class="tw--ml-8 md:tw--ml-10">
+          <div class="tw-text-center tw-text-gray-600 md:tw-pt-2 tw-text-lg md:tw-text-xl tw-font-semibold tw-uppercase">
             {{ visitor.title }}
           </div>
-          <div class="tw-text-center tw-text-gray-400 tw-text-lg tw-font-semibold tw-pt-1 tw-uppercase tw-font-mono tw-tracking-wide">
+          <div class="tw-text-center tw-text-gray-500 tw-text-base md:tw-text-lg tw-font-semibold tw-pt-1 tw-uppercase tw-font-mono tw-tracking-wide">
             {{ visitor.first_name }} {{ visitor.last_name }}
           </div>
-          <div class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
-            {{ visitor.email }}
+          <div v-if="visitor.email" class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
+            <q-icon name="mail" /> {{ visitor.email }}
           </div>
         </div>
-        <q-card-actions class="q-ma-lg tw-mb-8">
+        <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
           <q-btn flat color="primary" class="q-mx-sm q-px-sm tw-w-32" dense label="admit visitor" />
           <q-btn color="negative" flat dense icon="delete" />
         </q-card-actions> 
