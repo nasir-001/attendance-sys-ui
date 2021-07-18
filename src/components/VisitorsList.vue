@@ -135,7 +135,6 @@ export default defineComponent({
   /* height or max-height is important */
 
   .q-table__top,
-  .q-table__bottom,
   thead tr:first-child th
     /* bg color is important for th; just specify one */
     background-color: rgb(220, 231, 255)
