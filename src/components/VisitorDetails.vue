@@ -35,7 +35,7 @@
         </div>
         <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
           <q-btn flat color="primary" class="q-mx-sm q-px-sm tw-w-32" dense label="admit visitor" />
-          <q-btn color="negative" flat dense icon="delete" />
+          <q-btn @click="confirmDelete = true" color="negative" flat dense icon="delete" />
         </q-card-actions> 
       </q-card>
 
@@ -139,16 +139,47 @@
               </q-input>
             </q-card-section>
 
-            <q-card-actions align="right">
+            <q-card-actions align="left">
               <q-btn
-              class="tw-mr-2 tw-mb-4"
-              type="submit"
-              label="Save" 
-              color="primary" 
-              v-close-popup 
+                class="tw-mr-2 tw-mb-4"
+                type="submit"
+                label="Save" 
+                color="primary" 
+                v-close-popup 
             />
             </q-card-actions>
           </q-form>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="confirmDelete">
+        <q-card class="sm:tw-w-2/6">
+          <q-card-section class="row">
+            <div class="text-h6 tw-text-gray-800 tw--mt-1">Attention</div>
+            <q-space />
+            <q-btn flat v-close-popup dense round icon="close" />
+          </q-card-section>
+          <q-card-section class="q-pt-none">
+            <div class="tw-text-lg tw-text-gray-600">Are you sure you want to delete this visitor?</div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn
+              flat
+              class="tw-mr-2 tw-mb-4"
+              type="submit"
+              label="cancel" 
+              color="primary" 
+              v-close-popup 
+            />
+            <q-btn
+              flat
+              class="tw-mr-2 tw-mb-4"
+              type="submit"
+              label="confirm" 
+              color="negative" 
+              v-close-popup 
+            />
+          </q-card-actions>
         </q-card>
       </q-dialog>
 
@@ -168,7 +199,8 @@ export default defineComponent({
     const route = useRoute()
     const data = useAttendanceService()
     const visitor = ref(null)
-    const showAddVisitor = ref(true)
+    const showAddVisitor = ref(false)
+    const confirmDelete = ref(true)
 
     const colors = [
       '#1abc9c',
@@ -201,6 +233,7 @@ export default defineComponent({
       visitor,
       getAvatarBackgroundColor,
       showAddVisitor,
+      confirmDelete
      }
   }
 })
