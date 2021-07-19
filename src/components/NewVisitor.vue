@@ -3,7 +3,7 @@
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
     <q-card flat class="q-pa-md q-mt-lg tw-w-full xl:tw-w-4/6 tw-mx-auto">
-      <q-form>
+      <q-form @submit.prevent="newVisitorData">
         <q-card-section class="q-pt-none">
           <q-input
             outlined
@@ -65,15 +65,11 @@
           />
         </q-card-section>
         <q-card-section class="q-pt-none">
-          <q-input
-            outlined
-            auto-focus
-            lazy-rules
-            type="text"
+          <q-select 
+            outlined 
             v-model="newVisitoPayload.gender"
+            :options="gender" 
             label="Gender"
-            :rules="[
-              val => !!val || 'Field is required']"
           />
         </q-card-section>
         <q-card-section class="q-pt-none">
@@ -117,11 +113,13 @@
 <script>
 import { defineComponent, reactive } from 'vue';
 import { v4 as uuidv4 }  from 'uuid';
+import { useAttendanceService } from '../composables/attendanceService';
 
 export default defineComponent({
   name: 'NewVisitor',
 
   setup() {
+    const payloadData = useAttendanceService()
     const newVisitoPayload = reactive({
       id: uuidv4(),
       title: '',
@@ -136,11 +134,19 @@ export default defineComponent({
       }
     })
 
+    const newVisitorData = (payload) => {
+      payload = payloadData.newVisitor(newVisitoPayload)
+    }
+
     return {
       options: [
         'pending', 'admitted', 'cancelled', 'finished'
       ],
-      newVisitoPayload
+      gender: [
+        'male', 'female'
+      ],
+      newVisitoPayload,
+      newVisitorData
     }
   }
 })

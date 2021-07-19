@@ -48,6 +48,27 @@ export function useAttendanceService() {
         })
       })
       return response.data;
+    },
+    async newVisitor(payload) {
+      const response = await api.post(`/api/attendance/`, payload)
+      console.log(payload)
+      .then(() => {
+        $q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Visitor was successfully added',
+          icon: 'mark'
+        })
+      })
+      .catch(() => {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Failed to edit visitor',
+          icon: 'report_problem'
+        })
+      })
+      return response.data;
     }
   };
 }

@@ -108,17 +108,13 @@
               />
             </q-card-section>
             <q-card-section class="q-pt-none">
-              <q-input
-                outlined
-                auto-focus
-                lazy-rules
-                type="text"
-                v-model="visitor.gender"
-                label="Gender"
-                :rules="[
-                  val => !!val || 'Field is required']"
-              />
-            </q-card-section>
+          <q-select 
+            outlined 
+            v-model="visitor.gender"
+            :options="gender" 
+            label="Gender"
+          />
+        </q-card-section>
             <q-card-section class="q-pt-none">
               <q-select 
                 outlined 
@@ -198,6 +194,9 @@ export default defineComponent({
     return {
       options: [
         'pending', 'admitted', 'cancelled', 'finished'
+      ],
+      gender: [
+        'male', 'female'
       ],
       visitor,
       getAvatarBackgroundColor,
