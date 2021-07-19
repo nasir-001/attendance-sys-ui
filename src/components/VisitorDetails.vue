@@ -14,9 +14,9 @@
           </div>
           <div class="tw--ml-6">
             <div v-if="visitor.visit.status === 'admitted' " class="bg-positive tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.visit.status === 'cancel' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.visit.status === 'cancelled' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
             <div v-if="visitor.visit.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.visit.status === 'finish' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            <div v-if="visitor.visit.status === 'finished' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
           </div>
           <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
             <q-btn @click="showAddVisitor = true" flat dense color="primary" icon="edit" />
@@ -46,93 +46,119 @@
             <q-space />
             <q-btn flat v-close-popup dense round icon="close" />
           </q-card-section>
-          <q-form>
+          <q-form @submit.prevent="onSubmit()">
             <q-card-section class="q-pt-none">
               <q-input
-              outlined
-              auto-focus
-              lazy-rules
-              type="text"
-              v-model="visitor.title"
-              label="Title"
-              :rules="[
-                val => !!val || 'Field is required']"
-            />
+                outlined
+                auto-focus
+                lazy-rules
+                type="text"
+                v-model="visitor.title"
+                label="Title"
+                :rules="[
+                  val => !!val || 'Field is required']"
+              />
             </q-card-section>
             <q-card-section class="q-pt-none">
               <q-input
-              outlined
-              auto-focus
-              lazy-rules
-              type="text"
-              v-model="visitor.first_name"
-              label="First Name"
-              :rules="[
-                val => !!val || 'Field is required']"
-            />
+                outlined
+                auto-focus
+                lazy-rules
+                type="text"
+                v-model="visitor.first_name"
+                label="First Name"
+                :rules="[
+                  val => !!val || 'Field is required']"
+              />
             </q-card-section>
             <q-card-section class="q-pt-none">
               <q-input
-              outlined
-              auto-focus
-              lazy-rules
-              type="text"
-              v-model="visitor.last_name"
-              label="Last Name"
-              :rules="[
-                val => !!val || 'Field is required']"
-            />
+                outlined
+                auto-focus
+                lazy-rules
+                type="text"
+                v-model="visitor.last_name"
+                label="Last Name"
+                :rules="[
+                  val => !!val || 'Field is required']"
+              />
             </q-card-section>
             <q-card-section class="q-pt-none">
               <q-input
-              outlined
-              auto-focus
-              lazy-rules
-              type="text"
-              v-model="visitor.email"
-              label="Email"
-              :rules="[
-                val => !!val || 'Field is required']"
-            />
+                outlined
+                auto-focus
+                lazy-rules
+                type="text"
+                v-model="visitor.email"
+                label="Email"
+                :rules="[
+                  val => !!val || 'Field is required']"
+              />
             </q-card-section>
             <q-card-section class="q-pt-none">
               <q-input
-              outlined
-              auto-focus
-              lazy-rules
-              type="text"
-              v-model="visitor.phone"
-              label="Phone"
-              :rules="[
-                val => !!val || 'Field is required']"
-            />
+                outlined
+                auto-focus
+                lazy-rules
+                type="number"
+                v-model="visitor.phone"
+                label="Phone"
+                :rules="[
+                  val => !!val || 'Field is required']"
+              />
             </q-card-section>
             <q-card-section class="q-pt-none">
               <q-input
-              outlined
-              auto-focus
-              lazy-rules
-              type="text"
-              v-model="visitor.email"
-              label="Email"
-              :rules="[
-                val => !!val || 'Field is required']"
-            />
+                outlined
+                auto-focus
+                lazy-rules
+                type="text"
+                v-model="visitor.gender"
+                label="Phone"
+                :rules="[
+                  val => !!val || 'Field is required']"
+              />
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <q-input
+                outlined
+                auto-focus
+                lazy-rules
+                type="text"
+                v-model="visitor.email"
+                label="Email"
+                :rules="[
+                  val => !!val || 'Field is required']"
+              />
             </q-card-section>
             <q-card-section class="q-pt-none">
               <q-select 
-              outlined 
-              v-model="visitor.status" 
-              :options="options" 
-              label="Status" />
+                outlined 
+                v-model="visitor.visit.status" 
+                :options="options" 
+                label="Status"
+              />
             </q-card-section>
-            <q-card-section class="q-pt-lg sm:tw-mx-10 lg:tw-mx-28">
-              <q-date v-model="visitor.visit.date" />
+            <q-card-section class="q-pt-lg">
+              <q-input outlined v-model="visitor.visit.date">
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                      <q-date v-model="visitor.visit.date">
+                        <div class="row items-center justify-end">
+                          <q-btn  label="Save" color="primary" flat />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
             </q-card-section>
 
             <q-card-actions align="right">
               <q-btn 
               flat 
+              type="submit"
               label="Save" 
               color="primary" 
               v-close-popup 
@@ -177,16 +203,22 @@ export default defineComponent({
     function getAvatarBackgroundColor(username) {
       const index = username.length % colors.length;
       return colors[index];
-    }    
+    };
 
-    visitor.value = await data.attendance(route.params.id)
+    const onSubmit = () => {
+      console.log("onSubmit");
+    }
+
+    visitor.value = await data.attendance(route.params.id);
+
     return {
       options: [
         'pending', 'admitted', 'cancelled', 'finished'
       ],
       visitor,
       getAvatarBackgroundColor,
-      showAddVisitor
+      showAddVisitor,
+      onSubmit
      }
   }
 })
