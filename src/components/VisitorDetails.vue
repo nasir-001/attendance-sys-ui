@@ -46,7 +46,7 @@
             <q-space />
             <q-btn flat v-close-popup dense round icon="close" />
           </q-card-section>
-          <q-form @submit.prevent="onSubmit()">
+          <q-form>
             <q-card-section class="q-pt-none">
               <q-input
                 outlined
@@ -114,19 +114,7 @@
                 lazy-rules
                 type="text"
                 v-model="visitor.gender"
-                label="Phone"
-                :rules="[
-                  val => !!val || 'Field is required']"
-              />
-            </q-card-section>
-            <q-card-section class="q-pt-none">
-              <q-input
-                outlined
-                auto-focus
-                lazy-rules
-                type="text"
-                v-model="visitor.email"
-                label="Email"
+                label="Gender"
                 :rules="[
                   val => !!val || 'Field is required']"
               />
@@ -146,7 +134,7 @@
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                       <q-date v-model="visitor.visit.date">
                         <div class="row items-center justify-end">
-                          <q-btn  label="Save" color="primary" flat />
+                          <q-btn v-close-popup label="Save" color="primary" flat />
                         </div>
                       </q-date>
                     </q-popup-proxy>
@@ -173,7 +161,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, reactive } from 'vue';
 import { useAttendanceService } from '../composables/attendanceService';
 import { useRoute } from 'vue-router';
 
@@ -205,10 +193,6 @@ export default defineComponent({
       return colors[index];
     };
 
-    const onSubmit = () => {
-      console.log("onSubmit");
-    }
-
     visitor.value = await data.attendance(route.params.id);
 
     return {
@@ -218,7 +202,6 @@ export default defineComponent({
       visitor,
       getAvatarBackgroundColor,
       showAddVisitor,
-      onSubmit
      }
   }
 })

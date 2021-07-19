@@ -28,6 +28,26 @@ export function useAttendanceService() {
           })
         })
       return response.data;
+    },
+    async editVisitor(id, payload) {
+      const response = await api.patch(`/api/attendance/${id}`, payload)
+      .then(() => {
+        $q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Visitor was successfully editted',
+          icon: 'mark'
+        })
+      })
+      .catch(() => {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Failed to edit visitor',
+          icon: 'report_problem'
+        })
+      })
+      return response.data;
     }
   };
 }
