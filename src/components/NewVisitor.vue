@@ -10,7 +10,7 @@
             auto-focus
             lazy-rules
             type="text"
-            v-model="newVisitoPayload.title"
+            v-model="newVisitorPayload.title"
             label="Title"
             :rules="[
               val => !!val || 'Field is required']"
@@ -22,7 +22,7 @@
             auto-focus
             lazy-rules
             type="text"
-            v-model="newVisitoPayload.first_name"
+            v-model="newVisitorPayload.first_name"
             label="First Name"
             :rules="[
               val => !!val || 'Field is required']"
@@ -34,7 +34,7 @@
             auto-focus
             lazy-rules
             type="text"
-            v-model="newVisitoPayload.last_name"
+            v-model="newVisitorPayload.last_name"
             label="Last Name"
             :rules="[
               val => !!val || 'Field is required']"
@@ -46,7 +46,7 @@
             auto-focus
             lazy-rules
             type="text"
-            v-model="newVisitoPayload.email"
+            v-model="newVisitorPayload.email"
             label="Email"
             :rules="[
               val => !!val || 'Field is required']"
@@ -58,7 +58,7 @@
             auto-focus
             lazy-rules
             type="number"
-            v-model="newVisitoPayload.phone"
+            v-model="newVisitorPayload.phone"
             label="Phone"
             :rules="[
               val => !!val || 'Field is required']"
@@ -67,7 +67,7 @@
         <q-card-section class="q-pt-none">
           <q-select 
             outlined 
-            v-model="newVisitoPayload.gender"
+            v-model="newVisitorPayload.gender"
             :options="gender" 
             label="Gender"
           />
@@ -75,17 +75,17 @@
         <q-card-section class="q-pt-none">
           <q-select 
             outlined 
-            v-model="newVisitoPayload.visit.status"
+            v-model="newVisitorPayload.visit.status"
             :options="options" 
             label="Status"
           />
         </q-card-section>
         <q-card-section class="q-pt-lg">
-          <q-input label="Expected Date" outlined v-model="newVisitoPayload.visit.date">
+          <q-input label="Expected Date" outlined v-model="newVisitorPayload.visit.date">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="newVisitoPayload.visit.date">
+                  <q-date v-model="newVisitorPayload.visit.date">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Save" color="primary" flat />
                     </div>
@@ -97,8 +97,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn 
-          flat 
+          <q-btn
+          class="tw-mr-2 tw-mb-4"
           type="submit"
           label="Save" 
           color="primary" 
@@ -120,7 +120,7 @@ export default defineComponent({
 
   setup() {
     const payloadData = useAttendanceService()
-    const newVisitoPayload = reactive({
+    const newVisitorPayload = reactive({
       id: uuidv4(),
       title: '',
       first_name: '',
@@ -134,8 +134,8 @@ export default defineComponent({
       }
     })
 
-    const newVisitorData = (payload) => {
-      payload = payloadData.newVisitor(newVisitoPayload)
+    const newVisitorData = () => {
+      payload = payloadData.newVisitor(newVisitorPayload)
     }
 
     return {
@@ -145,7 +145,7 @@ export default defineComponent({
       gender: [
         'male', 'female'
       ],
-      newVisitoPayload,
+      newVisitorPayload,
       newVisitorData
     }
   }

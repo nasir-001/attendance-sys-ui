@@ -42,7 +42,7 @@
       <q-dialog v-model="showAddVisitor">
         <q-card class="sm:tw-w-3/6">
           <q-card-section class="row">
-            <div class="text-h6 text-primary tw--mt-1">Edit</div>
+            <div class="text-h6 text-primary tw--mt-1">Edit Visitor</div>
             <q-space />
             <q-btn flat v-close-popup dense round icon="close" />
           </q-card-section>
@@ -140,8 +140,8 @@
             </q-card-section>
 
             <q-card-actions align="right">
-              <q-btn 
-              flat 
+              <q-btn
+              class="tw-mr-2 tw-mb-4"
               type="submit"
               label="Save" 
               color="primary" 
