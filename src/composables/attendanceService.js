@@ -1,9 +1,10 @@
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
-
+import { useRouter } from 'vue-router';
 
 export function useAttendanceService() {
   const $q = useQuasar()
+  const router = useRouter()
   return {
     async list() {
       const response = await api.get(`/api/attendance`)
@@ -51,6 +52,7 @@ export function useAttendanceService() {
     },
     async newVisitor(payload) {
       const response = await api.post(`/api/attendance/`, payload)
+      router.push({ name: 'dashborad' })
       .then(() => {
         $q.notify({
           color: 'positive',
