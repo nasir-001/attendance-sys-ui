@@ -4,6 +4,7 @@
     leave-active-class="animated slideOutRight">
     <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-3/6 tw-mt-20 sm:tw-mx-auto">
       <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
+        <q-card-section class="text-grey-7">{{ formatedDate(visitor.visit.date) }}</q-card-section>
         <div class="tw-flex tw-pt-5 tw-justify-center">
           <div class="sm:tw--ml-2 tw-text-center tw-font-mono tw-w-20 
             tw-h-20 tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
@@ -30,12 +31,24 @@
             {{ visitor.first_name }} {{ visitor.last_name }}
           </div>
           <div v-if="visitor.email" class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
-            <q-icon name="mail" /> {{ visitor.email }}
+            <q-icon name="mail" /> {{ visitor.email }} 
           </div>
         </div>
         <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
-          <q-btn flat color="primary" class="q-mx-sm q-px-sm tw-w-32" dense label="admit visitor" />
-          <q-btn @click="confirmDelete = true" color="negative" flat dense icon="delete" />
+          <q-btn 
+            flat 
+            color="primary" 
+            class="q-mx-sm q-px-sm tw-w-32" 
+            dense 
+            label="admit visitor" 
+          />
+          <q-btn 
+            @click="confirmDelete = true" 
+            color="negative" 
+            flat 
+            dense  
+            label="delete"
+          />
         </q-card-actions> 
       </q-card>
 
@@ -108,13 +121,13 @@
               />
             </q-card-section>
             <q-card-section class="q-pt-none">
-          <q-select 
-            outlined 
-            v-model="visitor.gender"
-            :options="gender" 
-            label="Gender"
-          />
-        </q-card-section>
+            <q-select 
+              outlined 
+              v-model="visitor.gender"
+              :options="gender" 
+              label="Gender"
+            />
+            </q-card-section>
             <q-card-section class="q-pt-none">
               <q-select 
                 outlined 
@@ -175,7 +188,7 @@
               flat
               class="tw-mr-2 tw-mb-4"
               type="submit"
-              label="confirm" 
+              label="ok" 
               color="negative" 
               v-close-popup 
             />
@@ -191,6 +204,8 @@
 import { defineComponent, ref, reactive } from 'vue';
 import { useAttendanceService } from '../composables/attendanceService';
 import { useRoute } from 'vue-router';
+import dayjs from 'dayjs';
+import CustomParseFormat from 'dayjs/plugin/CustomParseFormat'
 
 export default defineComponent({
   name: 'visitor-details',
@@ -200,7 +215,7 @@ export default defineComponent({
     const data = useAttendanceService()
     const visitor = ref(null)
     const showAddVisitor = ref(false)
-    const confirmDelete = ref(true)
+    const confirmDelete = ref(false)
 
     const colors = [
       '#1abc9c',
@@ -221,6 +236,11 @@ export default defineComponent({
       return colors[index];
     };
 
+    function formatedDate(date) {
+      dayjs.extend(CustomParseFormat)
+      return dayjs(date).format('DD-MMMM')
+    }
+
     visitor.value = await data.attendance(route.params.id);
 
     return {
@@ -233,7 +253,8 @@ export default defineComponent({
       visitor,
       getAvatarBackgroundColor,
       showAddVisitor,
-      confirmDelete
+      confirmDelete,
+      formatedDate
      }
   }
 })
