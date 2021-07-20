@@ -37,8 +37,11 @@ export function useAttendanceService() {
           color: 'positive',
           position: 'top',
           message: 'Visitor was successfully editted',
-          icon: 'done'
+          icon: 'check_circle'
         })
+      })
+      .then(() => {
+        router.push({ name: 'dashborad' })
       })
       .catch(() => {
         $q.notify({
@@ -52,14 +55,16 @@ export function useAttendanceService() {
     },
     async newVisitor(payload) {
       const response = await api.post(`/api/attendance/`, payload)
-      router.push({ name: 'dashborad' })
       .then(() => {
         $q.notify({
           color: 'positive',
           position: 'top',
           message: 'Visitor was successfully added',
-          icon: 'done'
+          icon: 'check_circle'
         })
+      })
+      .then(() => {
+        router.push({ name: 'dashborad' })
       })
       .catch(() => {
         $q.notify({
@@ -77,8 +82,11 @@ export function useAttendanceService() {
           color: 'positive',
           position: 'top',
           message: 'Visitor was successfully deleted',
-          icon: 'done'
+          icon: 'check_circle'
         })
+      })
+      .then(() => {
+        router.push({ name: 'dashborad' })
       })
       .catch(() => {
         $q.notify({
