@@ -1,9 +1,9 @@
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
 
 export function useAttendanceService() {
+  const $q = useQuasar()
   return {
     async list() {
       const response = await api.get(`/api/attendance`)
@@ -36,7 +36,7 @@ export function useAttendanceService() {
           color: 'positive',
           position: 'top',
           message: 'Visitor was successfully editted',
-          icon: 'mark'
+          icon: 'done'
         })
       })
       .catch(() => {
@@ -51,13 +51,12 @@ export function useAttendanceService() {
     },
     async newVisitor(payload) {
       const response = await api.post(`/api/attendance/`, payload)
-      console.log(payload)
       .then(() => {
         $q.notify({
           color: 'positive',
           position: 'top',
           message: 'Visitor was successfully added',
-          icon: 'mark'
+          icon: 'done'
         })
       })
       .catch(() => {
@@ -68,7 +67,25 @@ export function useAttendanceService() {
           icon: 'report_problem'
         })
       })
-      return response.data;
+    },
+    async deleteVisitor(id) {
+      const response = await api.delete(`/api/attendance/${id}`)
+      .then(() => {
+        $q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Visitor was successfully deleted',
+          icon: 'done'
+        })
+      })
+      .catch(() => {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Failed to delete visitor',
+          icon: 'report_problem'
+        })
+      })
     }
   };
 }

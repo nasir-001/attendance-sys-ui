@@ -189,7 +189,8 @@
               class="tw-mr-2 tw-mb-4"
               type="submit"
               label="ok" 
-              color="negative" 
+              color="negative"
+              @click="visitorToDelete"
               v-close-popup 
             />
           </q-card-actions>
@@ -241,6 +242,10 @@ export default defineComponent({
       return dayjs(date).format('DD-MMMM')
     }
 
+    function visitorToDelete() {
+      return data.deleteVisitor(route.params.id)
+    }
+
     visitor.value = await data.attendance(route.params.id);
 
     return {
@@ -254,7 +259,8 @@ export default defineComponent({
       getAvatarBackgroundColor,
       showAddVisitor,
       confirmDelete,
-      formatedDate
+      formatedDate,
+      visitorToDelete
      }
   }
 })

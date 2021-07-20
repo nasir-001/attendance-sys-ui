@@ -135,7 +135,7 @@ export default defineComponent({
     })
 
     const newVisitorData = () => {
-      payload = payloadData.newVisitor(newVisitorPayload)
+      return payloadData.newVisitor(newVisitorPayload)
     }
 
     return {
