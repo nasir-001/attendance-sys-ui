@@ -23,12 +23,12 @@
             <q-td key="image" :props="props">
               <div class="tw-flex tw-justify-start">
                 <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
-                  <p class="tw-text-xl tw--mt-1 sm:tw-pt-4 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
+                  <p class="tw-text-xl tw--mt-1 tw-pt-3 sm:tw-pt-4 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
                 </div>
-                <q-badge v-if="props.row.visit.status === 'admitted'" color="positive" class="tw--mr-10 tw-w-3 tw-h-4 tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                <q-badge v-if="props.row.visit.status === 'cancelled'" color="negative" class="tw--mr-10 tw-w-3 tw-h-4 tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                <q-badge v-if="props.row.visit.status === 'pending'" color="warning" class="tw--mr-10 tw-w-3 tw-h-4 tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                <q-badge v-if="props.row.visit.status === 'finished'" color="primary" class="tw--mr-10 tw-w-3 tw-h-4 tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                <q-badge v-if="props.row.visit.status === 'admitted'" color="positive" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                <q-badge v-if="props.row.visit.status === 'cancelled'" color="negative" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                <q-badge v-if="props.row.visit.status === 'pending'" color="warning" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                <q-badge v-if="props.row.visit.status === 'finished'" color="primary" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
               </div>
             </q-td>
             <q-td key="title" :props="props">
