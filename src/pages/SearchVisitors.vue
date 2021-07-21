@@ -11,7 +11,7 @@
         outline
         @click="showFilter"
         label="filter"
-        class="q-mb-md"
+        class="q-mb-md q-px-sm text-grey-8"
       />
       <q-form @submit.prevent="filterVisitor">
         <div v-if="filterForm" class="tw-flex tw-justify-center">

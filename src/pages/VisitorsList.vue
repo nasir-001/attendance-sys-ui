@@ -5,6 +5,33 @@
     leave-active-class="animated slideOutRight"
   >
     <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
+    <q-btn 
+        dense
+        icon="filter_list"
+        outline
+        @click="showFilter"
+        label="filter"
+        class="q-mb-md q-px-sm text-grey-8"
+      />
+      <q-form @submit.prevent="filterVisitor">
+        <div v-if="filterForm" class="tw-flex tw-justify-center">
+          <q-input 
+            class="tw-w-40" 
+            outlined 
+            bottom-slots 
+            label="Search by name"
+            dense>
+          </q-input>
+          <q-btn
+            type="submit" 
+            dense
+            color="primary" 
+            icon="filter_list" 
+            label="Filter"
+            class="tw--ml-1 tw-h-10 tw-text-sm tw-px-2"
+          />
+        </div>
+      </q-form>
       <q-table
         :rows="rows"
         bordered
@@ -98,6 +125,7 @@ export default defineComponent({
   async setup () {
     const attendance = useAttendanceService()
     const rows = ref([])
+    const filterForm = ref(false)
     const $q = useQuasar()
     const colors = [
       '#1abc9c',
@@ -126,11 +154,24 @@ export default defineComponent({
       return colors[index];
     }
 
+    function filterVisitor() {
+      console.log("filter");
+    }
+
+    const showFilter = () => {
+      setTimeout(() => {
+        filterForm.value = !filterForm.value
+      }, 500)
+    }
+
     return {
       columns,
       rows,
       visibleColumns,
-      getAvatarBackgroundColor
+      getAvatarBackgroundColor,
+      showFilter,
+      filterVisitor,
+      filterForm
     }
   }
 })
