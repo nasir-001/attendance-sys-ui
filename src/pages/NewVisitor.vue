@@ -2,8 +2,8 @@
   <transition appear
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
-    <q-card flat class="q-pa-md q-mt-lg tw-w-full xl:tw-w-4/6 tw-mx-auto">
-      <q-form @submit.prevent="newVisitorData">
+    <div class="q-pa-md q-mb-xl q-mt-lg tw-w-full sm:tw-w-4/6 md:tw-w-1/2 tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
+      <q-form class="tw-mt-8" @submit.prevent="newVisitorData">
         <q-card-section class="q-pt-none">
           <q-input
             outlined
@@ -85,9 +85,16 @@
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="newVisitorPayload.visit.date">
+                  <q-date 
+                    today-btn 
+                    v-model="newVisitorPayload.visit.date"
+                  >
                     <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Save" color="primary" flat />
+                      <q-btn 
+                        v-close-popup 
+                        label="Save" 
+                        color="primary" flat
+                      />
                     </div>
                   </q-date>
                 </q-popup-proxy>
@@ -100,13 +107,13 @@
           <q-btn
           class="tw-mr-2 tw-mb-4"
           type="submit"
-          label="Save" 
+          label="Submit" 
           color="primary" 
           v-close-popup 
         />
         </q-card-actions>
       </q-form>
-    </q-card>
+    </div>
   </transition>
 </template>
 

@@ -2,9 +2,9 @@
   <transition appear
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
-    <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-3/6 tw-mt-20 sm:tw-mx-auto">
+    <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 tw-mt-20 sm:tw-mx-auto">
       <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
-        <q-card-section class="text-grey-7">{{ formatedDate(visitor.visit.date) }}</q-card-section>
+        <q-card-section class="text-grey-7 tw-font-mono">{{ formatedDate(visitor.visit.date) }}</q-card-section>
         <div class="tw-flex tw-pt-5 tw-justify-center">
           <div class="sm:tw--ml-2 tw-text-center tw-font-mono tw-w-20 
             tw-h-20 tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
@@ -53,7 +53,7 @@
       </q-card>
 
       <q-dialog v-model="showAddVisitor">
-        <q-card class="sm:tw-w-3/6">
+        <q-card class="tw-w-full sm:tw-w-3/6">
           <q-card-section class="row">
             <div class="text-h6 text-primary tw--mt-1">Edit Visitor</div>
             <q-space />
@@ -152,7 +152,7 @@
               </q-input>
             </q-card-section>
 
-            <q-card-actions align="left">
+            <q-card-actions align="right">
               <q-btn
                 class="tw-mr-2 tw-mb-4"
                 type="submit"

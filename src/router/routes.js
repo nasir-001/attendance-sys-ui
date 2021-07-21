@@ -9,23 +9,23 @@ const routes = [
       {
         path: 'visitors',
         name: 'visitors-list',
-        component: () => import('components/VisitorsList'),
+        component: () => import('pages/VisitorsList'),
       },
       {
         path: 'new-visitor',
         name: 'new-visitor',
-        component: () => import('components/NewVisitor'),
+        component: () => import('pages/NewVisitor'),
       },
       {
         path: 'search-visitors',
         name: 'search-visitors',
-        component: () => import('components/SearchVisitors'),
+        component: () => import('pages/SearchVisitors'),
       },
       {
         path: 'visitors/:id',
         name: 'visitor-details',
         props: true,
-        component: () => import('components/VisitorDetails'),
+        component: () => import('pages/VisitorDetails'),
       }
     ]
   },
