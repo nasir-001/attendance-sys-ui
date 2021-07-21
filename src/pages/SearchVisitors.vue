@@ -5,19 +5,26 @@
     leave-active-class="animated slideOutRight"
   >
     <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
-      <div class="row tw-justify-start tw-items-center">
-        <q-input 
-          square 
-          filled 
-          dense 
-          label="Square filled" 
-        />
-        <q-btn 
-          color="primary"
-          icon="filter_list" 
-          label="filter" 
-        />
-      </div>
+        <q-form @submit.prevent="filterVisitor">
+          <div class="tw-flex tw-justify-center">
+            <q-input 
+              class="tw-w-40" 
+              outlined 
+              bottom-slots 
+              label="Search by name"
+              dense>
+            </q-input>
+            <q-btn
+              type="submit" 
+              dense
+              color="primary" 
+              icon="filter_list" 
+              label="Filter"
+              class="tw--ml-1 tw-h-10 tw-text-sm"
+            />
+          </div>
+        </q-form>
+
       <q-table
         :rows="rows"
         bordered
@@ -139,11 +146,16 @@ export default defineComponent({
       return colors[index];
     }
 
+    function filterVisitor() {
+      console.log("filter");
+    }
+
     return {
       columns,
       rows,
       visibleColumns,
-      getAvatarBackgroundColor
+      getAvatarBackgroundColor,
+      filterVisitor
     }
   }
 })
