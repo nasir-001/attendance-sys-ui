@@ -5,25 +5,33 @@
     leave-active-class="animated slideOutRight"
   >
     <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
-        <q-form @submit.prevent="filterVisitor">
-          <div class="tw-flex tw-justify-center">
-            <q-input 
-              class="tw-w-40" 
-              outlined 
-              bottom-slots 
-              label="Search by name"
-              dense>
-            </q-input>
-            <q-btn
-              type="submit" 
-              dense
-              color="primary" 
-              icon="filter_list" 
-              label="Filter"
-              class="tw--ml-1 tw-h-10 tw-text-sm"
-            />
-          </div>
-        </q-form>
+      <q-btn 
+        dense
+        icon="filter_list"
+        outline
+        @click="showFilter"
+        label="filter"
+        class="q-mb-md"
+      />
+      <q-form @submit.prevent="filterVisitor">
+        <div v-if="filterForm" class="tw-flex tw-justify-center">
+          <q-input 
+            class="tw-w-40" 
+            outlined 
+            bottom-slots 
+            label="Search by name"
+            dense>
+          </q-input>
+          <q-btn
+            type="submit" 
+            dense
+            color="primary" 
+            icon="filter_list" 
+            label="Filter"
+            class="tw--ml-1 tw-h-10 tw-text-sm tw-px-2"
+          />
+        </div>
+      </q-form>
 
       <q-table
         :rows="rows"
@@ -78,15 +86,6 @@
           </q-tr>
         </template>
       </q-table>
-
-      <q-btn
-        round
-        class="tw-float-right tw-mt-4 tw-bottom-0"
-        color="primary"
-        size="16px"
-        icon="add"
-        to="new-visitor"
-      />
     </div>
   </transition>
 </template>
@@ -118,6 +117,7 @@ export default defineComponent({
   async setup () {
     const attendance = useAttendanceService()
     const rows = ref([])
+    const filterForm = ref(false)
     const $q = useQuasar()
     const colors = [
       '#1abc9c',
@@ -150,12 +150,20 @@ export default defineComponent({
       console.log("filter");
     }
 
+    const showFilter = () => {
+      setTimeout(() => {
+        filterForm.value = !filterForm.value
+      }, 500)
+    }
+
     return {
       columns,
       rows,
       visibleColumns,
       getAvatarBackgroundColor,
-      filterVisitor
+      filterVisitor,
+      showFilter,
+      filterForm
     }
   }
 })
