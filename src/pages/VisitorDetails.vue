@@ -2,7 +2,7 @@
   <transition appear
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
-    <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 tw-mt-20 sm:tw-mx-auto">
+    <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 xl:tw-w-1/3 tw-mt-20 sm:tw-mx-auto">
       <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
         <q-card-section class="text-grey-7 tw-font-mono">{{ formatedDate(visitor.visit.date) }}</q-card-section>
         <div class="tw-flex tw-pt-5 tw-justify-center">

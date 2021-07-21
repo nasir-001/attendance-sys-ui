@@ -2,7 +2,7 @@
   <transition appear
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
-    <div class="q-pa-md q-mb-xl q-mt-lg tw-w-full sm:tw-w-4/6 md:tw-w-1/2 tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
+    <div class="q-pa-md q-mb-xl q-mt-lg tw-mx-2 sm:tw-w-4/6 md:tw-w-1/2 sm:tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
       <q-form class="tw-mt-8" @submit.prevent="newVisitorData">
         <q-card-section class="q-pt-none">
           <q-input
