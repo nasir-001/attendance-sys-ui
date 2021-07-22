@@ -36,11 +36,20 @@
         </div>
         <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
           <q-btn 
+            v-if="visitor.visit.status === 'pending' "
             flat 
             color="primary" 
             class="q-mx-sm q-px-sm tw-w-32" 
             dense 
             label="admit visitor" 
+          />
+          <q-btn 
+            v-if="visitor.visit.status === 'admitted' "
+            flat 
+            color="positive" 
+            class="q-mx-sm q-px-sm tw-w-32" 
+            dense 
+            label="visitor leave" 
           />
           <q-btn 
             @click="confirmDelete = true" 

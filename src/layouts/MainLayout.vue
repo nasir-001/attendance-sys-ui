@@ -126,7 +126,7 @@ const linksData = [
     children: [
       {
         title: 'New Visitor',
-        icon: 'account_balance',
+        icon: 'person_add',
         to: { name: 'new-visitor' }
       },
       {
