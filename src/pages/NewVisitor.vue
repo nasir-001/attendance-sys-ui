@@ -2,7 +2,7 @@
   <transition appear
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
-    <div class="q-pa-md q-mb-xl q-mt-lg tw-mx-2 sm:tw-w-4/6 md:tw-w-1/2 sm:tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
+    <div v-if="showForm" class="q-pa-md q-mb-xl q-mt-lg tw-mx-2 sm:tw-w-4/6 md:tw-w-1/2 sm:tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
       <q-form class="tw-mt-8" @submit.prevent="newVisitorData">
         <q-card-section class="q-pt-none">
           <q-input
@@ -114,11 +114,14 @@
         </q-card-actions>
       </q-form>
     </div>
+    <div v-else class="q-pa-md q-mb-xl tw-mt-4 tw-mx-2 sm:tw-w-4/6 md:tw-w-1/2 sm:tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
+      <q-skeleton v-for="n in 7" :key="n" class="q-ma-xl" type="checkbox" height="50px" />
+    </div>
   </transition>
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { v4 as uuidv4 }  from 'uuid';
 import { useAttendanceService } from '../composables/attendanceService';
 
@@ -127,6 +130,7 @@ export default defineComponent({
 
   setup() {
     const payloadData = useAttendanceService()
+    const showForm = ref(false)
     const newVisitorPayload = reactive({
       id: uuidv4(),
       title: '',
@@ -145,6 +149,10 @@ export default defineComponent({
       return payloadData.newVisitor(newVisitorPayload)
     }
 
+    setTimeout(() => {
+      showForm.value = !showForm.value
+    }, 1000)
+
     return {
       options: [
         'pending', 'admitted', 'cancelled', 'finished'
@@ -153,7 +161,8 @@ export default defineComponent({
         'male', 'female'
       ],
       newVisitorPayload,
-      newVisitorData
+      newVisitorData,
+      showForm
     }
   }
 })
