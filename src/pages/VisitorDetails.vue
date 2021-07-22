@@ -59,7 +59,7 @@
             <q-space />
             <q-btn flat v-close-popup dense round icon="close" />
           </q-card-section>
-          <q-form>
+          <q-form @submit="editVisitor">
             <q-card-section class="q-pt-none">
               <q-input
                 outlined
@@ -159,7 +159,7 @@
                 label="Save" 
                 color="primary" 
                 v-close-popup 
-            />
+              />
             </q-card-actions>
           </q-form>
         </q-card>
@@ -217,6 +217,18 @@ export default defineComponent({
     const visitor = ref(null)
     const showAddVisitor = ref(false)
     const confirmDelete = ref(false)
+    const editVisitorPayload = reactive({
+      title: '',
+      first_name: '',
+      last_name: '',
+      email: '',
+      phone: '',
+      gender: '',
+      visit: {
+        date: '',
+        status: ''
+      }
+    })
 
     const colors = [
       '#1abc9c',
@@ -242,6 +254,10 @@ export default defineComponent({
       return dayjs(date).format('DD-MMMM')
     }
 
+    function editVisitor() {
+      console.log(editVisitorPayload);
+    }
+
     function visitorToDelete() {
       return data.deleteVisitor(route.params.id)
     }
@@ -260,7 +276,8 @@ export default defineComponent({
       showAddVisitor,
       confirmDelete,
       formatedDate,
-      visitorToDelete
+      visitorToDelete,
+      editVisitor
      }
   }
 })

@@ -96,6 +96,26 @@ export function useAttendanceService() {
           icon: 'report_problem'
         })
       })
+    },
+    async filterVisitorByName(name) {
+      const response = await api.get(`/api/attendance`, { params: { first_name: name } })
+      .then(() => {
+        $q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Visitor with that name is found',
+          icon: 'done_all'
+        })
+      })
+      .catch(() => {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Failed to delete visitor',
+          icon: 'report_problem'
+        })
+      })
+      return response.data
     }
   };
 }

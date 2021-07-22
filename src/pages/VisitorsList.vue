@@ -18,9 +18,12 @@
           <q-input 
             class="tw-w-40" 
             outlined 
+            v-model="queryName"
             bottom-slots 
             label="Search by name"
-            dense>
+            dense
+            :rules="[
+              val => !!val || 'Field is required']">
           </q-input>
           <q-btn
             type="submit" 
@@ -102,6 +105,7 @@
 import { computed, defineComponent, ref} from 'vue';
 import { useAttendanceService } from '../composables/attendanceService';
 import { useQuasar } from 'quasar';
+import { useRoute } from 'vue-router';
 
 const columns = [
   {
@@ -126,6 +130,8 @@ export default defineComponent({
     const attendance = useAttendanceService()
     const rows = ref([])
     const filterForm = ref(false)
+    const queryName = ref('')
+    const route = useRoute()
     const $q = useQuasar()
     const colors = [
       '#1abc9c',
@@ -155,7 +161,7 @@ export default defineComponent({
     }
 
     function filterVisitor() {
-      console.log("filter");
+      return attendance.filterVisitorByName(queryName.value)
     }
 
     const showFilter = () => {
@@ -171,7 +177,8 @@ export default defineComponent({
       getAvatarBackgroundColor,
       showFilter,
       filterVisitor,
-      filterForm
+      filterForm,
+      queryName
     }
   }
 })
