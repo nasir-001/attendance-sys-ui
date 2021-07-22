@@ -151,7 +151,7 @@ export default defineComponent({
 
     setTimeout(() => {
       showForm.value = !showForm.value
-    }, 1000)
+    }, 500)
 
     return {
       options: [
