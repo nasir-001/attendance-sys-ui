@@ -144,6 +144,14 @@
           </tr>
         </tbody>
       </q-markup-table>
+      <q-btn
+        round
+        class="tw-float-right tw-mt-4 tw-bottom-0"
+        color="primary"
+        size="16px"
+        icon="add"
+        to="new-visitor"
+      />
     </div>
   </transition>
 </template>
