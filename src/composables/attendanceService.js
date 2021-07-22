@@ -31,12 +31,13 @@ export function useAttendanceService() {
       return response.data;
     },
     async editVisitor(id, payload) {
+      console.log(id);
       const response = await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         $q.notify({
           color: 'positive',
           position: 'top',
-          message: 'Visitor was successfully editted',
+          message: 'Visitor has been editted successfully',
           icon: 'check_circle'
         })
       })
@@ -51,7 +52,6 @@ export function useAttendanceService() {
           icon: 'report_problem'
         })
       })
-      return response.data;
     },
     async newVisitor(payload) {
       const response = await api.post(`/api/attendance/`, payload)

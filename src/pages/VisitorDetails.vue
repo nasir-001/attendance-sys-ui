@@ -255,7 +255,17 @@ export default defineComponent({
     }
 
     function editVisitor() {
-      console.log(editVisitorPayload);
+      editVisitorPayload.title = visitor.value.title,
+      editVisitorPayload.first_name = visitor.value.first_name,
+      editVisitorPayload.last_name = visitor.value.last_name,
+      editVisitorPayload.email = visitor.value.email,
+      editVisitorPayload.phone = visitor.value.phone,
+      editVisitorPayload.gender = visitor.value.gender,
+      editVisitorPayload.visit.date = visitor.value.visit.date,
+      editVisitorPayload.visit.status = visitor.value.visit.status
+      if(editVisitorPayload){
+        data.editVisitor(route.params.id, editVisitorPayload)
+      }
     }
 
     function visitorToDelete() {
