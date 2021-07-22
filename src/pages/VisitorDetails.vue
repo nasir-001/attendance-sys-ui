@@ -46,7 +46,7 @@
               label="admit visitor" 
             />
           </q-form>
-          <q-form>
+          <q-form @submit.prevent="visitorLeave">
             <q-btn 
               v-if="visitor.visit.status === 'admitted' "
               flat 
@@ -233,6 +233,7 @@ export default defineComponent({
     const showAddVisitor = ref(false)
     const confirmDelete = ref(false)
     const admitted = ref('admitted')
+    const finished = ref('finished')
     const editVisitorPayload = reactive({
       title: '',
       first_name: '',
@@ -289,7 +290,7 @@ export default defineComponent({
     }
 
     function admitVisitor() {
-      const admitVisitorStatus = reactive({
+      const visitorAdmitPayload = reactive({
         title: visitor.value.title,
         first_name: visitor.value.first_name,
         last_name: visitor.value.last_name,
@@ -301,8 +302,23 @@ export default defineComponent({
           status: admitted.value
         }
       })
-      console.log(admitVisitorStatus);
-      data.editVisitor(route.params.id, admitVisitorStatus)
+      data.editVisitor(route.params.id, visitorAdmitPayload)
+    }
+
+    function visitorLeave() {
+      const visitorLeavePayload = reactive({
+        title: visitor.value.title,
+        first_name: visitor.value.first_name,
+        last_name: visitor.value.last_name,
+        email: visitor.value.email,
+        phone: visitor.value.phone,
+        gender: visitor.value.gender,
+        visit: {
+          date: visitor.value.visit.date,
+          status: finished.value
+        }
+      })
+      data.editVisitor(route.params.id, visitorLeavePayload)
     }
 
     visitor.value = await data.attendance(route.params.id);
@@ -321,7 +337,8 @@ export default defineComponent({
       formatedDate,
       visitorToDelete,
       editVisitor,
-      admitVisitor
+      admitVisitor,
+      visitorLeave
      }
   }
 })
