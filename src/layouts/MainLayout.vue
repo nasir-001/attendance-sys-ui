@@ -61,56 +61,9 @@
       <suspense>
         <router-view>
         </router-view>
-          <template #fallback>
-            <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-h-5/6 tw-mx-auto">
-              <q-markup-table>
-                <thead>
-                  <tr>
-                    <th class="text-left">
-                      <q-skeleton animation="blink" type="text" />
-                    </th>
-                    <th class="text-right">
-                      <q-skeleton animation="blink" type="text" />
-                    </th>
-                    <th class="text-right">
-                      <q-skeleton animation="blink" type="text" />
-                    </th>
-                    <th class="text-right">
-                      <q-skeleton animation="blink" type="text" />
-                    </th>
-                    <th class="text-right">
-                      <q-skeleton animation="blink" type="text" />
-                    </th>
-                    <th class="text-right">
-                      <q-skeleton animation="blink" type="text" />
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="n in 6" :key="n">
-                    <td class="text-left">
-                      <q-skeleton animation="blink" type="QAvatar" />
-                    </td>
-                    <td class="text-right">
-                      <q-skeleton animation="blink" type="text" width="50px" />
-                    </td>
-                    <td class="text-right">
-                      <q-skeleton animation="blink" type="text" width="50px" />
-                    </td>
-                    <td class="text-right">
-                      <q-skeleton animation="blink" type="text" width="65px" />
-                    </td>
-                    <td class="text-right">
-                      <q-skeleton animation="blink" type="text" width="40px" />
-                    </td>
-                    <td class="text-right">
-                      <q-skeleton animation="blink" type="text" width="85px" />
-                    </td>
-                  </tr>
-                </tbody>
-              </q-markup-table>
-            </div>
-          </template>      
+          <!-- <template #fallback>
+            <q-icon name="warning" class="text-red" style="font-size: 10rem;" />
+          </template>       -->
       </suspense>      
     </q-page-container>
   </q-layout>
