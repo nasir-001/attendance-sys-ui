@@ -35,22 +35,28 @@
           </div>
         </div>
         <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
-          <q-btn 
-            v-if="visitor.visit.status === 'pending' "
-            flat 
-            color="primary" 
-            class="q-mx-sm q-px-sm tw-w-32" 
-            dense 
-            label="admit visitor" 
-          />
-          <q-btn 
-            v-if="visitor.visit.status === 'admitted' "
-            flat 
-            color="positive" 
-            class="q-mx-sm q-px-sm tw-w-32" 
-            dense 
-            label="visitor leave" 
-          />
+          <q-form @submit.prevent="admitVisitor">
+            <q-btn 
+              v-if="visitor.visit.status === 'pending' "
+              flat 
+              type="submit"
+              color="primary" 
+              class="q-mx-sm q-px-sm tw-w-32" 
+              dense 
+              label="admit visitor" 
+            />
+          </q-form>
+          <q-form>
+            <q-btn 
+              v-if="visitor.visit.status === 'admitted' "
+              flat 
+              type="submit"
+              color="positive" 
+              class="q-mx-sm q-px-sm tw-w-32" 
+              dense 
+              label="visitor leave" 
+            />
+          </q-form>
           <q-btn 
             @click="confirmDelete = true" 
             color="negative" 
@@ -226,6 +232,7 @@ export default defineComponent({
     const visitor = ref(null)
     const showAddVisitor = ref(false)
     const confirmDelete = ref(false)
+    const admitted = ref('admitted')
     const editVisitorPayload = reactive({
       title: '',
       first_name: '',
@@ -281,6 +288,23 @@ export default defineComponent({
       return data.deleteVisitor(route.params.id)
     }
 
+    function admitVisitor() {
+      const admitVisitorStatus = reactive({
+        title: visitor.value.title,
+        first_name: visitor.value.first_name,
+        last_name: visitor.value.last_name,
+        email: visitor.value.email,
+        phone: visitor.value.phone,
+        gender: visitor.value.gender,
+        visit: {
+          date: visitor.value.visit.date,
+          status: admitted.value
+        }
+      })
+      console.log(admitVisitorStatus);
+      data.editVisitor(route.params.id, admitVisitorStatus)
+    }
+
     visitor.value = await data.attendance(route.params.id);
 
     return {
@@ -296,7 +320,8 @@ export default defineComponent({
       confirmDelete,
       formatedDate,
       visitorToDelete,
-      editVisitor
+      editVisitor,
+      admitVisitor
      }
   }
 })

@@ -98,7 +98,7 @@ export function useAttendanceService() {
       })
     },
     async filterVisitorByName(name) {
-      const response = await api.get(`/api/attendance`, { params: { first_name: name } })
+      const response = await api.get(`/api/attendance/?first_name=${name}`)
       .then(() => {
         $q.notify({
           color: 'positive',
