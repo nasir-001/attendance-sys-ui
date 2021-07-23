@@ -4,7 +4,7 @@
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight"
   >
-    <div v-if="rows.length" class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
+    <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
       <q-btn 
         dense
         icon="filter_list"
@@ -35,7 +35,6 @@
           />
         </div>
       </q-form>
-
       <q-table
         :rows="rows"
         bordered
@@ -47,7 +46,7 @@
         class="my-sticky-header-table"
         title-class="text-blue-10"
         table-header-class="text-blue-10"
-        title="All Visitors"
+        title="Expected Visitors"
       >
         <template v-slot:body="props">
           <q-tr :props="props">
@@ -83,24 +82,33 @@
               <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'pending' " color="warning" label="Pending" /> 
               <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finished' " color="primary" label="Departed" /> 
             </q-td>
-            <q-td key="view" :props="props" class="tw-mr-4">
-              <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" />
+            <q-td key="view" :props="props">
+              <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 sm:tw-mr-2" />
             </q-td>
           </q-tr>
         </template>
       </q-table>
+      <q-btn
+        round
+        class="tw-float-right tw-mt-4 tw-bottom-2"
+        color="primary"
+        size="16px"
+        icon="add"
+        to="new-visitor"
+      />
     </div>
-    <div v-else>
+    <!-- <div v-else>
       <skeletal-table></skeletal-table>
-    </div>
+    </div> -->
   </transition>
 </template>
 
 <script>
 import { computed, defineComponent, ref} from 'vue';
-import { useAttendanceService } from '../composables/attendanceService';
+import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
-import SkeletalTable from '../components/SkeletalTable.vue';
+import { useRoute } from 'vue-router';
+import SkeletalTable from '../../components/SkeletalTable.vue';
 
 const columns = [
   {
@@ -119,15 +127,17 @@ const columns = [
 ]
 
 export default defineComponent({
-  name: 'SearchVisitors',
+  name: 'VisitorsList',
   components: {
-    SkeletalTable
+    // SkeletalTable
   },
+
   async setup () {
     const attendance = useAttendanceService()
     const rows = ref([])
-    const queryName = ref('')
     const filterForm = ref(false)
+    const table = ref(false)
+    const queryName = ref('')
     const $q = useQuasar()
     const colors = [
       '#1abc9c',
@@ -166,15 +176,22 @@ export default defineComponent({
       }, 500)
     }
 
+    const showTable = () => {
+      setTimeout(() => {
+        table.value = !table.value
+      })
+    }
+
     return {
       columns,
       rows,
       visibleColumns,
       getAvatarBackgroundColor,
-      filterVisitor,
       showFilter,
+      filterVisitor,
       filterForm,
-      queryName
+      queryName,
+      table
     }
   }
 })

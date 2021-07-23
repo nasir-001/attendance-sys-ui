@@ -240,7 +240,7 @@
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
-import { useAttendanceService } from '../composables/attendanceService';
+import { useAttendanceService } from '../../composables/attendanceService';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 import CustomParseFormat from 'dayjs/plugin/CustomParseFormat'

@@ -3,29 +3,29 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashborad',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('src/layouts/admin/MainLayout.vue'),
     redirect: { name: 'visitors-list' },
     children: [
       {
         path: 'visitors',
         name: 'visitors-list',
-        component: () => import('pages/VisitorsList'),
+        component: () => import('pages/views/VisitorsList'),
       },
       {
         path: 'new-visitor',
         name: 'new-visitor',
-        component: () => import('pages/NewVisitor'),
+        component: () => import('pages/views/NewVisitor'),
       },
       {
         path: 'search-visitors',
         name: 'search-visitors',
-        component: () => import('pages/SearchVisitors'),
+        component: () => import('pages/views/SearchVisitors'),
       },
       {
         path: 'visitors/:id',
         name: 'visitor-details',
         props: true,
-        component: () => import('pages/VisitorDetails'),
+        component: () => import('pages/views/VisitorDetails'),
       }
     ]
   },

@@ -123,7 +123,7 @@
 <script>
 import { defineComponent, reactive, ref } from 'vue';
 import { v4 as uuidv4 }  from 'uuid';
-import { useAttendanceService } from '../composables/attendanceService';
+import { useAttendanceService } from '../../composables/attendanceService';
 
 export default defineComponent({
   name: 'NewVisitor',
@@ -132,7 +132,6 @@ export default defineComponent({
     const payloadData = useAttendanceService()
     const showForm = ref(false)
     const newVisitorPayload = reactive({
-      id: uuidv4(),
       title: '',
       first_name: '',
       last_name: '',
