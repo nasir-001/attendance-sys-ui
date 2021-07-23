@@ -90,7 +90,7 @@
       </q-table>
       <q-btn
         round
-        class="tw-float-right tw-mt-4 tw-bottom-0"
+        class="tw-float-right tw-mt-4 tw-bottom-2"
         color="primary"
         size="16px"
         icon="add"

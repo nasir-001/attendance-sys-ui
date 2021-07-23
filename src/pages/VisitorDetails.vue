@@ -4,7 +4,9 @@
     leave-active-class="animated slideOutRight">
     <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 xl:tw-w-1/3 tw-mt-20 sm:tw-mx-auto">
       <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
-        <q-card-section class="text-grey-7 tw-font-mono">{{ formatedDate(visitor.visit.date) }}</q-card-section>
+        <q-card-section class="text-grey-7 tw-font-mono">
+          {{ formatedDate(visitor.visit.date) }}
+        </q-card-section>
         <div class="tw-flex tw-pt-5 tw-ml-8 sm:tw-ml-12 tw-justify-center">
           <div class="sm:tw--ml-2 tw-text-center tw-font-mono tw-w-20 
             tw-h-20 tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
@@ -33,10 +35,23 @@
           <div v-if="visitor.email" class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
             <q-icon name="mail" /> {{ visitor.email }} 
           </div>
+          <div v-if="visitor.visit.status === 'admitted' " class="row justify-center q-mt-sm">
+            <div class="text-green-7 tw-font-semibold tw-font-mono">
+              {{ formatedTime(visitor.visit.admitted_time) }}
+            </div>
+          </div>
+          <div v-if="visitor.visit.status === 'finished' " class="row justify-center q-mt-sm">
+            <div class="text-green-7 tw-font-semibold q-mx-sm tw-font-mono">
+              {{ formatedTime(visitor.visit.admitted_time) }}
+            </div>
+            <div class="text-blue-7 tw-font-semibold q-mx-sm tw-font-mono">
+              {{ formatedTime(visitor.visit.depart_time) }}
+            </div>
+          </div>
         </div>
-        <div class="row">
-          <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
-            <q-form class="tw-mx-auto" @submit.prevent="admitVisitor">
+        <div class="row tw-mb-14 justify-center tw-mt-2">
+          <q-card-actions class="">
+            <q-form @submit.prevent="admitVisitor">
               <q-btn 
                 v-if="visitor.visit.status === 'pending' "
                 type="submit"
@@ -47,8 +62,8 @@
               />
             </q-form>
           </q-card-actions> 
-          <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
-            <q-form class="tw-mx-auto" @submit.prevent="cancelVisitor">
+          <q-card-actions class="">
+            <q-form @submit.prevent="cancelVisitor">
               <q-btn 
                 v-if="visitor.visit.status === 'pending' "
                 type="submit"
@@ -60,7 +75,7 @@
             </q-form>
           </q-card-actions> 
         </div>
-        <q-card-actions class="tw--mt-8 tw-pb-5">
+        <q-card-actions class="tw--mt-20 tw-pb-8">
           <q-form class="tw-mx-auto" @submit.prevent="visitorLeave">
             <q-btn 
               v-if="visitor.visit.status === 'admitted' " 
@@ -275,8 +290,15 @@ export default defineComponent({
     };
 
     function formatedDate(date) {
-      dayjs.extend(CustomParseFormat)
-      return dayjs(date).format('DD-MMMM')
+      dayjs.extend(CustomParseFormat);
+      date = dayjs(date).format('DD-MMMM');
+      return date;
+    }
+
+    function formatedTime(time) {
+      dayjs.extend(CustomParseFormat);
+      time = dayjs(time).format("hh:mm-a");
+      return time;
     }
 
     function editVisitor() {
@@ -363,7 +385,8 @@ export default defineComponent({
       editVisitor,
       admitVisitor,
       visitorLeave,
-      cancelVisitor
+      cancelVisitor,
+      formatedTime
      }
   }
 })
