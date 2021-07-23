@@ -2,251 +2,257 @@
   <transition appear
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
-    <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 xl:tw-w-1/3 tw-mt-20 sm:tw-mx-auto">
-      <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
-        <q-card-section class="text-grey-7 tw-font-mono">
-          {{ formatedDate(visitor.visit.date) }}
-        </q-card-section>
-        <div class="tw-flex tw-pt-5 tw-ml-8 sm:tw-ml-12 tw-justify-center">
-          <div class="sm:tw--ml-2 tw-text-center tw-font-mono tw-w-20 
-            tw-h-20 tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
-            :style="{'background-color': getAvatarBackgroundColor(visitor.first_name)}">
-            <p class="tw-text-2xl tw-pt-6 md:tw-pt-12 tw-text-gray-300">
-              {{ visitor.first_name[0].toUpperCase() }}{{ visitor.last_name[0].toUpperCase() }}
-            </p>
-          </div>
-          <div class="tw--ml-6">
-            <div v-if="visitor.visit.status === 'admitted' " class="bg-positive tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.visit.status === 'cancelled' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.visit.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            <div v-if="visitor.visit.status === 'finished' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-          </div>
-          <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
-            <q-btn @click="showAddVisitor = true" flat dense color="primary" icon="edit" />
-          </div>
-        </div>
-        <div>
-          <div class="tw-text-center tw-text-gray-600 md:tw-pt-2 tw-text-lg md:tw-text-xl tw-font-semibold tw-uppercase">
-            {{ visitor.title }}
-          </div>
-          <div class="tw-text-center tw-text-gray-500 tw-text-base md:tw-text-lg tw-font-semibold tw-pt-1 tw-uppercase tw-font-mono tw-tracking-wide">
-            {{ visitor.first_name }} {{ visitor.last_name }}
-          </div>
-          <div v-if="visitor.email" class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
-            <q-icon name="mail" /> {{ visitor.email }} 
-          </div>
-          <div v-if="visitor.visit.status === 'admitted' " class="row justify-center q-mt-sm">
-            <div class="text-green-7 tw-font-semibold tw-font-mono">
-              {{ formatedTime(visitor.visit.admitted_time) }}
-            </div>
-          </div>
-          <div v-if="visitor.visit.status === 'finished' " class="row justify-center q-mt-sm">
-            <div class="text-green-7 tw-font-semibold q-mx-sm tw-font-mono">
-              {{ formatedTime(visitor.visit.admitted_time) }}
-            </div>
-            <div class="text-blue-7 tw-font-semibold q-mx-sm tw-font-mono">
-              {{ formatedTime(visitor.visit.depart_time) }}
-            </div>
-          </div>
-        </div>
-        <div class="row tw-mb-14 justify-center tw-mt-2">
-          <q-card-actions class="">
-            <q-form @submit.prevent="admitVisitor">
-              <q-btn 
-                v-if="visitor.visit.status === 'pending' "
-                type="submit"
-                color="primary" 
-                class="q-mx-sm tw-w-32 tw-font-semibold" 
-                dense 
-                label="admit visitor" 
-              />
-            </q-form>
-          </q-card-actions> 
-          <q-card-actions class="">
-            <q-form @submit.prevent="cancelVisitor">
-              <q-btn 
-                v-if="visitor.visit.status === 'pending' "
-                type="submit"
-                color="negative" 
-                class="q-mx-sm tw-w-32 tw-font-semibold" 
-                dense 
-                label="cancel visitor" 
-              />
-            </q-form>
-          </q-card-actions> 
-        </div>
-        <q-card-actions class="tw--mt-20 tw-pb-8">
-          <q-form class="tw-mx-auto" @submit.prevent="visitorLeave">
-            <q-btn 
-              v-if="visitor.visit.status === 'admitted' " 
-              type="submit"
-              color="positive" 
-              class="q-mx-sm tw-w-42 tw-font-semibold tw-mx-4" 
-              dense 
-              label="visitor departed" 
-            />
-          </q-form>
-        </q-card-actions>
-      </q-card>
-
-      <q-dialog v-model="showAddVisitor">
-        <q-card class="tw-w-full sm:tw-w-3/6">
-          <q-card-section class="row">
-            <div class="text-h6 text-primary tw--mt-1">Edit Visitor</div>
-            <q-space />
-            <q-btn flat v-close-popup dense round icon="close" />
+    <q-page>
+      <back-button></back-button>
+      <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 xl:tw-w-1/3 tw-mt-20 sm:tw-mx-auto">
+        <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
+          <q-card-section class="text-grey-7 tw-font-mono">
+            {{ formatedDate(visitor.visit.date) }}
           </q-card-section>
-          <q-form @submit="editVisitor">
-            <q-card-section class="q-pt-none">
-              <q-input
-                outlined
-                auto-focus
-                lazy-rules
-                type="text"
-                v-model="visitor.title"
-                label="Title"
-                :rules="[
-                  val => !!val || 'Field is required']"
+          <div class="tw-flex tw-pt-5 tw-ml-8 sm:tw-ml-12 tw-justify-center">
+            <div class="sm:tw--ml-2 tw-text-center tw-font-mono tw-w-20 
+              tw-h-20 tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
+              :style="{'background-color': getAvatarBackgroundColor(visitor.first_name)}">
+              <p class="tw-text-2xl tw-pt-6 md:tw-pt-12 tw-text-gray-300">
+                {{ visitor.first_name[0].toUpperCase() }}{{ visitor.last_name[0].toUpperCase() }}
+              </p>
+            </div>
+            <div class="tw--ml-6">
+              <div v-if="visitor.visit.status === 'admitted' " class="bg-positive tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+              <div v-if="visitor.visit.status === 'cancelled' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+              <div v-if="visitor.visit.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+              <div v-if="visitor.visit.status === 'finished' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+            </div>
+            <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
+              <q-btn @click="showAddVisitor = true" flat dense color="primary" icon="edit" />
+            </div>
+          </div>
+          <div>
+            <div class="tw-text-center tw-text-gray-600 md:tw-pt-2 tw-text-lg md:tw-text-xl tw-font-semibold tw-uppercase">
+              {{ visitor.title }}
+            </div>
+            <div class="tw-text-center tw-text-gray-500 tw-text-base md:tw-text-lg tw-font-semibold tw-pt-1 tw-uppercase tw-font-mono tw-tracking-wide">
+              {{ visitor.first_name }} {{ visitor.last_name }}
+            </div>
+            <div v-if="visitor.email" class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
+              <q-icon name="mail" /> {{ visitor.email }} 
+            </div>
+            <div v-if="visitor.visit.status === 'admitted' " class="row justify-center q-mt-sm">
+              <div class="text-green-7 tw-font-semibold tw-font-mono">
+                {{ formatedTime(visitor.visit.admitted_time) }}
+              </div>
+            </div>
+            <div v-if="visitor.visit.status === 'finished' " class="row justify-center q-mt-sm">
+              <div class="text-green-7 tw-font-semibold q-mx-sm tw-font-mono">
+                {{ formatedTime(visitor.visit.admitted_time) }}
+              </div>
+              <div class="text-blue-7 tw-font-semibold q-mx-sm tw-font-mono">
+                {{ formatedTime(visitor.visit.depart_time) }}
+              </div>
+            </div>
+          </div>
+          <div class="row tw-mb-14 justify-center tw-mt-2">
+            <q-card-actions class="">
+              <q-form @submit.prevent="admitVisitor">
+                <q-btn 
+                  v-if="visitor.visit.status === 'pending' "
+                  type="submit"
+                  color="primary" 
+                  class="q-mx-sm tw-w-32 tw-font-semibold" 
+                  dense 
+                  label="admit visitor" 
+                />
+              </q-form>
+            </q-card-actions> 
+            <q-card-actions class="">
+              <q-form @submit.prevent="cancelVisitor">
+                <q-btn 
+                  v-if="visitor.visit.status === 'pending' "
+                  type="submit"
+                  color="negative" 
+                  class="q-mx-sm tw-w-32 tw-font-semibold" 
+                  dense 
+                  label="cancel visitor" 
+                />
+              </q-form>
+            </q-card-actions> 
+          </div>
+          <q-card-actions class="tw--mt-20 tw-pb-8">
+            <q-form class="tw-mx-auto" @submit.prevent="visitorLeave">
+              <q-btn 
+                v-if="visitor.visit.status === 'admitted' " 
+                type="submit"
+                color="positive" 
+                class="q-mx-sm tw-w-42 tw-font-semibold tw-mx-4" 
+                dense 
+                label="visitor departed" 
               />
+            </q-form>
+          </q-card-actions>
+        </q-card>
+
+        <q-dialog v-model="showAddVisitor">
+          <q-card class="tw-w-full sm:tw-w-3/6">
+            <q-card-section class="row">
+              <div class="text-h6 text-primary tw--mt-1">Edit Visitor</div>
+              <q-space />
+              <q-btn flat v-close-popup dense round icon="close" />
             </q-card-section>
-            <q-card-section class="q-pt-none">
-              <q-input
-                outlined
-                auto-focus
-                lazy-rules
-                type="text"
-                v-model="visitor.first_name"
-                label="First Name"
-                :rules="[
-                  val => !!val || 'Field is required']"
-              />
-            </q-card-section>
-            <q-card-section class="q-pt-none">
-              <q-input
-                outlined
-                auto-focus
-                lazy-rules
-                type="text"
-                v-model="visitor.last_name"
-                label="Last Name"
-                :rules="[
-                  val => !!val || 'Field is required']"
-              />
-            </q-card-section>
-            <q-card-section class="q-pt-none">
-              <q-input
-                outlined
-                auto-focus
-                lazy-rules
-                type="text"
-                v-model="visitor.email"
-                label="Email"
-                :rules="[
-                  val => !!val || 'Field is required']"
-              />
-            </q-card-section>
-            <q-card-section class="q-pt-none">
-              <q-input
-                outlined
-                auto-focus
-                lazy-rules
-                type="number"
-                v-model="visitor.phone"
-                label="Phone"
-                :rules="[
-                  val => !!val || 'Field is required']"
-              />
-            </q-card-section>
-            <q-card-section class="q-pt-none">
-            <q-select 
-              outlined 
-              v-model="visitor.gender"
-              :options="gender" 
-              label="Gender"
-            />
-            </q-card-section>
-            <q-card-section class="q-pt-none">
+            <q-form @submit="editVisitor">
+              <q-card-section class="q-pt-none">
+                <q-input
+                  outlined
+                  auto-focus
+                  lazy-rules
+                  type="text"
+                  v-model="visitor.title"
+                  label="Title"
+                  :rules="[
+                    val => !!val || 'Field is required']"
+                />
+              </q-card-section>
+              <q-card-section class="q-pt-none">
+                <q-input
+                  outlined
+                  auto-focus
+                  lazy-rules
+                  type="text"
+                  v-model="visitor.first_name"
+                  label="First Name"
+                  :rules="[
+                    val => !!val || 'Field is required']"
+                />
+              </q-card-section>
+              <q-card-section class="q-pt-none">
+                <q-input
+                  outlined
+                  auto-focus
+                  lazy-rules
+                  type="text"
+                  v-model="visitor.last_name"
+                  label="Last Name"
+                  :rules="[
+                    val => !!val || 'Field is required']"
+                />
+              </q-card-section>
+              <q-card-section class="q-pt-none">
+                <q-input
+                  outlined
+                  auto-focus
+                  lazy-rules
+                  type="text"
+                  v-model="visitor.email"
+                  label="Email"
+                  :rules="[
+                    val => !!val || 'Field is required']"
+                />
+              </q-card-section>
+              <q-card-section class="q-pt-none">
+                <q-input
+                  outlined
+                  auto-focus
+                  lazy-rules
+                  type="number"
+                  v-model="visitor.phone"
+                  label="Phone"
+                  :rules="[
+                    val => !!val || 'Field is required']"
+                />
+              </q-card-section>
+              <q-card-section class="q-pt-none">
               <q-select 
                 outlined 
-                v-model="visitor.visit.status" 
-                :options="options" 
-                label="Status"
+                v-model="visitor.gender"
+                :options="gender" 
+                label="Gender"
               />
-            </q-card-section>
-            <q-card-section class="q-pt-lg">
-              <q-input label="Arrival Date" outlined v-model="visitor.visit.date">
-                <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="visitor.visit.date">
-                        <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Save" color="primary" flat />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </q-card-section>
+              </q-card-section>
+              <q-card-section class="q-pt-none">
+                <q-select 
+                  outlined 
+                  v-model="visitor.visit.status" 
+                  :options="options" 
+                  label="Status"
+                />
+              </q-card-section>
+              <q-card-section class="q-pt-lg">
+                <q-input label="Arrival Date" outlined v-model="visitor.visit.date">
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                        <q-date v-model="visitor.visit.date">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Save" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </q-card-section>
 
+              <q-card-actions align="right">
+                <q-btn
+                  class="tw-mr-2 tw-mb-4"
+                  type="submit"
+                  label="Save" 
+                  color="primary" 
+                  v-close-popup 
+                />
+              </q-card-actions>
+            </q-form>
+          </q-card>
+        </q-dialog>
+
+        <q-dialog v-model="confirmDelete">
+          <q-card class="sm:tw-w-2/6">
+            <q-card-section class="row">
+              <div class="text-h6 tw-text-gray-800 tw--mt-1">Attention</div>
+              <q-space />
+              <q-btn flat v-close-popup dense round icon="close" />
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <div class="tw-text-lg tw-text-gray-600">Are you sure you want to delete this visitor?</div>
+            </q-card-section>
             <q-card-actions align="right">
               <q-btn
+                flat
                 class="tw-mr-2 tw-mb-4"
                 type="submit"
-                label="Save" 
+                label="cancel" 
                 color="primary" 
                 v-close-popup 
               />
+              <q-btn
+                flat
+                class="tw-mr-2 tw-mb-4"
+                type="submit"
+                label="ok" 
+                color="negative"
+                @click="visitorToDelete"
+                v-close-popup 
+              />
             </q-card-actions>
-          </q-form>
-        </q-card>
-      </q-dialog>
-
-      <q-dialog v-model="confirmDelete">
-        <q-card class="sm:tw-w-2/6">
-          <q-card-section class="row">
-            <div class="text-h6 tw-text-gray-800 tw--mt-1">Attention</div>
-            <q-space />
-            <q-btn flat v-close-popup dense round icon="close" />
-          </q-card-section>
-          <q-card-section class="q-pt-none">
-            <div class="tw-text-lg tw-text-gray-600">Are you sure you want to delete this visitor?</div>
-          </q-card-section>
-          <q-card-actions align="right">
-            <q-btn
-              flat
-              class="tw-mr-2 tw-mb-4"
-              type="submit"
-              label="cancel" 
-              color="primary" 
-              v-close-popup 
-            />
-            <q-btn
-              flat
-              class="tw-mr-2 tw-mb-4"
-              type="submit"
-              label="ok" 
-              color="negative"
-              @click="visitorToDelete"
-              v-close-popup 
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-
-    </div>
+          </q-card>
+        </q-dialog>
+      </div>
+    </q-page>
   </transition>
 </template>
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
+import BackButton from '../../components/BackButton.vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
-import CustomParseFormat from 'dayjs/plugin/CustomParseFormat'
+import CustomParseFormat from 'dayjs/plugin/CustomParseFormat';
 
 export default defineComponent({
   name: 'visitor-details',
+  components: {
+    BackButton
+  },
 
   async setup() {
     const route = useRoute()
