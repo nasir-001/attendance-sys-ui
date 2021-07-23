@@ -5,7 +5,7 @@
     <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 xl:tw-w-1/3 tw-mt-20 sm:tw-mx-auto">
       <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
         <q-card-section class="text-grey-7 tw-font-mono">{{ formatedDate(visitor.visit.date) }}</q-card-section>
-        <div class="tw-flex tw-pt-5 tw-justify-center">
+        <div class="tw-flex tw-pt-5 tw-ml-8 sm:tw-ml-12 tw-justify-center">
           <div class="sm:tw--ml-2 tw-text-center tw-font-mono tw-w-20 
             tw-h-20 tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
             :style="{'background-color': getAvatarBackgroundColor(visitor.first_name)}">
@@ -23,7 +23,7 @@
             <q-btn @click="showAddVisitor = true" flat dense color="primary" icon="edit" />
           </div>
         </div>
-        <div class="tw--ml-8 md:tw--ml-10">
+        <div>
           <div class="tw-text-center tw-text-gray-600 md:tw-pt-2 tw-text-lg md:tw-text-xl tw-font-semibold tw-uppercase">
             {{ visitor.title }}
           </div>
@@ -35,35 +35,28 @@
           </div>
         </div>
         <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
-          <q-form @submit.prevent="admitVisitor">
+          <q-form class="tw-mx-auto" @submit.prevent="admitVisitor">
             <q-btn 
               v-if="visitor.visit.status === 'pending' "
-              flat 
               type="submit"
               color="primary" 
-              class="q-mx-sm q-px-sm tw-w-32" 
+              class="q-mx-sm tw-w-32 tw-font-semibold" 
               dense 
               label="admit visitor" 
             />
           </q-form>
-          <q-form @submit.prevent="visitorLeave">
+        </q-card-actions> 
+        <q-card-actions class="tw--mt-8 tw-pb-5">
+          <q-form class="tw-mx-auto" @submit.prevent="visitorLeave">
             <q-btn 
-              v-if="visitor.visit.status === 'admitted' "
-              flat 
+              v-if="visitor.visit.status === 'admitted' " 
               type="submit"
               color="positive" 
-              class="q-mx-sm q-px-sm tw-w-32" 
+              class="q-mx-sm tw-w-42 tw-font-semibold tw-mx-4" 
               dense 
-              label="visitor leave" 
+              label="visitor departed" 
             />
           </q-form>
-          <q-btn 
-            @click="confirmDelete = true" 
-            color="negative" 
-            flat 
-            dense  
-            label="delete"
-          />
         </q-card-actions> 
       </q-card>
 
@@ -152,7 +145,7 @@
               />
             </q-card-section>
             <q-card-section class="q-pt-lg">
-              <q-input label="Expected Date" outlined v-model="visitor.visit.date">
+              <q-input label="Arrival Date" outlined v-model="visitor.visit.date">
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">

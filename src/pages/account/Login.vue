@@ -1,53 +1,55 @@
 <template>
-  <div class="tw-mx-2">
-    <div class="tw-mx-auto tw-rounded-lg tw-border-2 tw-text-gray-400 tw-mt-20 sm:tw-w-2/3 md:tw-w-2/4 lg:tw-w-2/6 xl:tw-w-1/3">
-      <form class="tw-my-10 tw-mx-2">
-        <q-card-section class="text-center">
-          <div class="tw-text-lg sm:tw-text-xl md:tw-text-2xl tw-text-gray-400 tw-font-mono">Login</div>
-        </q-card-section>
-        <q-card-section>
-          <q-input
-            outlined
-            auto-focus
-            lazy-rules
-            type="text"
-            label="Username"
-            v-model="username"
-            :rules="[
-              val => !!val || 'Field is required']"
-          />
-        </q-card-section>
-        <q-card-section>
-          <q-input
-            class="tw--mt-6 sm:tw--mt-0 tw-overflow-hidden"
-            outlined
-            lazy-rules
-            label="Password"
-            v-model="password"
-            :type="isPwd ? 'password' : 'text'"
-            :rules="[val => !!val || 'Field is required']"
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer tw-text-gray-400"
-                @click="isPwd = !isPwd"
-              />
-            </template>
-          </q-input>
-        </q-card-section>
-        <q-card-section>
-          <q-btn
-            label="Login"
-            type="submit"
-            color="primary"
-            class="full-width tw-text-base sm:tw-text-lg tw-rounded-full sm:tw-rounded-lg tw--mt-6 sm:tw--mt-0"
-            @click="loadData()"            
-            :disable="disableState"
-            :loading="loadingState"
-          />
-        </q-card-section>
-      </form>
+  <div class="q-pa-sm row justify-center">
+    <div class="col-12 col-sm-7 col-md-4 col-xl-3 tw-rounded-lg tw-border-2 tw-text-gray-400 tw-mt-20">
+      <q-card flat class="q-pb-sm w100">
+        <form>
+          <q-card-section class="text-center q-my-md">
+            <div class="text-h5">Login your account.</div>
+          </q-card-section>
+          <q-card-section>
+            <q-input
+              outlined
+              auto-focus
+              lazy-rules
+              type="text"
+              label="Username"
+              v-model="username"
+              :rules="[
+                val => !!val || 'Field is required']"
+            />
+          </q-card-section>
+          <q-card-section class="tw--mt-2">
+            <q-input
+              class="sm:tw--mt-0 tw-overflow-hidden"
+              outlined
+              lazy-rules
+              label="Password"
+              v-model="password"
+              :type="isPwd ? 'password' : 'text'"
+              :rules="[val => !!val || 'Field is required']"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer tw-text-gray-400"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
+          </q-card-section>
+          <q-card-section class="tw--mt-2 tw-mb-6">
+            <q-btn
+              label="Login"
+              type="submit"
+              color="primary"
+              class="full-width tw-text-base sm:tw-text-lg tw-rounded-full sm:tw-rounded-lg tw--mt-6 sm:tw--mt-0"
+              @click="loadData()"            
+              :disable="disableState"
+              :loading="loadingState"
+            />
+          </q-card-section>
+        </form>
+      </q-card>
     </div>
   </div>
 </template>

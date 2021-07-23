@@ -81,7 +81,7 @@
           />
         </q-card-section>
         <q-card-section class="q-pt-lg">
-          <q-input label="Expected Date" outlined v-model="newVisitorPayload.visit.date">
+          <q-input label="Arrival Date" outlined v-model="newVisitorPayload.visit.date">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">

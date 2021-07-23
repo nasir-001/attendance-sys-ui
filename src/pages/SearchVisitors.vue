@@ -81,7 +81,7 @@
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'admitted'" color="positive" label="Admitted" />
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'cancelled'" color="negative" label="Cancelled" />
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'pending' " color="warning" label="Pending" /> 
-              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finished' " color="primary" label="Finished" /> 
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finished' " color="primary" label="Departed" /> 
             </q-td>
             <q-td key="view" :props="props" class="tw-mr-4">
               <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" />
@@ -146,7 +146,7 @@ export default defineComponent({
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
         ? ['image', 'title', 'first_name', 'last_name', 'phone', 'email', 'status', 'view']
-        : ['image', 'first_name', 'last_name', 'view']
+        : ['image', 'first_name', 'last_name', 'status', 'view']
     })
 
     rows.value = await attendance.list()

@@ -61,9 +61,9 @@
       <suspense>
         <router-view>
         </router-view>
-          <!-- <template #fallback>
+          <template #fallback>
             <q-icon name="warning" class="text-red" style="font-size: 10rem;" />
-          </template>       -->
+          </template>      
       </suspense>      
     </q-page-container>
   </q-layout>

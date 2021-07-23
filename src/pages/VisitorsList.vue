@@ -80,7 +80,7 @@
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'admitted'" color="positive" label="Admitted" />
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'cancelled'" color="negative" label="Cancelled" />
               <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'pending' " color="warning" label="Pending" /> 
-              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finished' " color="primary" label="Finished" /> 
+              <q-badge class="tw-py-1.5 tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finished' " color="primary" label="Departed" /> 
             </q-td>
             <q-td key="view" :props="props" class="tw-mr-4">
               <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" />
@@ -97,61 +97,8 @@
         to="new-visitor"
       />
     </div>
-    <!-- <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-h-5/6 tw-mx-auto">
-      <q-markup-table>
-        <thead>
-          <tr>
-            <th class="text-left">
-              <q-skeleton animation="blink" type="text" />
-            </th>
-            <th class="text-right">
-              <q-skeleton animation="blink" type="text" />
-            </th>
-            <th class="text-right">
-              <q-skeleton animation="blink" type="text" />
-            </th>
-            <th class="text-right">
-              <q-skeleton animation="blink" type="text" />
-            </th>
-            <th class="text-right">
-              <q-skeleton animation="blink" type="text" />
-            </th>
-            <th class="text-right">
-              <q-skeleton animation="blink" type="text" />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="n in 6" :key="n">
-            <td class="text-left">
-              <q-skeleton animation="blink" type="QAvatar" />
-            </td>
-            <td class="text-right">
-              <q-skeleton animation="blink" type="text" width="50px" />
-            </td>
-            <td class="text-right">
-              <q-skeleton animation="blink" type="text" width="50px" />
-            </td>
-            <td class="text-right">
-              <q-skeleton animation="blink" type="text" width="65px" />
-            </td>
-            <td class="text-right">
-              <q-skeleton animation="blink" type="text" width="40px" />
-            </td>
-            <td class="text-right">
-              <q-skeleton animation="blink" type="text" width="85px" />
-            </td>
-          </tr>
-        </tbody>
-      </q-markup-table>
-      <q-btn
-        round
-        class="tw-float-right tw-mt-4 tw-bottom-0"
-        color="primary"
-        size="16px"
-        icon="add"
-        to="new-visitor"
-      />
+    <!-- <div v-else>
+      <skeletal-table></skeletal-table>
     </div> -->
   </transition>
 </template>
@@ -161,6 +108,7 @@ import { computed, defineComponent, ref} from 'vue';
 import { useAttendanceService } from '../composables/attendanceService';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
+import SkeletalTable from '../components/SkeletalTable.vue';
 
 const columns = [
   {
@@ -180,13 +128,16 @@ const columns = [
 
 export default defineComponent({
   name: 'VisitorsList',
+  components: {
+    // SkeletalTable
+  },
 
   async setup () {
     const attendance = useAttendanceService()
     const rows = ref([])
     const filterForm = ref(false)
+    const table = ref(false)
     const queryName = ref('')
-    const route = useRoute()
     const $q = useQuasar()
     const colors = [
       '#1abc9c',
@@ -205,7 +156,7 @@ export default defineComponent({
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
         ? ['image', 'title', 'first_name', 'last_name', 'phone', 'email', 'status', 'view']
-        : ['image', 'first_name', 'last_name', 'view']
+        : ['image', 'first_name', 'last_name', 'status', 'view']
     })
 
     rows.value = await attendance.list()
@@ -225,6 +176,12 @@ export default defineComponent({
       }, 500)
     }
 
+    const showTable = () => {
+      setTimeout(() => {
+        table.value = !table.value
+      })
+    }
+
     return {
       columns,
       rows,
@@ -233,7 +190,8 @@ export default defineComponent({
       showFilter,
       filterVisitor,
       filterForm,
-      queryName
+      queryName,
+      table
     }
   }
 })
