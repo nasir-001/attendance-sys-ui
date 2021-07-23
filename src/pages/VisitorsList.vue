@@ -4,7 +4,7 @@
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight"
   >
-    <div v-if="rows.length" class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
+    <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
       <q-btn 
         dense
         icon="filter_list"
@@ -97,7 +97,7 @@
         to="new-visitor"
       />
     </div>
-    <div v-else class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-h-5/6 tw-mx-auto">
+    <!-- <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-h-5/6 tw-mx-auto">
       <q-markup-table>
         <thead>
           <tr>
@@ -152,7 +152,7 @@
         icon="add"
         to="new-visitor"
       />
-    </div>
+    </div> -->
   </transition>
 </template>
 

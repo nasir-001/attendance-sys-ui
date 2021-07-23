@@ -115,7 +115,7 @@
       </q-form>
     </div>
     <div v-else class="q-pa-md q-mb-xl tw-mt-4 tw-mx-2 sm:tw-w-4/6 md:tw-w-1/2 sm:tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
-      <q-skeleton v-for="n in 7" :key="n" class="q-ma-xl" type="checkbox" height="50px" />
+      <q-skeleton v-for="n in 7" :key="n" class="q-ma-xl" type="QInput" height="50px" />
     </div>
   </transition>
 </template>
