@@ -5,7 +5,7 @@
     <q-page>
       <back-button></back-button>
       <div v-if="showForm" class="q-pa-md q-mb-xl q-mt-lg tw-mx-2 sm:tw-w-4/6 md:tw-w-1/2 sm:tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
-        <q-form class="tw-mt-8" @submit.prevent="newVisitorData">
+        <q-form @submit.prevent="newVisitorData">
           <q-card-section class="q-pt-none">
             <q-input
               outlined
