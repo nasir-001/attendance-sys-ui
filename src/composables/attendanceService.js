@@ -53,6 +53,75 @@ export function useAttendanceService() {
         })
       })
     },
+    async admitVisitor(id, payload) {
+      console.log(id);
+      const response = await api.patch(`/api/attendance/${id}`, payload)
+      .then(() => {
+        $q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Visitor has been admitted',
+          icon: 'check_circle'
+        })
+      })
+      .then(() => {
+        router.push({ name: 'dashborad' })
+      })
+      .catch(() => {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Failed to admit visitor',
+          icon: 'report_problem'
+        })
+      })
+    },
+    async cancelVisitor(id, payload) {
+      console.log(id);
+      const response = await api.patch(`/api/attendance/${id}`, payload)
+      .then(() => {
+        $q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Visitor has been admitted',
+          icon: 'check_circle'
+        })
+      })
+      .then(() => {
+        router.push({ name: 'dashborad' })
+      })
+      .catch(() => {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Failed to admit visitor',
+          icon: 'report_problem'
+        })
+      })
+    },
+    async visitorDepart(id, payload) {
+      console.log(id);
+      const response = await api.patch(`/api/attendance/${id}`, payload)
+      .then(() => {
+        $q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Visitor has been departed',
+          icon: 'check_circle'
+        })
+      })
+      .then(() => {
+        router.push({ name: 'dashborad' })
+      })
+      .catch(() => {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Failed to depart visitor',
+          icon: 'report_problem'
+        })
+      })
+    },
     async newVisitor(payload) {
       const response = await api.post(`/api/attendance/`, payload)
       .then(() => {

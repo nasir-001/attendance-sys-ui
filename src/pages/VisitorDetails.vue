@@ -34,18 +34,32 @@
             <q-icon name="mail" /> {{ visitor.email }} 
           </div>
         </div>
-        <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
-          <q-form class="tw-mx-auto" @submit.prevent="admitVisitor">
-            <q-btn 
-              v-if="visitor.visit.status === 'pending' "
-              type="submit"
-              color="primary" 
-              class="q-mx-sm tw-w-32 tw-font-semibold" 
-              dense 
-              label="admit visitor" 
-            />
-          </q-form>
-        </q-card-actions> 
+        <div class="row">
+          <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
+            <q-form class="tw-mx-auto" @submit.prevent="admitVisitor">
+              <q-btn 
+                v-if="visitor.visit.status === 'pending' "
+                type="submit"
+                color="primary" 
+                class="q-mx-sm tw-w-32 tw-font-semibold" 
+                dense 
+                label="admit visitor" 
+              />
+            </q-form>
+          </q-card-actions> 
+          <q-card-actions class="tw-pt-5 md:tw-pt-8 tw-pb-5">
+            <q-form class="tw-mx-auto" @submit.prevent="cancelVisitor">
+              <q-btn 
+                v-if="visitor.visit.status === 'pending' "
+                type="submit"
+                color="negative" 
+                class="q-mx-sm tw-w-32 tw-font-semibold" 
+                dense 
+                label="cancel visitor" 
+              />
+            </q-form>
+          </q-card-actions> 
+        </div>
         <q-card-actions class="tw--mt-8 tw-pb-5">
           <q-form class="tw-mx-auto" @submit.prevent="visitorLeave">
             <q-btn 
@@ -57,7 +71,7 @@
               label="visitor departed" 
             />
           </q-form>
-        </q-card-actions> 
+        </q-card-actions>
       </q-card>
 
       <q-dialog v-model="showAddVisitor">
@@ -227,6 +241,7 @@ export default defineComponent({
     const confirmDelete = ref(false)
     const admitted = ref('admitted')
     const finished = ref('finished')
+    const cancel = ref('cancelled')
     const editVisitorPayload = reactive({
       title: '',
       first_name: '',
@@ -295,7 +310,23 @@ export default defineComponent({
           status: admitted.value
         }
       })
-      data.editVisitor(route.params.id, visitorAdmitPayload)
+      data.admitVisitor(route.params.id, visitorAdmitPayload)
+    }
+
+    function cancelVisitor() {
+      const visitorAdmitPayload = reactive({
+        title: visitor.value.title,
+        first_name: visitor.value.first_name,
+        last_name: visitor.value.last_name,
+        email: visitor.value.email,
+        phone: visitor.value.phone,
+        gender: visitor.value.gender,
+        visit: {
+          date: visitor.value.visit.date,
+          status: cancel.value
+        }
+      })
+      data.cancelVisitor(route.params.id, visitorAdmitPayload)
     }
 
     function visitorLeave() {
@@ -311,7 +342,7 @@ export default defineComponent({
           status: finished.value
         }
       })
-      data.editVisitor(route.params.id, visitorLeavePayload)
+      data.visitorDepart(route.params.id, visitorLeavePayload)
     }
 
     visitor.value = await data.attendance(route.params.id);
@@ -331,7 +362,8 @@ export default defineComponent({
       visitorToDelete,
       editVisitor,
       admitVisitor,
-      visitorLeave
+      visitorLeave,
+      cancelVisitor
      }
   }
 })
