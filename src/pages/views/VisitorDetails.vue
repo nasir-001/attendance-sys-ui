@@ -39,15 +39,15 @@
             </div>
             <div v-if="visitor.visit.status === 'admitted' " class="row justify-center q-mt-sm">
               <div class="text-green-7 tw-font-semibold tw-font-mono">
-                {{ formatedTime(visitor.visit.admitted_time) }}
+                {{ visitor.visit.admitted_time }}
               </div>
             </div>
             <div v-if="visitor.visit.status === 'finished' " class="row justify-center q-mt-sm">
               <div class="text-green-7 tw-font-semibold q-mx-sm tw-font-mono">
-                {{ formatedTime(visitor.visit.admitted_time) }}
+                {{ visitor.visit.admitted_time }}
               </div>
               <div class="text-blue-7 tw-font-semibold q-mx-sm tw-font-mono">
-                {{ formatedTime(visitor.visit.depart_time) }}
+                {{ visitor.visit.depart_time }}
               </div>
             </div>
           </div>
@@ -167,7 +167,7 @@
                 label="Gender"
               />
               </q-card-section>
-              <q-card-section class="q-pt-none">
+              <q-card-section class="q-pt-md">
                 <q-select 
                   outlined 
                   v-model="visitor.visit.status" 
@@ -175,7 +175,52 @@
                   label="Status"
                 />
               </q-card-section>
-              <q-card-section class="q-pt-lg">
+              <q-card-section v-if="visitor.visit.status === 'admitted'" class="q-pt-md">
+                <q-input label="Admitted time" filled v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
+                  <template v-slot:append>
+                    <q-icon name="access_time" class="cursor-pointer">
+                      <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-time now-btn flat v-model="visitor.visit.admitted_time">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Save" color="danger" flat />
+                          </div>
+                        </q-time>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </q-card-section>
+              <q-card-section v-if="visitor.visit.status === 'finished'" class="q-pt-md">
+                <div class="tw-flex tw-justify-end tw--mb-4">
+                  <q-input label="Admitted time" class="tw-w-full tw-mr-1" filled v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
+                    <template v-slot:append>
+                      <q-icon name="access_time" class="cursor-pointer">
+                        <q-popup-proxy transition-show="scale" transition-hide="scale">
+                          <q-time now-btn flat v-model="visitor.visit.admitted_time">
+                            <div class="row items-center justify-end">
+                              <q-btn v-close-popup label="Save" color="danger" flat />
+                            </div>
+                          </q-time>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                  <q-input label="Depart time" class="tw-w-full tw-ml-1" filled v-model="visitor.visit.depart_time" mask="time" :rules="['time']">
+                    <template v-slot:append>
+                      <q-icon name="access_time" class="cursor-pointer">
+                        <q-popup-proxy transition-show="scale" transition-hide="scale">
+                          <q-time now-btn flat v-model="visitor.visit.depart_time">
+                            <div class="row items-center justify-end">
+                              <q-btn v-close-popup label="Save" color="danger" flat />
+                            </div>
+                          </q-time>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+              </q-card-section>
+              <q-card-section class="q-pt-md">
                 <q-input label="Arrival Date" outlined v-model="visitor.visit.date">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
@@ -248,6 +293,7 @@ import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 import CustomParseFormat from 'dayjs/plugin/CustomParseFormat';
 
+
 export default defineComponent({
   name: 'visitor-details',
   components: {
@@ -255,14 +301,15 @@ export default defineComponent({
   },
 
   async setup() {
-    const route = useRoute()
-    const data = useAttendanceService()
-    const visitor = ref(null)
-    const showAddVisitor = ref(false)
-    const confirmDelete = ref(false)
-    const admitted = ref('admitted')
-    const finished = ref('finished')
-    const cancel = ref('cancelled')
+    const route = useRoute();
+    const data = useAttendanceService();
+    const visitor = ref(null);
+    const showAddVisitor = ref(false);
+    const confirmDelete = ref(false);
+    const admitted = ref('admitted');
+    const finished = ref('finished');
+    const cancel = ref('cancelled');
+    const time = ref(new Date())
     const editVisitorPayload = reactive({
       title: '',
       first_name: '',
@@ -272,9 +319,11 @@ export default defineComponent({
       gender: '',
       visit: {
         date: '',
-        status: ''
+        status: '',
+        admitted_time: '',
+        depart_time: ''
       }
-    })
+    });
 
     const colors = [
       '#1abc9c',
@@ -316,6 +365,8 @@ export default defineComponent({
       editVisitorPayload.gender = visitor.value.gender,
       editVisitorPayload.visit.date = visitor.value.visit.date,
       editVisitorPayload.visit.status = visitor.value.visit.status
+      editVisitorPayload.visit.admitted_time = visitor.value.visit.admitted_time
+      editVisitorPayload.visit.depart_time = visitor.value.visit.depart_time
       if(editVisitorPayload){
         data.editVisitor(route.params.id, editVisitorPayload)
       }
@@ -336,10 +387,11 @@ export default defineComponent({
         visit: {
           date: visitor.value.visit.date,
           status: admitted.value,
-          admitted_time: dayjs(new Date()),
+          admitted_time: timeToReturn(),
           depart_time: visitor.value.visit.depart_time
         }
       })
+      console.log(time.value.getHours() + ":" + time.value.getMinutes());
       data.admitVisitor(route.params.id, visitorAdmitPayload)
     }
 
@@ -371,11 +423,16 @@ export default defineComponent({
           date: visitor.value.visit.date,
           status: finished.value,
           admitted_time: visitor.value.visit.admitted_time,
-          depart_time: dayjs(new Date())
+          depart_time: timeToReturn()
         }
       })
+      console.log(time.value.getHours() + ":" + time.value.getMinutes());
       data.visitorDepart(route.params.id, visitorLeavePayload)
     }
+
+    function timeToReturn() {
+      return time.value.getHours() + ":" + time.value.getMinutes()
+    };
 
     visitor.value = await data.attendance(route.params.id);
 
@@ -396,7 +453,7 @@ export default defineComponent({
       admitVisitor,
       visitorLeave,
       cancelVisitor,
-      formatedTime
+      formatedTime,
      }
   }
 })
