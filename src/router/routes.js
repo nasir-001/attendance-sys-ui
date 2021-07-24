@@ -30,6 +30,29 @@ const routes = [
     ]
   },
   {
+    path: '/visitor-manager',
+    component: () => import('src/layouts/staff/StaffLayout.vue'),
+    redirect: { name: 'visitors-list' },
+    children: [
+      {
+        path: 'visitors',
+        name: 'visitors-list',
+        component: () => import('pages/views/VisitorsList'),
+      },
+      {
+        path: 'search-visitors',
+        name: 'search-visitors',
+        component: () => import('pages/views/SearchVisitors'),
+      },
+      {
+        path: 'visitors/:id',
+        name: 'visitor-details',
+        props: true,
+        component: () => import('pages/views/VisitorDetails'),
+      }
+    ]
+  },
+  {
     path: '/',
     name: 'login',
     component: () => import('pages/account/Login'),

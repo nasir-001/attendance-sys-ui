@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title class="tw-text-lg sm:tw-text-xl">
-          Attendance <q-badge label="Administrator" class="q-pa-xs" color="white" text-color="primary" />
+          Attendance <q-badge label="manager" class="q-pa-xs" color="white" text-color="primary" />
         </q-toolbar-title>
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
@@ -78,11 +78,6 @@ const linksData = [
     icon: 'groups',
     children: [
       {
-        title: 'New Visitor',
-        icon: 'person_add',
-        to: { name: 'new-visitor' }
-      },
-      {
         title: 'Visitors List',
         icon: 'people',
         to: { name: 'visitors-list' }
@@ -97,7 +92,7 @@ const linksData = [
 ];
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: 'StaffLayout',
 
   setup () {
     const leftDrawerOpen = ref(false);
