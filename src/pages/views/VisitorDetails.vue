@@ -57,7 +57,7 @@
                 <q-btn 
                   v-if="visitor.visit.status === 'pending' "
                   type="submit"
-                  color="primary" 
+                  color="positive" 
                   class="q-mx-sm tw-w-32 tw-font-semibold" 
                   dense 
                   label="admit visitor" 
@@ -82,7 +82,7 @@
               <q-btn 
                 v-if="visitor.visit.status === 'admitted' " 
                 type="submit"
-                color="positive" 
+                color="primary" 
                 class="q-mx-sm tw-w-42 tw-font-semibold tw-mx-4" 
                 dense 
                 label="visitor departed" 
@@ -391,7 +391,6 @@ export default defineComponent({
           depart_time: visitor.value.visit.depart_time
         }
       })
-      console.log(time.value.getHours() + ":" + time.value.getMinutes());
       data.admitVisitor(route.params.id, visitorAdmitPayload)
     }
 
@@ -426,12 +425,15 @@ export default defineComponent({
           depart_time: timeToReturn()
         }
       })
-      console.log(time.value.getHours() + ":" + time.value.getMinutes());
       data.visitorDepart(route.params.id, visitorLeavePayload)
     }
 
     function timeToReturn() {
-      return time.value.getHours() + ":" + time.value.getMinutes()
+      if(time.value.getHours() >= 12){
+        return time.value.getHours() + ":" + time.value.getMinutes() + "-pm"
+      } else {
+        return time.value.getHours() + ":" + time.value.getMinutes() + "-am"
+      }
     };
 
     visitor.value = await data.attendance(route.params.id);

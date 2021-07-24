@@ -199,7 +199,21 @@ export default defineComponent({
     })
 
     const newVisitorData = () => {
-      return payloadData.newVisitor(newVisitorPayload)
+      try {
+        payloadData.newVisitor(newVisitorPayload)
+        newVisitorPayload.title = '',
+        newVisitorPayload.first_name = '',
+        newVisitorPayload.last_name = '',
+        newVisitorPayload.email = '',
+        newVisitorPayload.phone = '',
+        newVisitorPayload.gender = '',
+        newVisitorPayload.visit.date = '',
+        newVisitorPayload.visit.status = '',
+        newVisitorPayload.visit.admitted_time = '',
+        newVisitorPayload.visit.depart_time = ''
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     setTimeout(() => {
