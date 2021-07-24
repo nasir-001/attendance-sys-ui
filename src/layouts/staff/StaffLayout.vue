@@ -62,7 +62,7 @@
         <router-view>
         </router-view>
           <template #fallback>
-            <q-icon name="warning" class="text-red" style="font-size: 10rem;" />
+            <fall-back></fall-back>
           </template>      
       </suspense>      
     </q-page-container>
@@ -71,6 +71,7 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
+import FallBack from '../../components/FallBack.vue';
 
 const linksData = [
   {
@@ -93,6 +94,9 @@ const linksData = [
 
 export default defineComponent({
   name: 'StaffLayout',
+  components: {
+    FallBack
+  },
 
   setup () {
     const leftDrawerOpen = ref(false);

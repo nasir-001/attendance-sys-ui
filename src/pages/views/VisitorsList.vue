@@ -13,28 +13,17 @@
         label="filter"
         class="q-mb-md q-px-sm text-grey-8"
       />
-      <q-form @submit.prevent="filterVisitor">
-        <div v-if="filterForm" class="tw-flex tw-justify-center">
-          <q-input 
-            class="tw-w-40" 
-            outlined 
-            v-model="queryName"
-            bottom-slots 
-            label="Search by name"
-            dense
-            :rules="[
-              val => !!val || 'Field is required']">
-          </q-input>
-          <q-btn
-            type="submit" 
-            dense
-            color="primary" 
-            icon="filter_list" 
-            label="Filter"
-            class="tw--ml-1 tw-h-10 tw-text-sm tw-px-2"
-          />
-        </div>
-      </q-form>
+      <div v-if="filterForm">
+        <q-input 
+          class="tw-w-40" 
+          outlined 
+          v-model="filter.first_name"
+          bottom-slots 
+          label="Search by name"
+          dense
+        >
+        </q-input>
+      </div>
       <q-table
         :rows="rows"
         bordered
@@ -47,6 +36,8 @@
         title-class="text-blue-10"
         table-header-class="text-blue-10"
         title="Expected Visitors"
+        :filter="filter"
+        :filter-method="filterData"
       >
         <template v-slot:body="props">
           <q-tr :props="props">
@@ -104,7 +95,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref} from 'vue';
+import { computed, defineComponent, ref, reactive} from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
@@ -152,7 +143,7 @@ export default defineComponent({
       '#8e44ad',
       '#2c3e50',
     ];
-    
+
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
         ? ['image', 'title', 'first_name', 'last_name', 'phone', 'email', 'status', 'view']
@@ -182,6 +173,19 @@ export default defineComponent({
       })
     }
 
+    function filterData(rows, terms) {
+      for (const term in terms) {
+        rows = rows.filter(row =>
+          (row[term] + '').toLowerCase().indexOf(terms[term].toLowerCase()) !== -1
+        )
+      }
+      return rows
+    }
+
+     const filter = reactive({
+        first_name: '',
+      })
+
     return {
       columns,
       rows,
@@ -191,7 +195,9 @@ export default defineComponent({
       filterVisitor,
       filterForm,
       queryName,
-      table
+      table,
+      filterData,
+      filter
     }
   }
 })
