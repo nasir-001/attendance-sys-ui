@@ -48,9 +48,6 @@ export function useAttendanceService() {
       .then(() => {
         trigerNotification('positive', 'Visitor has been admitted', 'check_circle')
       })
-      .then(() => {
-        router.push({ name: 'dashborad' })
-      })
       .catch(() => {
         trigerNotification('negative', 'Failed to admit visitor', 'report_problem')
       })
@@ -59,13 +56,10 @@ export function useAttendanceService() {
       console.log(id);
       const response = await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
-        trigerNotification('positive', 'Visitor has been admitted', 'check_circle')
-      })
-      .then(() => {
-        router.push({ name: 'dashborad' })
+        trigerNotification('positive', 'Visitor has been cancelled', 'check_circle')
       })
       .catch(() => {
-        trigerNotification('negative', 'Failed to admit visitor', 'report_problem')
+        trigerNotification('negative', 'Failed to cancel visitor', 'report_problem')
       })
     },
     async visitorDepart(id, payload) {
@@ -73,9 +67,6 @@ export function useAttendanceService() {
       const response = await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been departed', 'check_circle')
-      })
-      .then(() => {
-        router.push({ name: 'dashborad' })
       })
       .catch(() => {
         trigerNotification('negative', 'Failed to depart visitor', 'report_problem')
@@ -87,7 +78,7 @@ export function useAttendanceService() {
         trigerNotification('positive', 'Visitor was successfully added', 'check_circle')
       })
       .catch(() => {
-        trigerNotification('negative', 'Failed to edit visitor', 'report_problem')
+        trigerNotification('negative', 'Failed to add visitor', 'report_problem')
       })
     },
     async filterVisitorByName(name) {
