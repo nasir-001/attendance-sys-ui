@@ -8,22 +8,22 @@ const routes = [
     children: [
       {
         path: 'visitors',
-        name: 'visitors-list',
+        name: 'admin-visitors-list',
         component: () => import('pages/views/VisitorsList'),
       },
       {
         path: 'new-visitor',
-        name: 'new-visitor',
+        name: 'admin-new-visitor',
         component: () => import('pages/views/NewVisitor'),
-      },
+      }, 
       {
         path: 'search-visitors',
-        name: 'search-visitors',
+        name: 'admin-search-visitors',
         component: () => import('pages/views/SearchVisitors'),
       },
       {
         path: 'visitors/:id',
-        name: 'visitor-details',
+        name: 'admin-visitor-details',
         props: true,
         component: () => import('pages/views/VisitorDetails'),
       }

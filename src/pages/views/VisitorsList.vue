@@ -83,7 +83,7 @@
               <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finished' " color="primary" label="Departed" /> 
             </q-td>
             <q-td key="view" :props="props">
-              <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 sm:tw-mr-2" />
+              <q-btn :to="{ name: 'admin-visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 sm:tw-mr-2" />
             </q-td>
           </q-tr>
         </template>
@@ -94,7 +94,7 @@
         color="primary"
         size="16px"
         icon="add"
-        to="new-visitor"
+        :to="{ name: 'admin-new-visitor' }"
       />
     </div>
     <!-- <div v-else>

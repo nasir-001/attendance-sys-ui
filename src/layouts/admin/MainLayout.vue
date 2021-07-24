@@ -80,17 +80,17 @@ const linksData = [
       {
         title: 'New Visitor',
         icon: 'person_add',
-        to: { name: 'new-visitor' }
+        to: { name: 'admin-new-visitor' }
       },
       {
         title: 'Visitors List',
         icon: 'people',
-        to: { name: 'visitors-list' }
+        to: { name: 'admin-visitors-list' }
       },
       {
         title: 'Search Visitor',
         icon: 'person_search',
-        to: { name: 'search-visitors' }
+        to: { name: 'admin-search-visitors' }
       }
     ]
   },
