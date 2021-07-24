@@ -8,35 +8,24 @@
       <back-button></back-button>
       <div v-if="rows.length" class="q-pa-md tw-w-full xl:tw-w-5/6 tw-mx-auto">
         <q-btn 
+        dense
+        icon="filter_list"
+        outline
+        @click="showFilter"
+        label="filter"
+        class="q-mb-md q-px-sm text-grey-8"
+      />
+      <div v-if="filterForm">
+        <q-input 
+          class="tw-w-40" 
+          outlined 
+          v-model="filter.first_name"
+          bottom-slots 
+          label="Search by name"
           dense
-          icon="filter_list"
-          outline
-          @click="showFilter"
-          label="filter"
-          class="q-mb-md q-px-sm text-grey-8"
-        />
-        <q-form @submit.prevent="filterVisitor">
-          <div v-if="filterForm" class="tw-flex tw-justify-center">
-            <q-input 
-              class="tw-w-40" 
-              outlined 
-              v-model="queryName"
-              bottom-slots 
-              label="Search by name"
-              dense
-              :rules="[
-                val => !!val || 'Field is required']">
-            </q-input>
-            <q-btn
-              type="submit" 
-              dense
-              color="primary" 
-              icon="filter_list" 
-              label="Filter"
-              class="tw--ml-1 tw-h-10 tw-text-sm tw-px-2"
-            />
-          </div>
-        </q-form>
+        >
+        </q-input>
+      </div>
 
         <q-table
           :rows="rows"
@@ -50,6 +39,8 @@
           title-class="text-blue-10"
           table-header-class="text-blue-10"
           title="All Visitors"
+          :filter="filter"
+          :filter-method="filterData"
         >
           <template v-slot:body="props">
             <q-tr :props="props">
@@ -100,7 +91,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref} from 'vue';
+import { computed, defineComponent, ref, reactive} from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
 import SkeletalTable from '../../components/SkeletalTable.vue';
@@ -171,6 +162,19 @@ export default defineComponent({
       }, 500)
     }
 
+    function filterData(rows, terms) {
+      for (const term in terms) {
+        rows = rows.filter(row =>
+          (row[term] + '').toLowerCase().indexOf(terms[term].toLowerCase()) !== -1
+        )
+      }
+      return rows
+    }
+
+     const filter = reactive({
+        first_name: '',
+      })
+
     return {
       columns,
       rows,
@@ -179,7 +183,9 @@ export default defineComponent({
       filterVisitor,
       showFilter,
       filterForm,
-      queryName
+      queryName,
+      filterData,
+      filter
     }
   }
 })
