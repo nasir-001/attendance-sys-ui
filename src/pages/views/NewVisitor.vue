@@ -217,8 +217,8 @@ export default defineComponent({
     }
 
     setTimeout(() => {
-      showForm.value = !showForm.value
-    }, 500)
+      showForm.value = !showForm.value;
+    }, 500);
 
     return {
       options: [

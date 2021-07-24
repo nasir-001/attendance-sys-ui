@@ -6,7 +6,7 @@
   >
     <q-page>
       <back-button></back-button>
-      <div v-if="rows.length" class="q-pa-md tw-w-full xl:tw-w-5/6 tw-mx-auto">
+      <div v-if="showTable" class="q-pa-md tw-w-full xl:tw-w-5/6 tw-mx-auto">
         <q-btn 
         dense
         icon="filter_list"
@@ -124,6 +124,7 @@ export default defineComponent({
     const rows = ref([])
     const queryName = ref('')
     const filterForm = ref(false)
+    const showTable = ref(false)
     const $q = useQuasar()
     const colors = [
       '#1abc9c',
@@ -152,10 +153,6 @@ export default defineComponent({
       return colors[index];
     }
 
-    function filterVisitor() {
-      return attendance.filterVisitorByName(queryName.value)
-    }
-
     const showFilter = () => {
       setTimeout(() => {
         filterForm.value = !filterForm.value
@@ -171,21 +168,25 @@ export default defineComponent({
       return rows
     }
 
-     const filter = reactive({
-        first_name: '',
-      })
+    const filter = reactive({
+      first_name: '',
+    })
+
+    setTimeout(() => {
+      showTable.value = !showTable.value;
+    }, 500);
 
     return {
       columns,
       rows,
       visibleColumns,
       getAvatarBackgroundColor,
-      filterVisitor,
       showFilter,
       filterForm,
       queryName,
       filterData,
-      filter
+      filter,
+      showTable
     }
   }
 })

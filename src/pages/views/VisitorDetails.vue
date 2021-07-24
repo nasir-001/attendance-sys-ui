@@ -364,17 +364,17 @@ export default defineComponent({
       editVisitorPayload.phone = visitor.value.phone,
       editVisitorPayload.gender = visitor.value.gender,
       editVisitorPayload.visit.date = visitor.value.visit.date,
-      editVisitorPayload.visit.status = visitor.value.visit.status
-      editVisitorPayload.visit.admitted_time = visitor.value.visit.admitted_time
+      editVisitorPayload.visit.status = visitor.value.visit.status,
+      editVisitorPayload.visit.admitted_time = visitor.value.visit.admitted_time,
       editVisitorPayload.visit.depart_time = visitor.value.visit.depart_time
       if(editVisitorPayload){
-        data.editVisitor(route.params.id, editVisitorPayload)
-      }
-    }
+        data.editVisitor(route.params.id, editVisitorPayload);
+      };
+    };
 
     function visitorToDelete() {
-      return data.deleteVisitor(route.params.id)
-    }
+      return data.deleteVisitor(route.params.id);
+    };
 
     function admitVisitor() {
       const visitorAdmitPayload = reactive({
@@ -391,8 +391,8 @@ export default defineComponent({
           depart_time: visitor.value.visit.depart_time
         }
       })
-      data.admitVisitor(route.params.id, visitorAdmitPayload)
-    }
+      data.admitVisitor(route.params.id, visitorAdmitPayload);
+    };
 
     function cancelVisitor() {
       const visitorAdmitPayload = reactive({
@@ -407,8 +407,8 @@ export default defineComponent({
           status: cancel.value
         }
       })
-      data.cancelVisitor(route.params.id, visitorAdmitPayload)
-    }
+      data.cancelVisitor(route.params.id, visitorAdmitPayload);
+    };
 
     function visitorLeave() {
       const visitorLeavePayload = reactive({
@@ -425,15 +425,15 @@ export default defineComponent({
           depart_time: timeToReturn()
         }
       })
-      data.visitorDepart(route.params.id, visitorLeavePayload)
-    }
+      data.visitorDepart(route.params.id, visitorLeavePayload);
+    };
 
     function timeToReturn() {
       if(time.value.getHours() >= 12){
-        return time.value.getHours() + ":" + time.value.getMinutes() + "-pm"
+        return time.value.getHours() + ":" + time.value.getMinutes() + "-pm";
       } else {
-        return time.value.getHours() + ":" + time.value.getMinutes() + "-am"
-      }
+        return time.value.getHours() + ":" + time.value.getMinutes() + "-am";
+      };
     };
 
     visitor.value = await data.attendance(route.params.id);

@@ -4,7 +4,7 @@
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight"
   >
-    <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
+    <div v-if="showTable" class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
       <q-btn 
         dense
         icon="filter_list"
@@ -88,9 +88,9 @@
         :to="{ name: 'admin-new-visitor' }"
       />
     </div>
-    <!-- <div v-else>
+    <div v-else>
       <skeletal-table></skeletal-table>
-    </div> -->
+    </div>
   </transition>
 </template>
 
@@ -115,21 +115,22 @@ const columns = [
   { name: 'email', label: 'EMAIL', align: 'center', },
   { name: 'status', label: 'STATUS', align: 'center', },
   { name: 'view', label: '', align: 'right', }
-]
+];
 
 export default defineComponent({
   name: 'VisitorsList',
   components: {
-    // SkeletalTable
+    SkeletalTable
   },
 
   async setup () {
     const attendance = useAttendanceService()
-    const rows = ref([])
-    const filterForm = ref(false)
-    const table = ref(false)
-    const queryName = ref('')
-    const $q = useQuasar()
+    const rows = ref([]);
+    const filterForm = ref(false);
+    const showTable = ref(false);
+    const queryName = ref('');
+    const $q = useQuasar();
+
     const colors = [
       '#1abc9c',
       '#2ecc71',
@@ -148,43 +149,37 @@ export default defineComponent({
       return $q.screen.gt.xs
         ? ['image', 'title', 'first_name', 'last_name', 'phone', 'email', 'status', 'view']
         : ['image', 'first_name', 'last_name', 'status', 'view']
-    })
+    });
 
-    rows.value = await attendance.list()
+    rows.value = await attendance.list();
 
     function getAvatarBackgroundColor(username) {
       const index = username.length % colors.length;
       return colors[index];
-    }
-
-    function filterVisitor() {
-      return attendance.filterVisitorByName(queryName.value)
-    }
+    };
 
     const showFilter = () => {
       setTimeout(() => {
-        filterForm.value = !filterForm.value
-      }, 500)
-    }
+        filterForm.value = !filterForm.value;
+      }, 500);
+    };
 
-    const showTable = () => {
-      setTimeout(() => {
-        table.value = !table.value
-      })
-    }
+    setTimeout(() => {
+      showTable.value = !showTable.value;
+    }, 500);
 
     function filterData(rows, terms) {
       for (const term in terms) {
         rows = rows.filter(row =>
           (row[term] + '').toLowerCase().indexOf(terms[term].toLowerCase()) !== -1
-        )
-      }
-      return rows
-    }
+        );
+      };
+      return rows;
+    };
 
      const filter = reactive({
         first_name: '',
-      })
+      });
 
     return {
       columns,
@@ -192,12 +187,11 @@ export default defineComponent({
       visibleColumns,
       getAvatarBackgroundColor,
       showFilter,
-      filterVisitor,
       filterForm,
       queryName,
-      table,
       filterData,
-      filter
+      filter,
+      showTable
     }
   }
 })

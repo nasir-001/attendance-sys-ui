@@ -80,16 +80,6 @@ export function useAttendanceService() {
       .catch(() => {
         trigerNotification('negative', 'Failed to add visitor', 'report_problem')
       })
-    },
-    async filterVisitorByName(name) {
-      const response = await api.get(`/api/attendance/?first_name=${name}`)
-      .then(() => {
-        trigerNotification('positive', "Found match visitor's name", 'done_all')
-      })
-      .catch(() => {
-        trigerNotification('negative', "Couldn't find visitor with that name", 'report_problem')
-      })
-      return response.data
     }
   };
 }
