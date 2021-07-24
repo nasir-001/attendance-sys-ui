@@ -335,7 +335,9 @@ export default defineComponent({
         gender: visitor.value.gender,
         visit: {
           date: visitor.value.visit.date,
-          status: admitted.value
+          status: admitted.value,
+          admitted_time: dayjs(new Date()),
+          depart_time: visitor.value.visit.depart_time
         }
       })
       data.admitVisitor(route.params.id, visitorAdmitPayload)
@@ -367,7 +369,9 @@ export default defineComponent({
         gender: visitor.value.gender,
         visit: {
           date: visitor.value.visit.date,
-          status: finished.value
+          status: finished.value,
+          admitted_time: visitor.value.visit.admitted_time,
+          depart_time: dayjs(new Date())
         }
       })
       data.visitorDepart(route.params.id, visitorLeavePayload)
