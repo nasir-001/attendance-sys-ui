@@ -101,8 +101,6 @@
 import { computed, defineComponent, ref, reactive} from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
-import { useRoute } from 'vue-router';
-import SkeletalTable from '../../components/SkeletalTable.vue';
 import { getAvatarBackgroundColor, filterData } from 'boot/utils'
 
 const columns = [
