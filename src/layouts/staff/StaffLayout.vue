@@ -56,10 +56,10 @@
           <q-item-section class="tw-text-xs sm:tw-text-sm tw-text-gray-600">Logout</q-item-section>
         </q-item>
       </q-list>
-    </q-drawer>  
+    </q-drawer>
     <q-page-container>
       <suspense>
-        <router-view />  
+        <router-view />
       </suspense>      
     </q-page-container>
   </q-layout>

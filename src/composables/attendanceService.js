@@ -77,6 +77,9 @@ export function useAttendanceService() {
       .then(() => {
         trigerNotification('positive', 'Visitor was successfully added', 'check_circle')
       })
+      .then(() => {
+        router.push({ name: 'admin-visitors-list' })
+      })
       .catch(() => {
         trigerNotification('negative', 'Failed to add visitor', 'report_problem')
       })
