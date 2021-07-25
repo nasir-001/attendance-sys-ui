@@ -6,26 +6,29 @@
   >
     <q-page>
       <back-button></back-button>
-      <div v-if="showTable" class="q-pa-md tw-w-full xl:tw-w-5/6 tw-mx-auto">
-        <q-btn 
-        dense
-        icon="filter_list"
-        outline
-        @click="showFilter"
-        label="filter"
-        class="q-mb-md q-px-sm text-grey-8"
-      />
-      <div v-if="filterForm">
-        <q-input 
-          class="tw-w-40" 
-          outlined 
-          v-model="filter.first_name"
-          bottom-slots 
-          label="Search by name"
-          dense
-        >
-        </q-input>
-      </div>
+      <div class="q-pa-md tw-w-full xl:tw-w-5/6 tw-mx-auto">
+        <div class="tw-flex tw-justify-start">
+          <div>
+            <q-btn
+              icon="filter_list"
+              outline
+              @click="showFilter"
+              label="filter"
+              class="q-mb-md q-px-sm text-grey-8"
+            />
+          </div>
+          <div v-if="filterForm">
+            <q-input 
+              class="tw-w-56 tw-ml-4" 
+              outlined 
+              v-model="filter.first_name"
+              bottom-slots 
+              label="Search by name"
+              dense
+            >
+            </q-input>
+          </div>
+        </div> 
 
         <q-table
           :rows="rows"
@@ -45,7 +48,7 @@
           <template v-slot:body="props">
             <q-tr :props="props">
               <q-td key="image" :props="props">
-                <div class="tw-flex tw-justify-start">
+                <div class="tw-flex tw-justify-start tw-ml-3">
                   <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
                     <p class="tw-text-xl tw--mt-1 tw-pt-3 sm:tw-pt-4 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
                   </div>
@@ -56,7 +59,7 @@
                 </div>
               </q-td>
               <q-td key="title" :props="props">
-                {{ props.row.title }}
+                <p class="sm:tw-ml-4">{{ props.row.title }}</p>
               </q-td>
               <q-td key="first_name" :props="props">
                 {{ props.row.first_name }}
@@ -83,9 +86,6 @@
           </template>
         </q-table>
       </div>
-      <div v-else>
-        <skeletal-table></skeletal-table>
-      </div>
     </q-page>
   </transition>
 </template>
@@ -94,7 +94,6 @@
 import { computed, defineComponent, ref, reactive} from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
-import SkeletalTable from '../../components/SkeletalTable.vue';
 import BackButton from '../../components/BackButton.vue';
 
 const columns = [
@@ -116,7 +115,6 @@ const columns = [
 export default defineComponent({
   name: 'SearchVisitors',
   components: {
-    SkeletalTable,
     BackButton
   },
   async setup () {

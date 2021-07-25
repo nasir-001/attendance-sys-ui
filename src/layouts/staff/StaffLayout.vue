@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title class="tw-text-lg sm:tw-text-xl">
-          Attendance <q-badge label="manager" class="q-pa-xs" color="white" text-color="primary" />
+          Attendance <q-badge label="Security" class="q-pa-xs" color="white" text-color="primary" />
         </q-toolbar-title>
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
@@ -59,11 +59,7 @@
     </q-drawer>  
     <q-page-container>
       <suspense>
-        <router-view>
-        </router-view>
-          <template #fallback>
-            <fall-back></fall-back>
-          </template>      
+        <router-view />  
       </suspense>      
     </q-page-container>
   </q-layout>
@@ -71,7 +67,6 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import FallBack from '../../components/FallBack.vue';
 
 const linksData = [
   {
@@ -82,11 +77,6 @@ const linksData = [
         title: 'Visitors List',
         icon: 'people',
         to: { name: 'visitors-list' }
-      },
-      {
-        title: 'Search Visitor',
-        icon: 'person_search',
-        to: { name: 'search-visitors' }
       }
     ]
   },
@@ -94,10 +84,6 @@ const linksData = [
 
 export default defineComponent({
   name: 'StaffLayout',
-  components: {
-    FallBack
-  },
-
   setup () {
     const leftDrawerOpen = ref(false);
     const toggleLeftDrawer = () => { leftDrawerOpen.value = !leftDrawerOpen.value }

@@ -38,16 +38,25 @@
               <q-icon name="mail" /> {{ visitor.email }} 
             </div>
             <div v-if="visitor.visit.status === 'admitted' " class="row justify-center q-mt-sm">
-              <div class="text-green-7 tw-font-semibold tw-font-mono">
-                {{ visitor.visit.admitted_time }}
+              <div class="text-green-7 tw-font-mono">
+                <q-badge color="primary">
+                  {{ visitor.visit.admitted_time }}
+                </q-badge>
               </div>
             </div>
             <div v-if="visitor.visit.status === 'finished' " class="row justify-center q-mt-sm">
               <div class="text-green-7 tw-font-semibold q-mx-sm tw-font-mono">
-                {{ visitor.visit.admitted_time }}
+                <q-badge color="primary">
+                  {{ visitor.visit.admitted_time }}
+                </q-badge>
+              </div>
+              <div class="text-grey-7">
+                to
               </div>
               <div class="text-blue-7 tw-font-semibold q-mx-sm tw-font-mono">
-                {{ visitor.visit.depart_time }}
+                <q-badge color="primary">
+                  {{ visitor.visit.depart_time }}
+                </q-badge>
               </div>
             </div>
           </div>
@@ -57,7 +66,7 @@
                 <q-btn 
                   v-if="visitor.visit.status === 'pending' "
                   type="submit"
-                  color="positive" 
+                  color="primary" 
                   class="q-mx-sm tw-w-32 tw-font-semibold" 
                   dense 
                   label="admit visitor" 

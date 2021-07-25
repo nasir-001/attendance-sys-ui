@@ -40,11 +40,6 @@ const routes = [
         component: () => import('pages/views/VisitorsList'),
       },
       {
-        path: 'search-visitors',
-        name: 'search-visitors',
-        component: () => import('pages/views/SearchVisitors'),
-      },
-      {
         path: 'visitors/:id',
         name: 'visitor-details',
         props: true,

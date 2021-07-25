@@ -4,26 +4,29 @@
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight"
   >
-    <div v-if="showTable" class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
-      <q-btn 
-        dense
-        icon="filter_list"
-        outline
-        @click="showFilter"
-        label="filter"
-        class="q-mb-md q-px-sm text-grey-8"
-      />
-      <div v-if="filterForm">
-        <q-input 
-          class="tw-w-40" 
-          outlined 
-          v-model="filter.first_name"
-          bottom-slots 
-          label="Search by name"
-          dense
-        >
-        </q-input>
-      </div>
+    <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
+      <div class="tw-flex tw-justify-start">
+        <div>
+          <q-btn
+            icon="filter_list"
+            outline
+            @click="showFilter"
+            label="filter"
+            class="q-mb-md q-px-sm text-grey-8"
+          />
+        </div>
+        <div v-if="filterForm">
+          <q-input 
+            class="tw-w-56 tw-ml-4" 
+            outlined 
+            v-model="filter.first_name"
+            bottom-slots 
+            label="Search by name"
+            dense
+          >
+          </q-input>
+        </div>
+      </div> 
       <q-table
         :rows="rows"
         bordered
@@ -42,7 +45,7 @@
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td key="image" :props="props">
-              <div class="tw-flex tw-justify-start">
+              <div class="tw-flex tw-justify-start tw-ml-3">
                 <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
                   <p class="tw-text-xl tw--mt-1 tw-pt-3 sm:tw-pt-4 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
                 </div>
@@ -88,9 +91,9 @@
         :to="{ name: 'admin-new-visitor' }"
       />
     </div>
-    <div v-else>
+    <!-- <div>
       <skeletal-table></skeletal-table>
-    </div>
+    </div> -->
   </transition>
 </template>
 
@@ -119,9 +122,6 @@ const columns = [
 
 export default defineComponent({
   name: 'VisitorsList',
-  components: {
-    SkeletalTable
-  },
 
   async setup () {
     const attendance = useAttendanceService()
@@ -147,7 +147,7 @@ export default defineComponent({
 
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
-        ? ['image', 'title', 'first_name', 'last_name', 'phone', 'email', 'status', 'view']
+        ? ['image', 'title', 'first_name', 'last_name', 'phone', 'status', 'view']
         : ['image', 'first_name', 'last_name', 'status', 'view']
     });
 

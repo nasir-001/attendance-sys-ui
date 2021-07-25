@@ -59,11 +59,7 @@
     </q-drawer>  
     <q-page-container>
       <suspense>
-        <router-view>
-        </router-view>
-          <template #fallback>
-            <fall-back></fall-back>
-          </template>      
+        <router-view />
       </suspense>      
     </q-page-container>
   </q-layout>
@@ -71,7 +67,6 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import FallBack from '../../components/FallBack.vue';
 
 const linksData = [
   {
@@ -99,9 +94,6 @@ const linksData = [
 
 export default defineComponent({
   name: 'MainLayout',
-  components:  {
-    FallBack
-  },
 
   setup () {
     const leftDrawerOpen = ref(false);
