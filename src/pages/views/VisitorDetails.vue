@@ -257,38 +257,6 @@
             </q-form>
           </q-card>
         </q-dialog>
-
-        <q-dialog v-model="confirmDelete">
-          <q-card class="sm:tw-w-2/6">
-            <q-card-section class="row">
-              <div class="text-h6 tw-text-gray-800 tw--mt-1">Attention</div>
-              <q-space />
-              <q-btn flat v-close-popup dense round icon="close" />
-            </q-card-section>
-            <q-card-section class="q-pt-none">
-              <div class="tw-text-lg tw-text-gray-600">Are you sure you want to delete this visitor?</div>
-            </q-card-section>
-            <q-card-actions align="right">
-              <q-btn
-                flat
-                class="tw-mr-2 tw-mb-4"
-                type="submit"
-                label="cancel" 
-                color="primary" 
-                v-close-popup 
-              />
-              <q-btn
-                flat
-                class="tw-mr-2 tw-mb-4"
-                type="submit"
-                label="ok" 
-                color="negative"
-                @click="visitorToDelete"
-                v-close-popup 
-              />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
       </div>
     </q-page>
   </transition>
@@ -299,8 +267,7 @@ import { defineComponent, ref, reactive } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { useRoute } from 'vue-router';
-import dayjs from 'dayjs';
-import CustomParseFormat from 'dayjs/plugin/CustomParseFormat';
+import { timeToReturn, getAvatarBackgroundColor, formatedDate } from 'boot/utils'
 
 
 export default defineComponent({
@@ -318,7 +285,6 @@ export default defineComponent({
     const admitted = ref('admitted');
     const finished = ref('finished');
     const cancel = ref('cancelled');
-    const time = ref(new Date())
     const editVisitorPayload = reactive({
       title: '',
       first_name: '',
@@ -334,37 +300,6 @@ export default defineComponent({
       }
     });
 
-    const colors = [
-      '#1abc9c',
-      '#2ecc71',
-      '#3498db',
-      '#3498db',
-      '#9b59b6',
-      '#34495e',
-      '#16a085',
-      '#27ae60',
-      '#2980b9',
-      '#8e44ad',
-      '#2c3e50',
-    ];
-
-    function getAvatarBackgroundColor(username) {
-      const index = username.length % colors.length;
-      return colors[index];
-    };
-
-    function formatedDate(date) {
-      dayjs.extend(CustomParseFormat);
-      date = dayjs(date).format('DD-MMMM');
-      return date;
-    }
-
-    function formatedTime(time) {
-      dayjs.extend(CustomParseFormat);
-      time = dayjs(time).format("h:mm-a");
-      return time;
-    }
-
     function editVisitor() {
       editVisitorPayload.title = visitor.value.title,
       editVisitorPayload.first_name = visitor.value.first_name,
@@ -379,11 +314,7 @@ export default defineComponent({
       if(editVisitorPayload){
         data.editVisitor(route.params.id, editVisitorPayload);
       };
-    };
-
-    function visitorToDelete() {
-      return data.deleteVisitor(route.params.id);
-    };
+    }
 
     function admitVisitor() {
       const visitorAdmitPayload = reactive({
@@ -437,14 +368,6 @@ export default defineComponent({
       data.visitorDepart(route.params.id, visitorLeavePayload);
     };
 
-    function timeToReturn() {
-      if(time.value.getHours() >= 12){
-        return time.value.getHours() + ":" + time.value.getMinutes() + "-pm";
-      } else {
-        return time.value.getHours() + ":" + time.value.getMinutes() + "-am";
-      };
-    };
-
     visitor.value = await data.attendance(route.params.id);
 
     return {
@@ -459,12 +382,10 @@ export default defineComponent({
       showAddVisitor,
       confirmDelete,
       formatedDate,
-      visitorToDelete,
       editVisitor,
       admitVisitor,
       visitorLeave,
-      cancelVisitor,
-      formatedTime,
+      cancelVisitor
      }
   }
 })

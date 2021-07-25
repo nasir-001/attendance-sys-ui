@@ -95,6 +95,7 @@ import { computed, defineComponent, ref, reactive} from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
 import BackButton from '../../components/BackButton.vue';
+import { getAvatarBackgroundColor, filterData } from 'boot/utils'
 
 const columns = [
   {
@@ -146,24 +147,10 @@ export default defineComponent({
 
     rows.value = await attendance.list()
 
-    function getAvatarBackgroundColor(username) {
-      const index = username.length % colors.length;
-      return colors[index];
-    }
-
     const showFilter = () => {
       setTimeout(() => {
         filterForm.value = !filterForm.value
       }, 500)
-    }
-
-    function filterData(rows, terms) {
-      for (const term in terms) {
-        rows = rows.filter(row =>
-          (row[term] + '').toLowerCase().indexOf(terms[term].toLowerCase()) !== -1
-        )
-      }
-      return rows
     }
 
     const filter = reactive({

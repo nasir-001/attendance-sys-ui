@@ -103,6 +103,7 @@ import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
 import SkeletalTable from '../../components/SkeletalTable.vue';
+import { getAvatarBackgroundColor, filterData } from 'boot/utils'
 
 const columns = [
   {
@@ -131,20 +132,6 @@ export default defineComponent({
     const queryName = ref('');
     const $q = useQuasar();
 
-    const colors = [
-      '#1abc9c',
-      '#2ecc71',
-      '#3498db',
-      '#3498db',
-      '#9b59b6',
-      '#34495e',
-      '#16a085',
-      '#27ae60',
-      '#2980b9',
-      '#8e44ad',
-      '#2c3e50',
-    ];
-
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
         ? ['image', 'title', 'first_name', 'last_name', 'phone', 'status', 'view']
@@ -152,11 +139,6 @@ export default defineComponent({
     });
 
     rows.value = await attendance.list();
-
-    function getAvatarBackgroundColor(username) {
-      const index = username.length % colors.length;
-      return colors[index];
-    };
 
     const showFilter = () => {
       setTimeout(() => {
@@ -168,14 +150,7 @@ export default defineComponent({
       showTable.value = !showTable.value;
     }, 500);
 
-    function filterData(rows, terms) {
-      for (const term in terms) {
-        rows = rows.filter(row =>
-          (row[term] + '').toLowerCase().indexOf(terms[term].toLowerCase()) !== -1
-        );
-      };
-      return rows;
-    };
+    
 
      const filter = reactive({
         first_name: '',
