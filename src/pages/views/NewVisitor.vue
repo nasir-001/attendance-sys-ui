@@ -131,7 +131,6 @@
 
 <script>
 import { defineComponent, reactive, ref } from 'vue';
-import { v4 as uuidv4 }  from 'uuid';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { validateEmail } from 'boot/utils';

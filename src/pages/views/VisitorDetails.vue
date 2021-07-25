@@ -185,7 +185,7 @@
                 />
               </q-card-section>
               <q-card-section v-if="visitor.visit.status === 'admitted'" class="q-pt-md">
-                <q-input label="Admitted time" filled v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
+                <q-input label="Admitted time" outlined v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
                   <template v-slot:append>
                     <q-icon name="access_time" class="cursor-pointer">
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -201,7 +201,7 @@
               </q-card-section>
               <q-card-section v-if="visitor.visit.status === 'finished'" class="q-pt-md">
                 <div class="tw-flex tw-justify-end tw--mb-4">
-                  <q-input label="Admitted time" class="tw-w-full tw-mr-1" filled v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
+                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -214,7 +214,7 @@
                       </q-icon>
                     </template>
                   </q-input>
-                  <q-input label="Depart time" class="tw-w-full tw-ml-1" filled v-model="visitor.visit.depart_time" mask="time" :rules="['time']">
+                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visitor.visit.depart_time" mask="time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
