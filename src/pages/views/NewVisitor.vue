@@ -51,7 +51,9 @@
               v-model="newVisitorPayload.email"
               label="Email"
               :rules="[
-                val => !!val || 'Field is required']"
+                val => !!val || 'Field is required',
+                val => emailValidator(val)
+              ]"
             />
           </q-card-section>
           <q-card-section class="q-pt-none">
@@ -61,26 +63,38 @@
               lazy-rules
               type="number"
               v-model="newVisitorPayload.phone"
+              mask="phone"
               label="Phone"
               :rules="[
-                val => !!val || 'Field is required']"
+                val => !!val || 'Field is required'
+              ]"
             />
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-select 
-              outlined 
+              outlined
               v-model="newVisitorPayload.gender"
               :options="gender" 
               label="Gender"
+              :rules="[
+                val => !!val || 'Field is required'
+              ]"
             />
           </q-card-section>
           <q-card-section class="q-pt-md">
-            <q-input label="Arrival Date" outlined v-model="newVisitorPayload.visit.date">
+            <q-input 
+              label="Arrival Date" 
+              outlined 
+              v-model="newVisitorPayload.visit.date"
+              :rules="[
+                val => !!val || 'Field is required'
+              ]"
+            >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                     <q-date 
-                      today-btn 
+                      today-btn
                       v-model="newVisitorPayload.visit.date"
                     >
                       <div class="row items-center justify-end">
@@ -120,6 +134,7 @@ import { defineComponent, reactive, ref } from 'vue';
 import { v4 as uuidv4 }  from 'uuid';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
+import { validateEmail } from 'boot/utils';
 
 export default defineComponent({
   name: 'NewVisitor',
@@ -150,6 +165,10 @@ export default defineComponent({
       }
     }
 
+    function emailValidator(value) {
+      return validateEmail(value)
+    }
+
     setTimeout(() => {
       showForm.value = !showForm.value;
     }, 500);
@@ -160,7 +179,8 @@ export default defineComponent({
       ],
       newVisitorPayload,
       newVisitorData,
-      showForm
+      showForm,
+      emailValidator
     }
   }
 })
