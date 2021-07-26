@@ -31,7 +31,9 @@
       bordered
       class="bg-grey-1"
     >
-      <div class="tw-mt-4 tw-text-base tw-text-gray-600 tw-text-center tw-uppercase tw-font-sans">Attendance System</div>
+      <div class="tw-mt-4 tw-text-base tw-text-gray-600 tw-text-center tw-uppercase tw-font-sans">
+        Attendance System
+      </div>
       <q-list class="q-pt-md">
         <q-expansion-item
           class="tw-text-xs sm:tw-text-sm tw-text-gray-600"
@@ -95,7 +97,7 @@ export default defineComponent({
   name: 'StaffLayout',
   setup () {
     const leftDrawerOpen = ref(false);
-    const toggleLeftDrawer = () => { leftDrawerOpen.value = !leftDrawerOpen.value }
+    const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value
 
     return {
       links: linksData,
