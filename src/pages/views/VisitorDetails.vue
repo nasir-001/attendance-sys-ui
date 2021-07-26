@@ -153,7 +153,9 @@
                   v-model="visitor.email"
                   label="Email"
                   :rules="[
-                    val => !!val || 'Field is required']"
+                    val => !!val || 'Field is required',
+                    val => emailValidator(val)
+                  ]"
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
@@ -165,7 +167,9 @@
                   v-model="visitor.phone"
                   label="Phone"
                   :rules="[
-                    val => !!val || 'Field is required']"
+                    val => !!val || 'Field is required',
+                    val => phoneValidator(val)  
+                  ]"
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
@@ -267,8 +271,8 @@ import { defineComponent, ref, reactive } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { useRoute } from 'vue-router';
-import { timeToReturn, getAvatarBackgroundColor, formatedDate } from 'boot/utils'
-
+import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail } from 'boot/utils';
+import { verifyPhoneNumber } from 'nigerian-phone-number-validator';
 
 export default defineComponent({
   name: 'visitor-details',
@@ -350,6 +354,14 @@ export default defineComponent({
       data.cancelVisitor(route.params.id, visitorAdmitPayload);
     };
 
+    function emailValidator(value) {
+      return validateEmail(value)
+    }
+
+    function phoneValidator(value) {
+      return verifyPhoneNumber(value)
+    }
+
     function visitorLeave() {
       const visitorLeavePayload = reactive({
         title: visitor.value.title,
@@ -385,7 +397,9 @@ export default defineComponent({
       editVisitor,
       admitVisitor,
       visitorLeave,
-      cancelVisitor
+      cancelVisitor,
+      emailValidator,
+      phoneValidator
      }
   }
 })

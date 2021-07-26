@@ -65,8 +65,10 @@
               v-model="newVisitorPayload.phone"
               mask="phone"
               label="Phone"
+              maxlength="11"
               :rules="[
-                val => !!val || 'Field is required'
+                val => !!val || 'Field is required',
+                val => phoneValidator(val)
               ]"
             />
           </q-card-section>
@@ -134,6 +136,7 @@ import { defineComponent, reactive, ref } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { validateEmail } from 'boot/utils';
+import { verifyPhoneNumber } from 'nigerian-phone-number-validator';
 
 export default defineComponent({
   name: 'NewVisitor',
@@ -164,6 +167,10 @@ export default defineComponent({
       }
     }
 
+    function phoneValidator(value) {
+      return verifyPhoneNumber(value)
+    }
+
     function emailValidator(value) {
       return validateEmail(value)
     }
@@ -179,7 +186,8 @@ export default defineComponent({
       newVisitorPayload,
       newVisitorData,
       showForm,
-      emailValidator
+      emailValidator,
+      phoneValidator
     }
   }
 })

@@ -4731,6 +4731,11 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+nigerian-phone-number-validator@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/nigerian-phone-number-validator/-/nigerian-phone-number-validator-1.1.0.tgz#bb4f2fbfcfbd660ff942e984743101d460d6345d"
+  integrity sha512-/AXb+OzRIgfi+QVfbqYd2qtSOK0loj6yJrwBlDxOiLk2l37aYQDivBRiNphCgLXMPc8aoT0xrGcqpTvnT2BJrQ==
+
 no-case@^2.2.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.2.tgz#60b813396be39b3f1288a4c1ed5d1e7d28b464ac"
