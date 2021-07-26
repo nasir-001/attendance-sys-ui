@@ -33,7 +33,9 @@
       class="bg-grey-1"
     >
       <div class="tw-mt-4 tw-text-base tw-text-gray-600 tw-text-center tw-uppercase tw-font-sans">
-        Attendance System
+        <q-icon class="tw--mt-2 tw-mx-1" name="fa fa-landmark" />
+          Attendance System
+        <q-icon class="tw--mt-1 tw-mx-1" name="fa fa-landmark" />
       </div>
       <q-list class="q-pt-md">
         <q-expansion-item
