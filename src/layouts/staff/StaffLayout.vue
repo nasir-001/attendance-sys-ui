@@ -16,6 +16,7 @@
         <div>
           <q-btn
             flat
+            @click="logout()"
             dense
             class="tw-text-xs sm:tw-text-sm"
           >
@@ -60,6 +61,7 @@
         <q-item
           v-ripple
           clickable
+          @click="logout()"
         >
           <q-item-section class="tw-text-gray-600" avatar>
             <q-icon name="logout" />
@@ -99,10 +101,15 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
     const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value
 
+    function logout() {
+      console.log('logout');
+    }
+
     return {
       links: linksData,
       leftDrawerOpen,
-      toggleLeftDrawer      
+      toggleLeftDrawer,
+      logout   
     }
   }
 })
