@@ -21,7 +21,7 @@
             outlined 
             v-model="filter.first_name"
             bottom-slots 
-            label="Search by name"
+            label="search by name"
             dense
           >
           </q-input>
@@ -91,9 +91,6 @@
         :to="{ name: 'admin-new-visitor' }"
       />
     </div>
-    <!-- <div>
-      <skeletal-table></skeletal-table>
-    </div> -->
   </transition>
 </template>
 
