@@ -272,7 +272,6 @@ import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { useRoute } from 'vue-router';
 import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail } from 'boot/utils';
-import { verifyPhoneNumber } from 'nigerian-phone-number-validator';
 
 export default defineComponent({
   name: 'visitor-details',

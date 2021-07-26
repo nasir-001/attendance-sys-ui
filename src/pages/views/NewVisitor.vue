@@ -136,7 +136,6 @@ import { defineComponent, reactive, ref } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { validateEmail } from 'boot/utils';
-import { verifyPhoneNumber } from 'nigerian-phone-number-validator';
 
 export default defineComponent({
   name: 'NewVisitor',
