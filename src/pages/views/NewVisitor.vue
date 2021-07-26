@@ -81,7 +81,7 @@
               ]"
             />
           </q-card-section>
-          <q-card-section class="q-pt-md">
+          <q-card-section class="q-pt-none">
             <q-input 
               label="Arrival Date" 
               outlined 
