@@ -13,7 +13,16 @@
         <q-toolbar-title class="tw-text-lg sm:tw-text-xl">
           Attendance <q-badge label="Security" class="q-pa-xs" color="white" text-color="primary" />
         </q-toolbar-title>
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn
+            flat
+            dense
+            class="tw-text-xs sm:tw-text-sm"
+          >
+            <q-icon name="logout" /> 
+            Logout 
+          </q-btn>
+        </div>
       </q-toolbar>
     </q-header>
     <q-drawer
