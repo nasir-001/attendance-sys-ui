@@ -30,7 +30,6 @@ export function useAttendanceService() {
       return response.data;
     },
     async editVisitor(id, payload) {
-      console.log(id);
       const response = await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been editted successfully', 'check_circle')
@@ -43,7 +42,6 @@ export function useAttendanceService() {
       })
     },
     async admitVisitor(id, payload) {
-      console.log(id);
       const response = await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been admitted', 'check_circle')
@@ -53,7 +51,6 @@ export function useAttendanceService() {
       })
     },
     async cancelVisitor(id, payload) {
-      console.log(id);
       const response = await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been cancelled', 'check_circle')
@@ -63,7 +60,6 @@ export function useAttendanceService() {
       })
     },
     async visitorDepart(id, payload) {
-      console.log(id);
       const response = await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been departed', 'check_circle')

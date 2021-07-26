@@ -367,7 +367,7 @@ export default defineComponent({
       })
       data.visitorDepart(route.params.id, visitorLeavePayload);
     };
-
+    console.log(timeToReturn());
     visitor.value = await data.attendance(route.params.id);
 
     return {
