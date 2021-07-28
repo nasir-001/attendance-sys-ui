@@ -107,7 +107,7 @@
               <q-space />
               <q-btn flat v-close-popup dense round icon="close" />
             </q-card-section>
-            <q-form @submit="editVisitor">
+            <q-form @submit.prevent="editVisitor">
               <q-card-section class="q-pt-none">
                 <q-input
                   outlined
@@ -271,8 +271,7 @@ import { defineComponent, ref, reactive } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { useRoute } from 'vue-router';
-import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail } from 'boot/utils';
-import { verifyPhoneNumber } from 'nigerian-phone-number-validator';
+import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail, validatePhone } from 'boot/utils';
 
 export default defineComponent({
   name: 'visitor-details',
@@ -359,7 +358,7 @@ export default defineComponent({
     }
 
     function phoneValidator(value) {
-      return verifyPhoneNumber(value)
+      return validatePhone(value)
     }
 
     function visitorLeave() {

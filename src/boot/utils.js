@@ -7,6 +7,11 @@ function validateEmail (val) {
   return (re.test(val) || 'Please enter a valid email.')
 }
 
+function validatePhone (val) {
+  const re = /^[0]\d{10}$/
+  return (re.test(val) || 'Please enter a valid phone')
+}
+
 const colors = [
   '#1abc9c',
   '#2ecc71',
@@ -52,6 +57,7 @@ function timeToReturn() {
 
 export {
   validateEmail,
+  validatePhone,
   timeToReturn,
   getAvatarBackgroundColor,
   formatedDate,

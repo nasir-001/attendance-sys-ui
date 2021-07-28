@@ -135,8 +135,7 @@
 import { defineComponent, reactive, ref } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
-import { validateEmail } from 'boot/utils';
-import { verifyPhoneNumber } from 'nigerian-phone-number-validator';
+import { validateEmail, validatePhone } from 'boot/utils';
 
 export default defineComponent({
   name: 'NewVisitor',
@@ -147,6 +146,7 @@ export default defineComponent({
   setup() {
     const payloadData = useAttendanceService()
     const showForm = ref(false)
+    
     const newVisitorPayload = reactive({
       title: '',
       first_name: '',
@@ -168,12 +168,13 @@ export default defineComponent({
     }
 
     function phoneValidator(value) {
-      return verifyPhoneNumber(value)
+      return validatePhone(value)
     }
 
     function emailValidator(value) {
       return validateEmail(value)
     }
+    
 
     setTimeout(() => {
       showForm.value = !showForm.value;
