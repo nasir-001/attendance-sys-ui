@@ -41,7 +41,15 @@
         title="Expected Visitors"
         :filter="filter"
         :filter-method="filterData"
-      >
+        :loading="tableIsLoading"
+      >            
+        <template v-slot:loading>
+          <q-spinner-tail
+            color="primary"
+            size="3em"
+            class="tw-mx-auto"
+          />
+        </template>
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td key="image" :props="props">
@@ -86,7 +94,7 @@
               />
             </q-td>
           </q-tr>
-        </template>
+        </template>  
       </q-table>
       <q-btn
         round
@@ -131,6 +139,7 @@ export default defineComponent({
     const filterForm = ref(false);
     const showTable = ref(false);
     const queryName = ref('');
+    const tableIsLoading = ref(false)
     const $q = useQuasar();
 
     const visibleColumns = computed(() => {
@@ -139,7 +148,13 @@ export default defineComponent({
         : ['image', 'first_name', 'last_name', 'status', 'view']
     });
 
-    rows.value = await attendance.list();
+    try {
+      tableIsLoading.value = true
+      rows.value = await attendance.list();
+      tableIsLoading.value = false
+    } catch (error) {
+      tableIsLoading.value = true
+    }
 
     const showFilter = () => {
       setTimeout(() => {
@@ -167,7 +182,8 @@ export default defineComponent({
       queryName,
       filterData,
       filter,
-      showTable
+      showTable,
+      tableIsLoading
     }
   }
 })
