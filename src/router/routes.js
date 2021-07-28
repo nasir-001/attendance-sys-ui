@@ -1,7 +1,7 @@
 
 const routes = [
   {
-    path: '/dashboard',
+    path: '/admin',
     name: 'dashborad',
     component: () => import('src/layouts/admin/MainLayout.vue'),
     redirect: { name: 'visitors-list' },
@@ -30,7 +30,7 @@ const routes = [
     ]
   },
   {
-    path: '/visitor-manager',
+    path: '/security',
     component: () => import('src/layouts/staff/StaffLayout.vue'),
     redirect: { name: 'visitors-list' },
     children: [

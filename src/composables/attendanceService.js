@@ -22,6 +22,13 @@ export function useAttendanceService() {
         })
       return response.data;
     },
+    async today() {
+      const response = await api.get(`/api/attendance/today`)
+        .catch(() => {
+          trigerNotification('negative', 'Failed to load visitors', 'report_problem')
+        })
+      return response.data;
+    },
     async attendance(id) {
       const response = await api.get(`/api/attendance/${id}`)
         .catch(() => {
