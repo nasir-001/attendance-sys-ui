@@ -112,7 +112,7 @@
 import { computed, defineComponent, ref, reactive} from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
-import { getAvatarBackgroundColor, filterData } from 'boot/utils'
+import { getAvatarBackgroundColor, filterData } from 'boot/utils';
 
 const columns = [
   {

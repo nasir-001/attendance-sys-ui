@@ -272,6 +272,7 @@ import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { useRoute } from 'vue-router';
 import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail } from 'boot/utils';
+import { verifyPhoneNumber } from 'nigerian-phone-number-validator';
 
 export default defineComponent({
   name: 'visitor-details',
@@ -378,7 +379,6 @@ export default defineComponent({
       })
       data.visitorDepart(route.params.id, visitorLeavePayload);
     };
-    console.log(timeToReturn());
     visitor.value = await data.attendance(route.params.id);
 
     return {
