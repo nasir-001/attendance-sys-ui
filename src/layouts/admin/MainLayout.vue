@@ -105,6 +105,24 @@ const linksData = [
       }
     ]
   },
+  {
+    title: 'Access Control',
+    icon: 'mdi-account-key-outline',
+    children: [
+      {
+        title: 'User Permissions',
+        icon: 'mdi-account-lock',
+      },
+      {
+        title: 'User Roles',
+        icon: 'mdi-hat-fedora',
+      },
+      {
+        title: 'User Groups',
+        icon: 'groups',
+      }
+    ]
+  }
 ];
 
 export default defineComponent({
