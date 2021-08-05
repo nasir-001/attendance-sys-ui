@@ -112,14 +112,17 @@ const linksData = [
       {
         title: 'User Permissions',
         icon: 'mdi-account-lock',
+        to: { name: 'permission-list' }
       },
       {
         title: 'User Roles',
         icon: 'mdi-hat-fedora',
+        to: { name: 'role-list' }
       },
       {
         title: 'User Groups',
         icon: 'groups',
+        to: { name: 'group-list' }
       }
     ]
   }

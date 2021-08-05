@@ -48,6 +48,57 @@ const routes = [
     ]
   },
   {
+    path: '/admin/acl',
+    component: () => import('layouts/admin/MainLayout.vue'),
+    children: [
+      {
+        path: 'user-permissions',
+        name: 'permission-list',
+        component: () => import('pages/access_control/Permissions.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
+      },
+      {
+        path: 'user-roles',
+        name: 'role-list',
+        component: () => import('pages/access_control/Roles.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
+      },
+      {
+        path: 'user-roles/:roleName',
+        name: 'role-detail',
+        component: () => import('pages/access_control/RoleDetail.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
+      },
+      {
+        path: 'user-groups',
+        name: 'group-list',
+        component: () => import('pages/access_control/UserGroupList.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
+      },
+      {
+        path: 'user-groups/:groupName',
+        name: 'group-detail',
+        component: () => import('pages/access_control/UserGroupDetail.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
+      }
+    ]
+  },
+  {
     path: '/',
     name: 'login',
     component: () => import('pages/account/Login'),
