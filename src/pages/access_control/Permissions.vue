@@ -43,6 +43,13 @@
           :loading="tableIsLoading"
           table-header-class="bg-blue-1 text-blue-10"
         >
+          <template v-slot:loading>
+            <q-spinner-tail
+              color="primary"
+              size="3em"
+              class="tw-mx-auto"
+            />
+          </template>
           <template v-slot:body-cell-delete="props">
             <q-td :props="props">
               <q-btn
@@ -50,7 +57,7 @@
                 round
                 dense
                 icon="delete"
-                class="q-mr-md"
+                class="sm:tw-mr-3"
                 color="negative"
               >
                 <q-tooltip :delay="1000" anchor="bottom middle" self="top middle" :offset="[10, 10]">
@@ -58,9 +65,6 @@
                 </q-tooltip>
               </q-btn>
             </q-td>
-          </template>
-          <template v-slot:loading>
-            <q-inner-loading showing color="primary" />
           </template>
         </q-table>
       </div>
@@ -167,7 +171,13 @@ export default defineComponent({
     
     const permissions = useAttendanceService();
 
-    rows.value = await permissions.permissions();
+    try {
+      tableIsLoading.value = true
+      rows.value = await permissions.permissions();
+      tableIsLoading.value = false
+    } catch (error) {
+      tableIsLoading.value = true
+    }
 
     return {
       tableCols,

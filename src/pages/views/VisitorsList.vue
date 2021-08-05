@@ -42,7 +42,7 @@
         :filter="filter"
         :filter-method="filterData"
         :loading="tableIsLoading"
-      >            
+      >
         <template v-slot:loading>
           <q-spinner-tail
             color="primary"
