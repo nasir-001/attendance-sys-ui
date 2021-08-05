@@ -166,8 +166,6 @@ export default defineComponent({
       showTable.value = !showTable.value;
     }, 500);
 
-    
-
      const filter = reactive({
         first_name: '',
       });

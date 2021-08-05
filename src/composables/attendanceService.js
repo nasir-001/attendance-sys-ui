@@ -22,6 +22,13 @@ export function useAttendanceService() {
         })
       return response.data;
     },
+    async permissions() {
+      const response = await api.get(`/api/permissions`)
+        .catch(() => {
+          trigerNotification('negative', 'Failed to load permissions', 'report_problem')
+        })
+      return response.data;
+    },
     async today() {
       const response = await api.get(`/api/attendance/today`)
         .catch(() => {

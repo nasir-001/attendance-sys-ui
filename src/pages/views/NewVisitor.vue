@@ -143,7 +143,7 @@ export default defineComponent({
     BackButton
   },
 
-  setup() {
+  async setup() {
     const payloadData = useAttendanceService()
     const showForm = ref(false)
     
