@@ -24,7 +24,7 @@
               <div v-if="visitor.visit.status === 'finished' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
             </div>
             <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
-              <q-btn @click="showAddVisitor = true" flat dense color="primary" icon="edit" />
+              <q-btn @click="showEditVisitor = true" flat dense color="primary" icon="edit" />
             </div>
           </div>
           <div>
@@ -100,7 +100,7 @@
           </q-card-actions>
         </q-card>
 
-        <q-dialog v-model="showAddVisitor">
+        <q-dialog v-model="showEditVisitor">
           <q-card class="tw-w-full sm:tw-w-3/6">
             <q-card-section class="row">
               <div class="text-h6 text-primary tw--mt-1">Edit Visitor</div>
@@ -283,7 +283,7 @@ export default defineComponent({
     const route = useRoute();
     const data = useAttendanceService();
     const visitor = ref(null);
-    const showAddVisitor = ref(false);
+    const showEditVisitor = ref(false);
     const confirmDelete = ref(false);
     const admitted = ref('admitted');
     const finished = ref('finished');
@@ -389,7 +389,7 @@ export default defineComponent({
       ],
       visitor,
       getAvatarBackgroundColor,
-      showAddVisitor,
+      showEditVisitor,
       confirmDelete,
       formatedDate,
       editVisitor,

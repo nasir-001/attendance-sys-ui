@@ -29,6 +29,15 @@ export function useAttendanceService() {
         })
       return response.data;
     },
+    async newPermission(payload) {
+      const response = await api.post(`/api/permissions/`, payload)
+      .then(() => {
+        trigerNotification('positive', 'Permission added successfully', 'done')
+      })
+      .catch(() => {
+        trigerNotification('negative', 'Permission failed to add', 'report_problem')
+      })
+    },
     async today() {
       const response = await api.get(`/api/attendance/today`)
         .catch(() => {

@@ -71,7 +71,7 @@
     </div>
 
     <!-- New permission modal/dialog -->
-    <q-dialog no-backdrop-dismiss>
+    <q-dialog v-model="newPerm" no-backdrop-dismiss>
       <q-card style="width: 600px; max-width: 95vw;">
         <q-card-section class="text-center">
           <div class="text-h5">New Permission</div>
@@ -80,19 +80,21 @@
 
         <q-card-section>
           <div class="q-pa-md">
-            <form class="q-gutter-md">
+            <form @submit.prevent="addNewPermission" class="q-gutter-md">
               <q-input
                 ref="name"
                 outlined
                 autofocus
                 type="text"
                 label="Name"
+                v-model="newPerPayload.name"
                 bottom-slots
                 :rules="[ val => !!val || 'This field is required.' ]"
               />
               <q-input
                 autogrow
                 outlined
+                v-model="newPerPayload.description"
                 label="Description"
               />
               <q-card-actions align="right" class="q-pt-lg q-pr-none">
@@ -150,7 +152,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 
@@ -168,21 +170,35 @@ export default defineComponent({
   async setup() {
     const tableIsLoading = ref(false);
     const rows = ref([]);
+    const newPerm = ref(false);
+    const payload = ref('');
+
+    const newPerPayload = reactive({
+      name: '',
+      description: ''
+    })
     
     const permissions = useAttendanceService();
 
+    function addNewPermission() {
+      permissions.newPermission(newPerPayload);
+    }
+
     try {
-      tableIsLoading.value = true
+      tableIsLoading.value = true;
       rows.value = await permissions.permissions();
-      tableIsLoading.value = false
+      tableIsLoading.value = false;
     } catch (error) {
-      tableIsLoading.value = true
+      tableIsLoading.value = true;
     }
 
     return {
       tableCols,
       tableIsLoading,
-      rows
+      rows,
+      newPerm,
+      newPerPayload,
+      addNewPermission
     }
   },
 })
