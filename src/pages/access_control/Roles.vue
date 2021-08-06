@@ -40,7 +40,7 @@
           row-key="name"
           class="col-12"
           :rows-per-page-options="[10, 25, 50, 0]"
-          :rows="rows"
+          :rows="rolesList"
           :columns="columns"
           :loading="tableIsLoading"
           table-header-class="bg-blue-1 text-blue-10"
@@ -133,7 +133,7 @@
     </q-dialog>
 
     <!-- Delete role modal/dialog -->
-    <q-dialog persistent>
+    <q-dialog v-model="confirmRoleDelete" persistent>
       <q-card class="q-pa-md">
         <q-card-section>
           <div class="text-h6 text-center">
@@ -141,7 +141,7 @@
           </div>
         </q-card-section>
         <q-card-section class="row items-center q-pb-md">
-          <span class="q-ml-sm text-body1">Are you sure you want to delete</span>
+          <span class="q-ml-sm text-body1">Are you sure you want to delete <strong>{{ deleteRolePayload }}</strong>?</span>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn
@@ -158,6 +158,9 @@
             color="negative"
             class="q-px-md"
             label="Delete Role"
+            @click="deleteRole"
+            :loading="deleteBtnIsLoading"
+            :disabled="deleteBtnIsLoading"
           />
         </q-card-actions>
       </q-card>
@@ -168,6 +171,8 @@
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { useAttendanceService } from '../../composables/attendanceService';
+import { api } from 'boot/axios';
+import { useQuasar } from 'quasar';
 
 const tableCols = [
   { name: 'role', label: 'ROLES', field: 'name', align: 'left', classes: 'cursor-pointer', sortable: true },
@@ -187,28 +192,101 @@ export default defineComponent({
     const confirmRoleDelete = ref(false);
     const newRole = ref(false);
     const newRoleBtnLoading = ref(false);
+    const deleteBtnIsLoading = ref(false);
+    const rolesList = ref([])
+    const $q = useQuasar()
+    getRolesList()
     const newRolePayload = reactive({
       name: '',
       description: ''
     })
+    const newRoleError = reactive({
+      status: false,
+      message: ''
+    })
 
-    const apiRequest = useAttendanceService();
+    function getAuthToken() {
+      return $q.localStorage.getItem('authToken')
+    }
 
     function makeDeletePayload (payload) {
       deleteRolePayload.value = payload;
       confirmRoleDelete.value = true;
     }
 
-    function addNewRole () {
-      apiRequest.newRole(newRolePayload)
+    function getRolesList() {
+      if (rolesList.value.length === 0) {
+        tableIsLoading.value = true;
+      }
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.get(`/api/roles`)
+      .then((response) => {
+        rolesList.value = response.data;
+        tableIsLoading.value = false;
+      })
     }
 
-    try {
-      tableIsLoading.value = true;
-      rows.value = await apiRequest.roles();
-      tableIsLoading.value = false;
-    } catch (error) {
-      tableIsLoading.value = true;
+    function addNewRole () {
+      newRoleBtnLoading.value = true;
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.post(`/api/permissions/`, newRolePayload)
+      .then(() => {
+        newRolePayload.name = '';
+        newRolePayload.description = '';
+        newRoleBtnLoading.value = false;
+        newRole.value = false;
+        $q.notify({
+          icon: 'done',
+          type: 'positive',
+          timeout: 5000,
+          position: 'top',
+          message: 'Role added successfully'
+        })
+      })
+      .catch((error) => {
+        newRoleError.message = error.response.data.detail
+        newRoleError.status = true
+        newRoleBtnLoading.value = false
+      })
+    }
+
+    function deleteRole() {
+      deleteBtnIsLoading.value = true;
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.delete(`/roles/${deleteRolePayload.value}`)
+      .then(() => {
+        deleteRolePayload.value = '';
+        deleteBtnIsLoading.value = false;
+        getRolesList();
+        confirmRoleDelete.value = false;
+        $q.notify({
+          icon: 'done',
+          type: 'positive',
+          timeout: 7000,
+          position: 'top',
+          message: 'Role deleted successfully'
+        })
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          confirmRoleDelete.value = false;
+          $q.notify({
+            icon: 'report_problem',
+            type: 'negative',
+            timeout: 7000,
+            position: 'top',
+            message: error.response.data.detail
+          })
+          deleteRolePayload.value = '';
+          deleteBtnIsLoading.value = false;
+        }
+      })
     }
 
     return {
@@ -219,7 +297,12 @@ export default defineComponent({
       newRole,
       addNewRole,
       newRolePayload,
-      newRoleBtnLoading
+      newRoleBtnLoading,
+      rolesList,
+      confirmRoleDelete,
+      deleteRolePayload,
+      deleteRole,
+      deleteBtnIsLoading
     }
 
   },
