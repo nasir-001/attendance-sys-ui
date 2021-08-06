@@ -38,6 +38,15 @@ export function useAttendanceService() {
         trigerNotification('negative', 'Permission failed to add', 'report_problem')
       })
     },
+    async deletePermission(payload) {
+      await api.delete(`/api/permissions/${payload}`)
+      .then(() => {
+        trigerNotification('positive', 'Permission deleted successfully', 'done')
+      })
+      .catch((error) => {
+        trigerNotification('negative', error.response.data.detail, 'report_problem')
+      })
+    },
     async today() {
       const response = await api.get(`/api/attendance/today`)
         .catch(() => {

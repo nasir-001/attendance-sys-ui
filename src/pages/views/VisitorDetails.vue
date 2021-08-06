@@ -103,7 +103,9 @@
         <q-dialog v-model="showEditVisitor">
           <q-card class="tw-w-full sm:tw-w-3/6">
             <q-card-section class="row">
-              <div class="text-h6 text-primary tw--mt-1">Edit Visitor</div>
+              <q-card-section class="text-left">
+                <div class="text-h5">Edit visitor</div>
+              </q-card-section>
               <q-space />
               <q-btn flat v-close-popup dense round icon="close" />
             </q-card-section>

@@ -59,6 +59,7 @@
                 icon="delete"
                 class="sm:tw-mr-3"
                 color="negative"
+                @click="makeDeletePayload(props.row.name)"
               >
                 <q-tooltip :delay="1000" anchor="bottom middle" self="top middle" :offset="[10, 10]">
                   Delete permission
@@ -87,14 +88,14 @@
                 autofocus
                 type="text"
                 label="Name"
-                v-model="newPerPayload.name"
+                v-model="newPermission.name"
                 bottom-slots
                 :rules="[ val => !!val || 'This field is required.' ]"
               />
               <q-input
                 autogrow
                 outlined
-                v-model="newPerPayload.description"
+                v-model="newPermission.description"
                 label="Description"
               />
               <q-card-actions align="right" class="q-pt-lg q-pr-none">
@@ -119,7 +120,7 @@
     </q-dialog>
 
     <!-- Delete permission modal/dialog -->
-    <q-dialog persistent>
+    <q-dialog v-model="confirmPermDelete" persistent>
       <q-card class="q-pa-md">
         <q-card-section>
           <div class="text-h6 text-center">
@@ -127,7 +128,7 @@
           </div>
         </q-card-section>
         <q-card-section class="row items-center q-pb-md">
-          <span class="q-ml-sm text-body1">Are you sure you want to delete</span>
+          <span class="q-ml-sm text-body1">Are you sure you want to delete <strong>{{ deletePermPayload }}</strong>?</span>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn
@@ -144,6 +145,9 @@
             color="negative"
             class="q-px-md"
             label="Delete Permission"
+            @click="deletePermission"
+            :loading="deleteBtnIsLoading"
+            :disable="deleteBtnIsLoading"
           />
         </q-card-actions>
       </q-card>
@@ -171,22 +175,41 @@ export default defineComponent({
     const tableIsLoading = ref(false);
     const rows = ref([]);
     const newPerm = ref(false);
-    const payload = ref('');
+    const deletePermPayload = ref('');
+    const confirmPermDelete = ref(false);
+    const deleteBtnIsLoading = ref(false);
 
-    const newPerPayload = reactive({
+    const newPermission = reactive({
       name: '',
       description: ''
     })
     
-    const permissions = useAttendanceService();
+    const apiRequest = useAttendanceService();
 
     function addNewPermission() {
-      permissions.newPermission(newPerPayload);
+      apiRequest.newPermission(newPermission);
+    }
+
+    function makeDeletePayload(payload) {
+      deletePermPayload.value = payload;
+      confirmPermDelete.value = true;
+    }
+
+    function getPermissionsList () {
+      return apiRequest.permissions()
+    }
+
+    function deletePermission() {
+      deleteBtnIsLoading.value = true;
+      apiRequest.deletePermission(deletePermPayload);
+      deleteBtnIsLoading.value = false;
+      getPermissionsList()
+      confirmPermDelete.value = false;
     }
 
     try {
       tableIsLoading.value = true;
-      rows.value = await permissions.permissions();
+      rows.value = await apiRequest.permissions();
       tableIsLoading.value = false;
     } catch (error) {
       tableIsLoading.value = true;
@@ -197,8 +220,13 @@ export default defineComponent({
       tableIsLoading,
       rows,
       newPerm,
-      newPerPayload,
-      addNewPermission
+      newPermission,
+      addNewPermission,
+      makeDeletePayload,
+      confirmPermDelete,
+      deletePermission,
+      deleteBtnIsLoading,
+      deletePermPayload
     }
   },
 })
