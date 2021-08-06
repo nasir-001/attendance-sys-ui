@@ -47,22 +47,6 @@ export function useAttendanceService() {
         trigerNotification('negative', error.response.data.detail, 'report_problem')
       })
     },
-    async roles() {
-      const response = await api.get(`/api/roles`)
-        .catch(() => {
-          trigerNotification('negative', 'Failed to load roles', 'report_problem')
-        })
-      return response.data;
-    },
-    async newRole(payload) {
-      await api.post(`/api/permissions/`, payload)
-      .then(() => {
-        trigerNotification('positive', 'Role added successfully', 'done')
-      })
-      .catch(() => {
-        trigerNotification('negative', 'Role failed to add', 'report_problem')
-      })
-    },
     async today() {
       const response = await api.get(`/api/attendance/today`)
         .catch(() => {

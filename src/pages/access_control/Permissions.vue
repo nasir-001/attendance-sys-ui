@@ -39,7 +39,7 @@
           row-key="name"
           class="col-12"
           :columns="tableCols"
-          :rows="rows"
+          :rows="permissionsList"
           :loading="tableIsLoading"
           table-header-class="bg-blue-1 text-blue-10"
         >
@@ -159,6 +159,8 @@
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { useAttendanceService } from '../../composables/attendanceService';
+import { api } from 'boot/axios';
+import { useQuasar } from 'quasar';
 
 const tableCols = [
   { name: 'permission', label: 'PERMISSIONS', field: 'name', align: 'left', sortable: true },
@@ -177,17 +179,60 @@ export default defineComponent({
     const newPerm = ref(false);
     const deletePermPayload = ref('');
     const confirmPermDelete = ref(false);
+    const newPermBtnLoading = ref(false);
     const deleteBtnIsLoading = ref(false);
+    getPermissionsList()
+    const permissionsList = ref([]);
+    const $q = useQuasar();
+
+    const permError = reactive({
+      status: false,
+      message: ''
+    })
 
     const newPermission = reactive({
       name: '',
       description: ''
     })
-    
-    const apiRequest = useAttendanceService();
+
+    function getAuthToken() {
+      return $q.localStorage.getItem('authToken')
+    }
+
+    function getPermissionsList() {
+      tableIsLoading.value = true;
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.get('/api/permissions')
+      .then((response) => {
+        permissionsList.value = response.data;
+        tableIsLoading.value = false;
+      })
+    }
 
     function addNewPermission() {
-      apiRequest.newPermission(newPermission);
+      newPermBtnLoading.value = true;
+      api.post('/api/permissions/', newPermission)
+      .then(() => {
+        newPermission.name = '';
+        newPermission.description = '';
+        newPermBtnLoading.value = false;
+        getPermissionsList();
+        newPerm.value = false;
+        $q.notify({
+          icon: 'done',
+          type: 'positive',
+          timeout: 5000,
+          position: 'top',
+          message: 'Permission added successfully'
+        })
+      })
+      .catch((error) => {
+        permError.message = error.response.data.detail;
+        newPermBtnLoading.value = false;
+        permError.status = true;
+      })
     }
 
     function makeDeletePayload(payload) {
@@ -195,26 +240,39 @@ export default defineComponent({
       confirmPermDelete.value = true;
     }
 
-    function getPermissionsList () {
-      return apiRequest.permissions()
-    }
-
     function deletePermission() {
       deleteBtnIsLoading.value = true;
-      apiRequest.deletePermission(deletePermPayload);
-      deleteBtnIsLoading.value = false;
-      getPermissionsList()
-      confirmPermDelete.value = false;
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.delete(`/api/permissions/${deletePermPayload.value}`)
+      .then(() => {
+        deleteBtnIsLoading.value = false;
+        getPermissionsList()
+        confirmPermDelete.value = false;
+        $q.notify({
+          icon: 'done',
+          type: 'positive',
+          timeout: 7000,
+          position: 'top',
+          message: 'Permission deleted successfully'
+        })
+      })
+      .catch((error) => {
+        if(error.response.status === 403) {
+          confirmPermDelete.value = false;
+          $q.notify({
+            icon: 'done',
+            type: 'negative',
+            timeout: 7000,
+            position: 'top',
+            message: error.response.data.detail
+          })
+        }
+        deleteBtnIsLoading.value = false;
+      })
     }
-
-    try {
-      tableIsLoading.value = true;
-      rows.value = await apiRequest.permissions();
-      tableIsLoading.value = false;
-    } catch (error) {
-      tableIsLoading.value = true;
-    }
-
+    
     return {
       tableCols,
       tableIsLoading,
@@ -226,7 +284,8 @@ export default defineComponent({
       confirmPermDelete,
       deletePermission,
       deleteBtnIsLoading,
-      deletePermPayload
+      deletePermPayload,
+      permissionsList
     }
   },
 })

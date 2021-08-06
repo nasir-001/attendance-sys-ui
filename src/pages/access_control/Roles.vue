@@ -170,7 +170,6 @@
 <script>
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
-import { useAttendanceService } from '../../composables/attendanceService';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 
@@ -259,7 +258,7 @@ export default defineComponent({
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
-      api.delete(`/roles/${deleteRolePayload.value}`)
+      api.delete(`/api/roles/${deleteRolePayload.value}`)
       .then(() => {
         deleteRolePayload.value = '';
         deleteBtnIsLoading.value = false;
