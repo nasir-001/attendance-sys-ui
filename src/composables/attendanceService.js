@@ -30,7 +30,7 @@ export function useAttendanceService() {
       return response.data;
     },
     async newPermission(payload) {
-      const response = await api.post(`/api/permissions/`, payload)
+      await api.post(`/api/permissions/`, payload)
       .then(() => {
         trigerNotification('positive', 'Permission added successfully', 'done')
       })
@@ -47,6 +47,13 @@ export function useAttendanceService() {
         trigerNotification('negative', error.response.data.detail, 'report_problem')
       })
     },
+    async roles() {
+      const response = await api.get(`/api/roles`)
+        .catch(() => {
+          trigerNotification('negative', 'Failed to load roles', 'report_problem')
+        })
+      return response.data;
+    },
     async today() {
       const response = await api.get(`/api/attendance/today`)
         .catch(() => {
@@ -62,7 +69,7 @@ export function useAttendanceService() {
       return response.data;
     },
     async editVisitor(id, payload) {
-      const response = await api.patch(`/api/attendance/${id}`, payload)
+      await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been editted successfully', 'check_circle')
       })
@@ -74,7 +81,7 @@ export function useAttendanceService() {
       })
     },
     async admitVisitor(id, payload) {
-      const response = await api.patch(`/api/attendance/${id}`, payload)
+      await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been admitted', 'check_circle')
       })
@@ -83,7 +90,7 @@ export function useAttendanceService() {
       })
     },
     async cancelVisitor(id, payload) {
-      const response = await api.patch(`/api/attendance/${id}`, payload)
+      await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been cancelled', 'check_circle')
       })
@@ -92,7 +99,7 @@ export function useAttendanceService() {
       })
     },
     async visitorDepart(id, payload) {
-      const response = await api.patch(`/api/attendance/${id}`, payload)
+      await api.patch(`/api/attendance/${id}`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor has been departed', 'check_circle')
       })
@@ -101,7 +108,7 @@ export function useAttendanceService() {
       })
     },
     async newVisitor(payload) {
-      const response = await api.post(`/api/attendance/`, payload)
+      await api.post(`/api/attendance/`, payload)
       .then(() => {
         trigerNotification('positive', 'Visitor was successfully added', 'check_circle')
       })
