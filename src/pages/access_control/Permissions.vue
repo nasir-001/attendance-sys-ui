@@ -28,6 +28,7 @@
               :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']"
               label="Add New Permission"
               @click="newPerm = true"
+              :disabled="tableIsLoading"
             />
           </div>
         </div>
@@ -90,6 +91,9 @@
                 label="Name"
                 v-model="newPermission.name"
                 bottom-slots
+                :error="permError.status"
+                :error-message="permError.message"
+                @focus="permError.status = false"
                 :rules="[ val => !!val || 'This field is required.' ]"
               />
               <q-input
@@ -111,6 +115,8 @@
                   label="Add new"
                   color="primary"
                   class="q-px-md"
+                  :loading="newPermBtnLoading"
+                  :disabled="newPermBtnLoading || !newPermission"
                 />
               </q-card-actions>
             </form>
@@ -158,7 +164,6 @@
 <script>
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
-import { useAttendanceService } from '../../composables/attendanceService';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 
@@ -272,7 +277,7 @@ export default defineComponent({
         deleteBtnIsLoading.value = false;
       })
     }
-    
+
     return {
       tableCols,
       tableIsLoading,
@@ -285,7 +290,9 @@ export default defineComponent({
       deletePermission,
       deleteBtnIsLoading,
       deletePermPayload,
-      permissionsList
+      permissionsList,
+      permError,
+      newPermBtnLoading
     }
   },
 })

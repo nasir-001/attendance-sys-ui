@@ -100,8 +100,11 @@
                 type="text"
                 label="Name"
                 bottom-slots
+                :error="newRoleError.status"
+                :error-message="newRoleError.message"
                 v-model="newRolePayload.name"
                 :rules="[ val => !!val || 'This field is required.' ]"
+                 @focus="newRoleError.status = false"
               />
               <q-input
                 autogrow
@@ -167,6 +170,7 @@
     </q-dialog>
   </q-page>
 </template>
+
 <script>
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
@@ -301,7 +305,8 @@ export default defineComponent({
       confirmRoleDelete,
       deleteRolePayload,
       deleteRole,
-      deleteBtnIsLoading
+      deleteBtnIsLoading,
+      newRoleError
     }
 
   },
