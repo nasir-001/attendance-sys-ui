@@ -27,6 +27,7 @@
               color="primary"
               label="Add New Role"
               @click="newRole = true"
+              :disable="tableIsLoading"
               :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']"
             />
           </div>
@@ -40,9 +41,17 @@
           class="col-12"
           :rows-per-page-options="[10, 25, 50, 0]"
           :rows="rows"
-          :columns="tableCols"
+          :columns="columns"
+          :loading="tableIsLoading"
           table-header-class="bg-blue-1 text-blue-10"
         >
+          <template v-slot:loading>
+            <q-spinner-tail
+              color="primary"
+              size="3em"
+              class="tw-mx-auto"
+            />
+          </template>
           <template v-slot:body-cell-role="props">
             <q-td
               :props="props"
@@ -67,10 +76,6 @@
                 color="negative"
               />
             </q-td>
-          </template>
-
-          <template v-slot:loading>
-            <q-inner-loading showing color="primary" />
           </template>
         </q-table>
       </div>
@@ -186,7 +191,8 @@ export default defineComponent({
 
     return {
       rows,
-      tableCols
+      columns: tableCols,
+      tableIsLoading
     }
 
   },
