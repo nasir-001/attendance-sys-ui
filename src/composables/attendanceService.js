@@ -54,6 +54,15 @@ export function useAttendanceService() {
         })
       return response.data;
     },
+    async newRole(payload) {
+      await api.post(`/api/permissions/`, payload)
+      .then(() => {
+        trigerNotification('positive', 'Role added successfully', 'done')
+      })
+      .catch(() => {
+        trigerNotification('negative', 'Role failed to add', 'report_problem')
+      })
+    },
     async today() {
       const response = await api.get(`/api/attendance/today`)
         .catch(() => {

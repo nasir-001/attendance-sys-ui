@@ -74,6 +74,7 @@
                 icon="delete"
                 class="q-mr-md"
                 color="negative"
+                @click="makeDeletePayload(props.row.name)"
               />
             </q-td>
           </template>
@@ -82,7 +83,7 @@
     </div>
 
     <!-- New role modal/dialog -->
-    <q-dialog no-backdrop-dismiss>
+    <q-dialog v-model="newRole" no-backdrop-dismiss>
       <q-card style="width: 600px; max-width: 95vw;">
         <q-card-section class="text-center">
           <div class="text-h5">New Role</div>
@@ -91,7 +92,7 @@
 
         <q-card-section>
           <div class="q-pa-md">
-            <form class="q-gutter-md">
+            <form v-on:submit.prevent="addNewRole" class="q-gutter-md">
               <q-input
                 ref="name"
                 outlined
@@ -99,12 +100,14 @@
                 type="text"
                 label="Name"
                 bottom-slots
+                v-model="newRolePayload.name"
                 :rules="[ val => !!val || 'This field is required.' ]"
               />
               <q-input
                 autogrow
                 outlined
                 label="Description"
+                v-model="newRolePayload.description"
               />
               <q-card-actions align="right" class="q-pt-lg q-pr-none">
                 <q-btn
@@ -119,6 +122,8 @@
                   label="Add new"
                   color="primary"
                   class="q-px-md"
+                  :loading="newRoleBtnLoading"
+                  :disabled="newRoleBtnLoading || !newRolePayload"
                 />
               </q-card-actions>
             </form>
@@ -160,7 +165,7 @@
   </q-page>
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 
@@ -178,8 +183,25 @@ export default defineComponent({
   async setup() {
     const tableIsLoading = ref(false);
     const rows = ref([]);
+    const deleteRolePayload = ref('');
+    const confirmRoleDelete = ref(false);
+    const newRole = ref(false);
+    const newRoleBtnLoading = ref(false);
+    const newRolePayload = reactive({
+      name: '',
+      description: ''
+    })
 
     const apiRequest = useAttendanceService();
+
+    function makeDeletePayload (payload) {
+      deleteRolePayload.value = payload;
+      confirmRoleDelete.value = true;
+    }
+
+    function addNewRole () {
+      apiRequest.newRole(newRolePayload)
+    }
 
     try {
       tableIsLoading.value = true;
@@ -192,7 +214,12 @@ export default defineComponent({
     return {
       rows,
       columns: tableCols,
-      tableIsLoading
+      tableIsLoading,
+      makeDeletePayload,
+      newRole,
+      addNewRole,
+      newRolePayload,
+      newRoleBtnLoading
     }
 
   },
