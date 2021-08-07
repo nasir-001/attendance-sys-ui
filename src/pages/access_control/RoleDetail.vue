@@ -35,7 +35,7 @@
       </div>
       <!-- Permiions Table -->
       <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
-        <!-- <not-found back v-if="notFound" /> -->
+        <not-found-404 back v-if="notFound" />
         <q-table
           row-key="name"
           class="col-12"
@@ -135,6 +135,7 @@
 <script>
 import { defineComponent, ref, reactive, computed } from 'vue';
 import BackButton from '../../components/BackButton.vue';
+import NotFound404 from '../../components/NotFound404.vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
@@ -147,7 +148,8 @@ const tableCols = [
 export default defineComponent({
   name: 'RoleDetail',
   components: {
-    BackButton
+    BackButton,
+    NotFound404
   },
 
   setup() {

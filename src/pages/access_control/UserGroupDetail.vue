@@ -37,7 +37,7 @@
 
       <!-- Roles Table -->
       <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
-        <!-- <not-found back v-if="notFound" /> -->
+        <not-found-404 back v-if="notFound" />
         <q-table
           row-key="name"
           class="col-12"
@@ -165,6 +165,7 @@ import BackButton from '../../components/BackButton.vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
+import NotFound404 from '../../components/NotFound404.vue';
 
 const tableCols = [
   { name: 'role', label: 'GROUP ROLES', field: 'name', align: 'left', sortable: true },
@@ -174,7 +175,8 @@ const tableCols = [
 export default defineComponent({
   name: 'UserGroupDetail',
   components: {
-    BackButton
+    BackButton,
+    NotFound404
   },
 
   setup() {
