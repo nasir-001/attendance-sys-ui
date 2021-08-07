@@ -172,7 +172,7 @@ export default defineComponent({
           return perm.name;
         });
         const perms = permsList.value.map((perm) => {
-          perm.name
+          return perm.name
         });
         return perms.filter(perm => rolePermissions.indexOf(perm) === -1)
     })
