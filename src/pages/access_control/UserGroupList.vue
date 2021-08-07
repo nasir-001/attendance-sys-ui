@@ -45,6 +45,14 @@
           :rows-per-page-options="[10, 25, 50, 0]"
           table-header-class="bg-blue-1 text-blue-10"
         >
+          <template v-slot:loading>
+            <q-spinner-tail
+              color="primary"
+              size="3em"
+              class="tw-mx-auto"
+            />
+          </template>
+
           <template v-slot:body-cell-group="props">
             <q-td
               :props="props"
@@ -67,19 +75,16 @@
                 icon="delete"
                 class="q-mr-md"
                 color="negative"
+                @click="makeDeletePayload(props.row.name)"
               />
             </q-td>
-          </template>
-
-          <template v-slot:loading>
-            <q-inner-loading showing color="primary" />
           </template>
         </q-table>
       </div>
     </div>
 
     <!-- New Group modal/dialog -->
-    <q-dialog no-backdrop-dismiss>
+    <q-dialog v-model="newGroup" no-backdrop-dismiss>
       <q-card style="width: 600px; max-width: 95vw;">
         <q-card-section class="text-center">
           <div class="text-h5">New Group</div>
@@ -88,7 +93,7 @@
 
         <q-card-section>
           <div class="q-pa-md">
-            <form class="q-gutter-md">
+            <form @submit.prevent="addNewGroup" class="q-gutter-md">
               <q-input
                 ref="name"
                 outlined
@@ -96,12 +101,17 @@
                 type="text"
                 label="Name"
                 bottom-slots
+                :error="newGroupError.status"
+                :error-message="newGroupError.message"
+                v-model="newGroupPayload.name"
                 :rules="[ val => !!val || 'This field is required.' ]"
+                @input="newGroupError.status = false"
               />
               <q-input
                 autogrow
                 outlined
                 label="Description"
+                v-model="newGroupPayload.description"
               />
               <q-card-actions align="right" class="q-pt-lg q-pr-none">
                 <q-btn
@@ -116,6 +126,8 @@
                   label="Add new"
                   color="primary"
                   class="q-px-md"
+                  :disabled="newGroupBtnLoading"
+                  :loading="newGroupBtnLoading"
                 />
               </q-card-actions>
             </form>
@@ -125,7 +137,7 @@
     </q-dialog>
 
     <!-- Delete group modal/dialog -->
-    <q-dialog persistent>
+    <q-dialog v-model="confirmGroupDelete" persistent>
       <q-card class="q-pa-md">
         <q-card-section>
           <div class="text-h6 text-center">
@@ -133,7 +145,7 @@
           </div>
         </q-card-section>
         <q-card-section class="row items-center q-pb-md">
-          <span class="q-ml-sm text-body1">Are you sure you want to delete</span>
+          <span class="q-ml-sm text-body1">Are you sure you want to delete <strong>{{ deleteGroupPayload }}</strong>?</span>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn
@@ -150,6 +162,9 @@
             color="negative"
             class="q-px-md"
             label="Delete Group"
+            @click="deleteGroup"
+            :loading="deleteBtnIsLoading"
+            :disabled="deleteBtnIsLoading"
           />
         </q-card-actions>
       </q-card>
@@ -190,11 +205,8 @@ export default defineComponent({
       name: '',
       description: ''
     })
-    const deleteGroupPayload = reactive({
-      name: '',
-      description: ''
-    })
-    getGroupsList()
+    const deleteGroupPayload = ref('')
+    getGroupsList();
 
     function getAuthToken () {
       $q.localStorage.getItem('authToken');
@@ -242,21 +254,57 @@ export default defineComponent({
     }
 
     function makeDeletePayload (payload) {
-      deleteGroupPayload = payload;
-      confirmGroupDelete.value = true;
+      deleteGroupPayload.value = payload;
+      confirmGroupDelete.value = true;      
     }
 
     function deleteGroup () {
       deleteBtnIsLoading.value = true;
-      api.defaults.headers.common = {
-        Authorization: `Bearer ${getAuthToken()}`
-      }
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.delete(`/api/groups/${deleteGroupPayload.value}`)
+        .then(() => {
+          deleteBtnIsLoading.value = false;
+          getGroupsList();
+          confirmGroupDelete.value = false;
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 7000,
+            position: 'top',
+            message: 'Group deleted successfully'
+          })
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            confirmGroupDelete.value = false;
+            $q.notify({
+              icon: 'done',
+              type: 'negative',
+              timeout: 7000,
+              position: 'top',
+              message: error.response.data.detail
+            })
+            deleteBtnIsLoading.value = false;
+          }
+        })
     }
 
     return {
       tableIsLoading,
       columns: tableCols,
-      groupsList
+      groupsList,
+      makeDeletePayload,
+      newGroup,
+      newGroupError,
+      newGroupPayload,
+      newGroupBtnLoading,
+      confirmGroupDelete,
+      deleteGroupPayload,
+      deleteGroup,
+      deleteBtnIsLoading,
+      addNewGroup
     }
     
   },
