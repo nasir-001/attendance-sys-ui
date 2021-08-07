@@ -60,6 +60,7 @@
                 round
                 class="q-mr-md"
                 color="negative"
+                @click="removePermFromRole(props.row.name)"
                 icon="delete"
               >
                 <q-tooltip :delay="1000" anchor="bottom middle" self="top middle" :offset="[10, 10]">
@@ -73,7 +74,7 @@
     </div>
 
     <!-- Add permission modal/dialog -->
-    <q-dialog no-backdrop-dismiss>
+    <q-dialog v-model="addPerm" no-backdrop-dismiss>
       <q-card style="width: 600px; max-width: 95vw;">
         <q-card-section class="text-center">
           <div class="text-h5">Add Permission</div>
@@ -90,6 +91,11 @@
                 type="text"
                 label="Name"
                 bottom-slots
+                @filter="filterFn"
+                :options="options"
+                :error="permError.status"
+                :error-message="permError.message"
+                v-model="addPermPayload"
                 :rules="[ val => !!val || 'This field is required.' ]"
               >
                 <template v-slot:no-option>
@@ -113,6 +119,8 @@
                   color="primary"
                   class="q-px-md"
                   label="Add permission"
+                  :disabled="addPermBtnLoading || !addPermPayload"
+                  :loading="addPermBtnLoading"
                 />
               </q-card-actions>
             </form>
@@ -124,7 +132,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, reactive, computed } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
@@ -149,34 +157,36 @@ export default defineComponent({
     const $q = useQuasar();
     const route = useRoute()
     const tableIsLoading = ref(false);
+    const addPermPayload = ref('');
+    const addPerm = ref(false);
+    const addPermBtnLoading = ref(false);
+    const permError = reactive({
+      status: false,
+      message: ''
+    })
     getAllPermissions()
     getRoleDetail()
 
-    computed(() => {
-      function allPermissions () {
-        const rolePermissions = roleObj.value.permissions.map((perm) => {
+    const allPermissions = computed(() => {
+      const rolePermissions = roleObj.value.permissions.map((perm) => {
           return perm.name;
         });
         const perms = permsList.value.map((perm) => {
           perm.name
         });
         return perms.filter(perm => rolePermissions.indexOf(perm) === -1)
-      };
-      return {
-        allPermissions
-      }
     })
 
     function filterFn (val, update) {
       if (val === '') {
         update(() => {
-          options.value = allPermissions;
+          options.value = allPermissions.value;
         })
         return
       };
       update(() => {
         const needle = val.toLowerCase();
-        options.value = allPermissions.filter(v => v.toLowerCase().indexOf(needle) > -1);
+        options.value = allPermissions.value.filter(v => v.toLowerCase().indexOf(needle) > -1);
       })
     }
 
@@ -217,11 +227,70 @@ export default defineComponent({
         })
     }
 
+    function addPermToRole () {
+      addPermBtnLoading.value = true;
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.put(`/api/roles/${roleObj.value.name}`, { permissions: [addPermPayload.value] })
+        .then(() => {
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 5000,
+            position: 'top',
+            message: 'Permission added successfully',
+          })
+          addPermBtnLoading.value = false;
+          getRoleDetail();
+          getAllPermissions();
+          addPerm.value = false;
+          addPermPayload.value = '';
+      })
+    }
+
+    function removePermFromRole (perm) {
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.delete(`/api/roles/${roleObj.value.name}/permissions`, { data: { permissions: [perm] } })
+        .then((response) => {
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 5000,
+            position: 'top',
+            message: 'Permission removed successfully'
+          })
+          getRoleDetail()
+          getAllPermissions()
+        })
+        .catch(() => {
+          if (error.response.status === 404){
+            $q.notify({
+              icon: 'warning',
+              type: 'negative',
+              timeout: 5000,
+              position: 'top',
+              message: error.response.data.detail
+            })
+          }
+        })
+    }
+
     return {
       notFound,
       roleObj,
       tableIsLoading,
-      columns: tableCols
+      columns: tableCols,
+      addPerm,
+      filterFn,
+      removePermFromRole,
+      options,
+      permError,
+      addPermPayload,
+      addPermToRole,
+      addPermBtnLoading
     }
     
   },
