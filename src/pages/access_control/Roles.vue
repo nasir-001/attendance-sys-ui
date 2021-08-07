@@ -236,7 +236,7 @@ export default defineComponent({
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
-      api.post(`/api/permissions/`, newRolePayload)
+      api.post(`/api/roles/`, newRolePayload)
         .then(() => {
           newRolePayload.name = '';
           newRolePayload.description = '';
