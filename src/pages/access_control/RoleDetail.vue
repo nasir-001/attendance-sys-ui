@@ -83,7 +83,7 @@
 
         <q-card-section>
           <div class="q-pa-md">
-            <form class="q-gutter-md">
+            <form @submit.prevent="addPermToRole" class="q-gutter-md">
               <q-select
                 ref="name"
                 outlined
@@ -97,6 +97,7 @@
                 :error-message="permError.message"
                 v-model="addPermPayload"
                 :rules="[ val => !!val || 'This field is required.' ]"
+                @input="permError.status = false"
               >
                 <template v-slot:no-option>
                   <q-item>
