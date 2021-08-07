@@ -2,7 +2,7 @@
   <q-page padding>
     <div class="row q-pb-xl justify-center q-gutter-sm-md">
       <!-- Title -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
+      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl" v-if="!notFound">
         <back-button />
         <div class="row">
           <div
@@ -11,7 +11,7 @@
               'col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm'
             ]"
           >
-            <!-- {{ roleObj.name }} -->
+            {{ roleObj.name }}
           </div>
           <div
             :class="[
@@ -19,13 +19,14 @@
               'col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs'
             ]"
           >
-            <!-- {{ roleObj.name }} -->
+            {{ roleObj.name }}
           </div>
           <div class="col-12 col-sm-6">
             <q-btn
               no-caps
               color="primary"
               @click="addPerm = true"
+              :disabled="tableIsLoading"
               label="Add Permission to Role"
               :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']"
             />
@@ -38,9 +39,19 @@
         <q-table
           row-key="name"
           class="col-12"
+          :columns="columns"
+          :loading="tableIsLoading"
+          :rows="roleObj.permissions"
           :rows-per-page-options="[10, 25, 50, 0]"
           table-header-class="bg-blue-1 text-blue-10"
         >
+          <template v-slot:loading>
+            <q-spinner-tail
+              color="primary"
+              size="3em"
+              class="tw-mx-auto"
+            />
+          </template>
           <template v-slot:body-cell-remove="props">
             <q-td :props="props">
               <q-btn
@@ -56,10 +67,6 @@
                 </q-tooltip>
               </q-btn>
             </q-td>
-          </template>
-
-          <template v-slot:loading>
-            <q-inner-loading showing color="primary" />
           </template>
         </q-table>
       </div>
@@ -119,6 +126,13 @@
 <script>
 import { defineComponent, ref, computed } from 'vue';
 import BackButton from '../../components/BackButton.vue';
+import { api } from 'boot/axios';
+import { useQuasar } from 'quasar';
+
+const tableCols = [
+  { name: 'permission', label: 'ROLE PERMISSIONS', field: 'name', align: 'left', sortable: true },
+  { name: 'remove', label: '', align: 'right' }
+]
 
 export default defineComponent({
   name: 'RoleDetail',
@@ -130,6 +144,10 @@ export default defineComponent({
     const notFound = ref(false);
     const roleObj = ref({});
     const permsList = ref([]);
+    const options = ref([]);
+    const $q = useQuasar();
+    const tableIsLoading = ref(false);
+    getAllPermissions()
 
     computed(() => {
       function allPermissions () {
@@ -141,14 +159,46 @@ export default defineComponent({
         });
         return perms.filter(perm => rolePermissions.indexOf(perm) === -1)
       };
-
       return {
         allPermissions
       }
     })
 
+    function filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          options.value = allPermissions;
+        })
+        return
+      };
+      update(() => {
+        const needle = val.toLowerCase();
+        options.value = allPermissions.filter(v => v.toLowerCase().indexOf(needle) > -1);
+      })
+    }
+
+    function getAuthToken () {
+      return $q.localStorage.getItem('authToken');
+    }
+
+    function getAllPermissions () {
+      if (!roleObj.value.name) {
+        tableIsLoading.value = true;
+      }
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.get('/api/permissions/')
+      .then((response) => {
+        permsList.value = response.data
+      })
+    }
+
     return {
-      notFound
+      notFound,
+      roleObj,
+      tableIsLoading,
+      columns: tableCols
     }
     
   },
