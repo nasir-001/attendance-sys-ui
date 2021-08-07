@@ -210,34 +210,34 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.get('/api/permissions')
-      .then((response) => {
-        permissionsList.value = response.data;
-        tableIsLoading.value = false;
-      })
+        .then((response) => {
+          permissionsList.value = response.data;
+          tableIsLoading.value = false;
+        })
     }
 
     function addNewPermission() {
       newPermBtnLoading.value = true;
       api.post('/api/permissions/', newPermission)
-      .then(() => {
-        newPermission.name = '';
-        newPermission.description = '';
-        newPermBtnLoading.value = false;
-        getPermissionsList();
-        newPerm.value = false;
-        $q.notify({
-          icon: 'done',
-          type: 'positive',
-          timeout: 5000,
-          position: 'top',
-          message: 'Permission added successfully'
+        .then(() => {
+          newPermission.name = '';
+          newPermission.description = '';
+          newPermBtnLoading.value = false;
+          getPermissionsList();
+          newPerm.value = false;
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 5000,
+            position: 'top',
+            message: 'Permission added successfully'
+          })
         })
-      })
-      .catch((error) => {
-        permError.message = error.response.data.detail;
-        newPermBtnLoading.value = false;
-        permError.status = true;
-      })
+        .catch((error) => {
+          permError.message = error.response.data.detail;
+          newPermBtnLoading.value = false;
+          permError.status = true;
+        })
     }
 
     function makeDeletePayload(payload) {
@@ -251,31 +251,31 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.delete(`/api/permissions/${deletePermPayload.value}`)
-      .then(() => {
-        deleteBtnIsLoading.value = false;
-        getPermissionsList()
-        confirmPermDelete.value = false;
-        $q.notify({
-          icon: 'done',
-          type: 'positive',
-          timeout: 7000,
-          position: 'top',
-          message: 'Permission deleted successfully'
-        })
-      })
-      .catch((error) => {
-        if(error.response.status === 403) {
+        .then(() => {
+          deleteBtnIsLoading.value = false;
+          getPermissionsList()
           confirmPermDelete.value = false;
           $q.notify({
             icon: 'done',
-            type: 'negative',
+            type: 'positive',
             timeout: 7000,
             position: 'top',
-            message: error.response.data.detail
+            message: 'Permission deleted successfully'
           })
-        }
-        deleteBtnIsLoading.value = false;
-      })
+        })
+        .catch((error) => {
+          if(error.response.status === 403) {
+            confirmPermDelete.value = false;
+            $q.notify({
+              icon: 'done',
+              type: 'negative',
+              timeout: 7000,
+              position: 'top',
+              message: error.response.data.detail
+            })
+          }
+          deleteBtnIsLoading.value = false;
+        })
     }
 
     return {

@@ -128,6 +128,7 @@ import { defineComponent, ref, computed } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
+import { useRoute } from 'vue-router';
 
 const tableCols = [
   { name: 'permission', label: 'ROLE PERMISSIONS', field: 'name', align: 'left', sortable: true },
@@ -146,8 +147,10 @@ export default defineComponent({
     const permsList = ref([]);
     const options = ref([]);
     const $q = useQuasar();
+    const route = useRoute()
     const tableIsLoading = ref(false);
     getAllPermissions()
+    getRoleDetail()
 
     computed(() => {
       function allPermissions () {
@@ -189,9 +192,29 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.get('/api/permissions/')
-      .then((response) => {
-        permsList.value = response.data
-      })
+        .then((response) => {
+          permsList.value = response.data
+        })
+    }
+
+    function getRoleDetail () {
+      if (!roleObj.value) {
+        tableIsLoading.value = true;
+      }
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.get(`/api/roles/${route.params.roleName}`)
+        .then((response) => {
+          roleObj.value = response.data;
+          tableIsLoading.value = false;
+        })
+        .catch((error) => {
+          if(error.response.status === 404) {
+            tableIsLoading.value = false;
+            notFound.value = true;
+          }
+        })
     }
 
     return {

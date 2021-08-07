@@ -225,10 +225,10 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.get(`/api/roles`)
-      .then((response) => {
-        rolesList.value = response.data;
-        tableIsLoading.value = false;
-      })
+        .then((response) => {
+          rolesList.value = response.data;
+          tableIsLoading.value = false;
+        })
     }
 
     function addNewRole () {
@@ -237,24 +237,24 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.post(`/api/permissions/`, newRolePayload)
-      .then(() => {
-        newRolePayload.name = '';
-        newRolePayload.description = '';
-        newRoleBtnLoading.value = false;
-        newRole.value = false;
-        $q.notify({
-          icon: 'done',
-          type: 'positive',
-          timeout: 5000,
-          position: 'top',
-          message: 'Role added successfully'
+        .then(() => {
+          newRolePayload.name = '';
+          newRolePayload.description = '';
+          newRoleBtnLoading.value = false;
+          newRole.value = false;
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 5000,
+            position: 'top',
+            message: 'Role added successfully'
+          })
         })
-      })
-      .catch((error) => {
-        newRoleError.message = error.response.data.detail
-        newRoleError.status = true
-        newRoleBtnLoading.value = false
-      })
+        .catch((error) => {
+          newRoleError.message = error.response.data.detail
+          newRoleError.status = true
+          newRoleBtnLoading.value = false
+        })
     }
 
     function deleteRole() {
@@ -263,33 +263,33 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.delete(`/api/roles/${deleteRolePayload.value}`)
-      .then(() => {
-        deleteRolePayload.value = '';
-        deleteBtnIsLoading.value = false;
-        getRolesList();
-        confirmRoleDelete.value = false;
-        $q.notify({
-          icon: 'done',
-          type: 'positive',
-          timeout: 7000,
-          position: 'top',
-          message: 'Role deleted successfully'
-        })
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          confirmRoleDelete.value = false;
-          $q.notify({
-            icon: 'report_problem',
-            type: 'negative',
-            timeout: 7000,
-            position: 'top',
-            message: error.response.data.detail
-          })
+        .then(() => {
           deleteRolePayload.value = '';
           deleteBtnIsLoading.value = false;
-        }
-      })
+          getRolesList();
+          confirmRoleDelete.value = false;
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 7000,
+            position: 'top',
+            message: 'Role deleted successfully'
+          })
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            confirmRoleDelete.value = false;
+            $q.notify({
+              icon: 'report_problem',
+              type: 'negative',
+              timeout: 7000,
+              position: 'top',
+              message: error.response.data.detail
+            })
+            deleteRolePayload.value = '';
+            deleteBtnIsLoading.value = false;
+          }
+        })
     }
 
     return {
