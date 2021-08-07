@@ -101,7 +101,7 @@ const routes = [
   {
     path: '/',
     name: 'login',
-    component: () => import('pages/account/Login'),
+    component: () => import('pages/auth/Login'),
   },
   
   // Always leave this as last one,
