@@ -27,7 +27,7 @@
       <!-- Users Table -->
       <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
         <q-table
-          row-key="name"
+          row-key="email"
           class="col-12"
           :columns="columns"
           :rows="userList"
@@ -55,6 +55,7 @@
               {{ props.row.firstname }}
             </q-td>
           </template>
+        </q-table>
       </div>
     </div>
   </q-page>
