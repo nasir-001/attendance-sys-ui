@@ -107,7 +107,7 @@
                 outlined
                 type="text"
                 label="First Name"
-                v-model="userEditPayload.lastname"
+                v-model="userEditPayload.firstname"
                 :rules="[val => !!val || 'Field is required']"
               />
               <q-input
@@ -190,8 +190,6 @@
                   class="q-px-md"
                   color="primary"
                   label="Change user group"
-                  :disabled="editBtnIsLoading"
-                  :loading="editBtnIsLoading"
                 />
               </q-card-actions>
             </form>
@@ -291,14 +289,14 @@ export default defineComponent({
       // }
       api.get('/api/groups')
         .then((response) => {
-          const options = ref([]);
+          const options = [];
           for (let i = 0; i < response.data.length; i++) {
-            options.value.push({
+            options.push({
               label: response.data[i].name,
               value: response.data[i].uuid
             })
           }
-          groupOptions.value = options.value;
+          groupOptions.value = options;
           tableIsLoading.value = false;
       })
     }
@@ -337,8 +335,8 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.post(`/api/users/${userObj.value.uuid}/groups`, { groups: [userOwnGroup.label] })
-        .then((response) => {
-          getUserDetail()
+        .then(() => {
+          getUserDetail();
           editBtnIsLoading.value = false;
           groupEdit.value = false;
           $q.notify({
@@ -348,17 +346,17 @@ export default defineComponent({
             position: 'top',
             message: 'User group changed successfully'
           })
-        })
-        .catch((error) => {
-          const errorObj = error.response;
-          if (errorObj.status === 404) {
-            emailError.status = true;
-            emailError.message = errorObj.data;
-          }
-          editBtnIsLoading.value = false;
+          .catch((error) => {
+            const errorObj = error.response;
+            if (errorObj.status === 404) {
+              emailError.status = true;
+              emailError.message = errorObj.data;
+            }
+            editBtnIsLoading.value = false;
+          })
         })
     }
-
+    
     return {
       userObj,
       userEdit,
