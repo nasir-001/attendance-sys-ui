@@ -99,6 +99,39 @@ const routes = [
     ]
   },
   {
+    path: '/admin/users',
+    component: () => import('layouts/admin/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'user-list',
+        component: () => import('pages/users/UserList.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
+      },
+      {
+        path: 'new-user',
+        name: 'new-user',
+        component: () => import('pages/users/NewUser.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
+      },
+      {
+        path: 'users/:uuid',
+        name: 'user-detail',
+        component: () => import('pages/users/UserDetail.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
+      }
+    ]
+  },
+  {
     path: '/',
     name: 'login',
     component: () => import('pages/auth/Login'),

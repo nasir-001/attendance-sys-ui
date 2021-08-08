@@ -106,6 +106,23 @@ const linksData = [
     ]
   },
   {
+    title: 'Manage Users',
+    icon: 'people_outline',
+    showOpenExpansionStr: 'admin/users',
+    children: [
+      {
+        title: 'Add New User',
+        icon: 'person_add',
+        to: { name: 'new-user' }
+      },
+      {
+        title: 'Users List',
+        icon: 'people',
+        to: { name: 'user-list' }
+      }
+    ]
+  },
+  {
     title: 'Access Control',
     icon: 'mdi-account-key-outline',
     children: [
