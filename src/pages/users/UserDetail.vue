@@ -37,7 +37,7 @@
       <not-found-404 v-if="notFound" back />
 
       <!-- Found -->
-      <div v-else class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
+      <div v-else class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl tw-mt-3 sm:tw-mt-0">
         <!-- Loading Skeleton -->
         <div v-if="tableIsLoading" class="row justify-center q-pb-xl">
           <div class="col-12 q-gutter-sm q-pt-lg">
@@ -267,7 +267,7 @@ export default defineComponent({
               userEditPayload[key] = editPayload[key];
             }
           }
-          if (editPayload.groups.lenlength > 0) {
+          if (editPayload.groups.length > 0) {
             userOwnGroup = {
               label: editPayload.groups[0].name,
               value: editPayload.groups[0].uuid
