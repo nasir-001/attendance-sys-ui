@@ -8,6 +8,7 @@
         <q-form @submit.prevent="newVisitorData">
           <q-card-section class="q-pt-none">
             <q-input
+              hide-bottom-space
               outlined
               auto-focus
               lazy-rules
@@ -20,6 +21,7 @@
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-input
+              hide-bottom-space
               outlined
               auto-focus
               lazy-rules
@@ -32,6 +34,7 @@
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-input
+              hide-bottom-space
               outlined
               auto-focus
               lazy-rules
@@ -44,6 +47,7 @@
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-input
+              hide-bottom-space
               outlined
               auto-focus
               lazy-rules
@@ -58,6 +62,7 @@
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-input
+              hide-bottom-space
               outlined
               auto-focus
               lazy-rules
@@ -83,8 +88,9 @@
               ]"
             />
           </q-card-section>
-          <q-card-section class="q-pt-none">
-            <q-input 
+          <q-card-section class="tw--mt-8">
+            <q-input
+              hide-bottom-space 
               label="Arrival Date" 
               outlined 
               v-model="newVisitorPayload.visit.date"
