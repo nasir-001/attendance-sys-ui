@@ -6,10 +6,10 @@
         <back-button />
         <div class="row">
           <div class="col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm">
-            <!-- {{ userObj.firstname }} -->
+            {{ userObj.firstname }}
           </div>
           <div class="col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs">
-            <!-- {{ userObj.firstname }} -->
+            {{ userObj.firstname }}
           </div>
         <div class="col-12 col-sm-6 q-gutter-sm">
           <q-btn
@@ -17,6 +17,7 @@
             color="primary"
             label="Edit User Info"
             @click="userEdit = true"
+            :disabled="tableIsLoading"
             :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
           />
           <q-btn
@@ -25,6 +26,7 @@
             color="primary"
             label="Change User Group"
             @click="groupEdit = true"
+            disabled="tableIsLoading"
             :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
           />
         </div>
@@ -32,12 +34,12 @@
       </div>
 
       <!-- Not Found -->
-      <!-- <not-found v-if="notFound" back /> -->
+      <not-found-404 v-if="notFound" back />
 
       <!-- Found -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
+      <div v-else class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
         <!-- Loading Skeleton -->
-        <div class="row justify-center q-pb-xl">
+        <div v-if="tableIsLoading" class="row justify-center q-pb-xl">
           <div class="col-12 q-gutter-sm q-pt-lg">
             <q-skeleton animation="pulse" type="QInput" />
             <q-skeleton animation="pulse" type="QInput" />
@@ -47,37 +49,43 @@
         </div>
 
         <!-- User Detail -->
-        <div class="row">
+        <div v-else class="row">
           <div class="col-12">
             <q-input
               readonly
               outlined
               type="text"
               label="First Name"
+              :model-value="userObj.firstname"
             />
             <q-input
               readonly
               outlined
               type="text"
               label="Last Name"
+              :model-value="userObj.lastname"
             />
             <q-input
               readonly
               outlined
               type="text"
               label="Middle Name"
+              :model-value="userObj.middlename"
             />
             <q-input
               readonly
               outlined
               type="text"
               label="Email"
+              :model-value="userObj.email"
             />
             <q-input
               readonly
               outlined
               type="text"
               label="User Group"
+              v-if="userObj.groups.length > 0"
+              :model-value="userObj.groups[0].name"
             />
           </div>
         </div>
@@ -85,7 +93,7 @@
     </div>
 
     <!-- Edit user modal/dialog -->
-    <q-dialog no-backdrop-dismiss>
+    <q-dialog v-model="userEdit" no-backdrop-dismiss>
       <q-card style="width: 600px; max-width: 95vw;">
         <q-card-section class="text-center">
           <div class="text-h5">Edit User</div>
@@ -94,17 +102,19 @@
 
         <q-card-section>
           <div class="q-pa-md">
-            <form class="q-gutter-md q-py-md">
+            <form @submit.prevent.stop="editUser" class="q-gutter-md q-py-md">
               <q-input
                 outlined
                 type="text"
                 label="First Name"
+                v-model="userEditPayload.lastname"
                 :rules="[val => !!val || 'Field is required']"
               />
               <q-input
                 outlined
                 type="text"
                 label="Last Name"
+                v-model="userEditPayload.lastname"
                 :rules="[val => !!val || 'Field is required']"
               />
               <q-input
@@ -112,13 +122,19 @@
                 type="text"
                 bottom-slots
                 label="Middle Name (Optional)"
+                v-model="userEditPayload.middlename"
               />
               <q-input
                 outlined
                 type="email"
                 label="Email"
+                :error="emailError.status"
+                @input="emailError.status = false"
+                v-model="userEditPayload.email"
+                :error-message="emailError.message"
                 :rules="[
                   val => !!val || 'Field is required',
+                  val => emailValidator(val)
                 ]"
               />
               <q-card-actions align="right" class="q-pb-lg q-pr-none">
@@ -134,6 +150,8 @@
                   class="q-px-md"
                   color="primary"
                   label="Edit user info"
+                  :disabled="editBtnIsLoading"
+                  :loading="editBtnIsLoading"
                 />
               </q-card-actions>
             </form>
@@ -143,7 +161,7 @@
     </q-dialog>
 
     <!-- Change user group modal/dialog -->
-    <q-dialog no-backdrop-dismiss>
+    <q-dialog v-model="groupEdit" no-backdrop-dismiss>
       <q-card style="width: 600px; max-width: 95vw;">
         <q-card-section class="text-center">
           <div class="text-h5">Change User Group</div>
@@ -151,10 +169,11 @@
 
         <q-card-section>
           <div class="q-pa-md">
-            <form class="q-gutter-md q-py-md">
+            <form @submit.prevent.stop="changeUserGroup" class="q-gutter-md q-py-md">
               <q-select
                 outlined
                 label="User Group"
+                :options="groupOptions"
                 :rules="[val => !!val || 'Field is required']"
               />
               <q-card-actions align="right" class="q-pr-none">
@@ -170,6 +189,8 @@
                   class="q-px-md"
                   color="primary"
                   label="Change user group"
+                  :disabled="editBtnIsLoading"
+                  :loading="editBtnIsLoading"
                 />
               </q-card-actions>
             </form>
@@ -187,11 +208,13 @@ import { validateEmail } from 'boot/utils';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
+import NotFound404 from '../../components/NotFound404.vue';
 
 export default defineComponent({
   name: 'UserDetail',
   components: {
-    BackButton
+    BackButton,
+    NotFound404
   },
   
   setup() {
@@ -333,6 +356,21 @@ export default defineComponent({
           }
           editBtnIsLoading.value = false;
         })
+    }
+
+    return {
+      userObj,
+      userEdit,
+      tableIsLoading,
+      notFound,
+      editUser,
+      userEditPayload,
+      emailError,
+      emailValidator,
+      editBtnIsLoading,
+      groupEdit,
+      changeUserGroup,
+      groupOptions
     }
     
   },
