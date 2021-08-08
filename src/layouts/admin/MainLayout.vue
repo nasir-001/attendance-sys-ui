@@ -86,7 +86,7 @@ import { defineComponent, ref } from 'vue';
 const linksData = [
   {
     title: 'Manage Visitors',
-    icon: 'groups',
+    icon: 'emoji_transportation',
     children: [
       {
         title: 'New Visitor',

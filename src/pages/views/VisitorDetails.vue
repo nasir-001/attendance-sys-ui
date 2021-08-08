@@ -100,18 +100,19 @@
           </q-card-actions>
         </q-card>
 
-        <q-dialog v-model="showEditVisitor">
+        <q-dialog persistent v-model="showEditVisitor">
           <q-card class="tw-w-full sm:tw-w-3/6">
             <q-card-section class="row">
-              <q-card-section class="text-left">
+              <div class="text-left">
                 <div class="text-h5">Edit visitor</div>
-              </q-card-section>
+              </div>
               <q-space />
-              <q-btn flat v-close-popup dense round icon="close" />
+              <q-btn flat v-close-popup dense round label="close" color="negative" />
             </q-card-section>
             <q-form @submit.prevent="editVisitor">
               <q-card-section class="q-pt-none">
                 <q-input
+                  hide-bottom-space
                   outlined
                   auto-focus
                   lazy-rules
@@ -123,7 +124,8 @@
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input
+                <q-input 
+                  hide-bottom-space
                   outlined
                   auto-focus
                   lazy-rules
@@ -135,7 +137,8 @@
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input
+                <q-input 
+                  hide-bottom-space
                   outlined
                   auto-focus
                   lazy-rules
@@ -147,7 +150,8 @@
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input
+                <q-input 
+                  hide-bottom-space
                   outlined
                   auto-focus
                   lazy-rules
@@ -161,7 +165,8 @@
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input
+                <q-input 
+                  hide-bottom-space
                   outlined
                   auto-focus
                   lazy-rules
@@ -182,16 +187,18 @@
                 label="Gender"
               />
               </q-card-section>
-              <q-card-section class="q-pt-md">
+              <q-card-section class="tw--mt-4">
                 <q-select 
+                  hide-bottom-space
                   outlined 
                   v-model="visitor.visit.status" 
                   :options="options" 
                   label="Status"
                 />
               </q-card-section>
-              <q-card-section v-if="visitor.visit.status === 'admitted'" class="q-pt-md">
-                <q-input label="Admitted time" outlined v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
+              <q-card-section v-if="visitor.visit.status === 'admitted'" class="tw--mt-4">
+                <q-input 
+                  hide-bottom-space label="Admitted time" outlined v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
                   <template v-slot:append>
                     <q-icon name="access_time" class="cursor-pointer">
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -205,9 +212,10 @@
                   </template>
                 </q-input>
               </q-card-section>
-              <q-card-section v-if="visitor.visit.status === 'finished'" class="q-pt-md">
+              <q-card-section v-if="visitor.visit.status === 'finished'" class="tw--mt-4">
                 <div class="tw-flex tw-justify-end tw--mb-4">
-                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
+                  <q-input 
+                    hide-bottom-space label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -220,7 +228,8 @@
                       </q-icon>
                     </template>
                   </q-input>
-                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visitor.visit.depart_time" mask="time" :rules="['time']">
+                  <q-input 
+                    hide-bottom-space label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visitor.visit.depart_time" mask="time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -236,7 +245,8 @@
                 </div>
               </q-card-section>
               <q-card-section class="q-pt-md">
-                <q-input label="Arrival Date" outlined v-model="visitor.visit.date">
+                <q-input 
+                  hide-bottom-space label="Arrival Date" outlined v-model="visitor.visit.date">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
