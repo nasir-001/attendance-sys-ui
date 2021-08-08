@@ -30,9 +30,19 @@
           row-key="name"
           class="col-12"
           :columns="columns"
+          :rows="userList"
+          :loading="tableIsLoading"
           :rows-per-page-options="[10, 25, 50, 0]"
           table-header-class="bg-blue-1 text-blue-10"
         >
+          <template v-slot:loading>
+            <q-spinner-tail
+              color="primary"
+              size="3em"
+              class="tw-mx-auto"
+            />
+          </template>
+          
           <template v-slot:body-cell-firstname="props">
             <q-td
               :props="props"
@@ -45,11 +55,6 @@
               {{ props.row.firstname }}
             </q-td>
           </template>
-
-          <template v-slot:loading>
-            <q-inner-loading showing color="primary" />
-          </template>
-        </q-table>
       </div>
     </div>
   </q-page>
@@ -97,7 +102,8 @@ export default defineComponent({
     
     return {
       columns: tableCols,
-      tableIsLoading
+      tableIsLoading,
+      userList
     }
   },
 })
