@@ -65,8 +65,6 @@
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { api } from 'boot/axios';
-import { useQuasar } from 'quasar';
-import { useRouter } from 'vue-router';
 
 const tableCols = [
   { name: 'firstname', label: 'FIRST NAME', field: 'firstname', align: 'left', classes: 'cursor-pointer', sortable: true },
