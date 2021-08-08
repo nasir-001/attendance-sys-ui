@@ -26,7 +26,7 @@
             color="primary"
             label="Change User Group"
             @click="groupEdit = true"
-            disabled="tableIsLoading"
+            :disabled="tableIsLoading"
             :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
           />
         </div>
@@ -169,11 +169,12 @@
 
         <q-card-section>
           <div class="q-pa-md">
-            <form @submit.prevent.stop="changeUserGroup" class="q-gutter-md q-py-md">
+            <form @submit.prevent="changeUserGroup" class="q-gutter-md q-py-md">
               <q-select
                 outlined
                 label="User Group"
                 :options="groupOptions"
+                v-model="userOwnGroup"
                 :rules="[val => !!val || 'Field is required']"
               />
               <q-card-actions align="right" class="q-pr-none">
@@ -335,7 +336,7 @@ export default defineComponent({
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
-      api.put(`/api/users/${userObj.value.uuid}/groups`, { groups: [userOwnGroup.value.label] })
+      api.post(`/api/users/${userObj.value.uuid}/groups`, { groups: [userOwnGroup.label] })
         .then((response) => {
           getUserDetail()
           editBtnIsLoading.value = false;
@@ -370,7 +371,8 @@ export default defineComponent({
       editBtnIsLoading,
       groupEdit,
       changeUserGroup,
-      groupOptions
+      groupOptions,
+      userOwnGroup
     }
     
   },
