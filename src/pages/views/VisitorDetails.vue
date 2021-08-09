@@ -302,6 +302,14 @@ export default defineComponent({
     const cancel = ref('cancelled');
     const $q = useQuasar();
 
+    function emailValidator(value) {
+      return validateEmail(value)
+    }
+
+    function phoneValidator(value) {
+      return validatePhone(value)
+    }
+
     const editVisitorPayload = reactive({
       title: '',
       first_name: '',
@@ -433,15 +441,8 @@ export default defineComponent({
         })
     };
 
-    function emailValidator(value) {
-      return validateEmail(value)
-    }
-
-    function phoneValidator(value) {
-      return validatePhone(value)
-    }
-
     function visitorLeave() {
+      departBtnIsLoading.value = true;
       const visitorLeavePayload = reactive({
         title: visitor.value.title,
         first_name: visitor.value.first_name,
@@ -456,7 +457,28 @@ export default defineComponent({
           depart_time: timeToReturn()
         }
       })
-      data.visitorDepart(route.params.id, visitorLeavePayload);
+
+      api.patch(`/api/attendance/${route.params.id}`, visitorLeavePayload)
+        .then(() => {
+          departBtnIsLoading.value = false;
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 7000,
+            position: 'top',
+            message: 'Visitor has been departed'
+          })
+        })
+        .catch(() => {
+          $q.notify({
+            icon: 'report_problem',
+            type: 'negative',
+            timeout: 7000,
+            position: 'top',
+            message: 'Failed to depart visitor'
+          })
+          departBtnIsLoading.value = false;
+        })
     };
     visitor.value = await data.attendance(route.params.id);
 
