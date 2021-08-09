@@ -3,8 +3,9 @@
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight">
     <q-page>
-      <back-button></back-button>
+      <back-button />
       <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 xl:tw-w-1/3 tw-mt-5 sm:tw-mx-auto">
+        <!-- visitor detail -->
         <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
           <q-card-section class="text-grey-7 tw-font-mono">
             {{ formatedDate(visitor.visit.date) }}

@@ -128,7 +128,6 @@ export default defineComponent({
     BackButton
   },
   async setup () {
-    const attendance = useAttendanceService()
     const rows = ref([])
     const queryName = ref('')
     const filterForm = ref(false)
