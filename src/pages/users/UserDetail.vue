@@ -282,6 +282,7 @@ export default defineComponent({
           }
       })
     }
+
     function getGroupList () {
       tableIsLoading.value = true;
       // api.defaults.headers.common = {
@@ -300,6 +301,7 @@ export default defineComponent({
           tableIsLoading.value = false;
       })
     }
+    
     function editUser () {
       editBtnIsLoading.value = true;
       // api.defaults.headers.common = {

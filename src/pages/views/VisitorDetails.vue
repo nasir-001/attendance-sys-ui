@@ -100,19 +100,17 @@
           </q-card-actions>
         </q-card>
 
+        <!-- Edit visitor modal/dialog -->
         <q-dialog persistent v-model="showEditVisitor">
           <q-card class="tw-w-full sm:tw-w-3/6">
             <q-card-section class="row">
-              <div class="text-left">
-                <div class="text-h5">Edit visitor</div>
-              </div>
+              <div class="text-h6 text-primary tw--mt-1">Edit Visitor</div>
               <q-space />
               <q-btn flat v-close-popup dense round label="close" color="negative" />
             </q-card-section>
             <q-form @submit.prevent="editVisitor">
               <q-card-section class="q-pt-none">
                 <q-input
-                  hide-bottom-space
                   outlined
                   auto-focus
                   lazy-rules
@@ -124,8 +122,7 @@
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input 
-                  hide-bottom-space
+                <q-input
                   outlined
                   auto-focus
                   lazy-rules
@@ -137,8 +134,7 @@
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input 
-                  hide-bottom-space
+                <q-input
                   outlined
                   auto-focus
                   lazy-rules
@@ -150,8 +146,7 @@
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input 
-                  hide-bottom-space
+                <q-input
                   outlined
                   auto-focus
                   lazy-rules
@@ -165,8 +160,7 @@
                 />
               </q-card-section>
               <q-card-section class="q-pt-none">
-                <q-input 
-                  hide-bottom-space
+                <q-input
                   outlined
                   auto-focus
                   lazy-rules
@@ -187,18 +181,16 @@
                 label="Gender"
               />
               </q-card-section>
-              <q-card-section class="tw--mt-4">
+              <q-card-section class="q-pt-md">
                 <q-select 
-                  hide-bottom-space
                   outlined 
                   v-model="visitor.visit.status" 
                   :options="options" 
                   label="Status"
                 />
               </q-card-section>
-              <q-card-section v-if="visitor.visit.status === 'admitted'" class="tw--mt-4">
-                <q-input 
-                  hide-bottom-space label="Admitted time" outlined v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
+              <q-card-section v-if="visitor.visit.status === 'admitted'" class="q-pt-md">
+                <q-input label="Admitted time" outlined v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
                   <template v-slot:append>
                     <q-icon name="access_time" class="cursor-pointer">
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -212,10 +204,9 @@
                   </template>
                 </q-input>
               </q-card-section>
-              <q-card-section v-if="visitor.visit.status === 'finished'" class="tw--mt-4">
+              <q-card-section v-if="visitor.visit.status === 'finished'" class="q-pt-md">
                 <div class="tw-flex tw-justify-end tw--mb-4">
-                  <q-input 
-                    hide-bottom-space label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
+                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visitor.visit.admitted_time" mask="time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -228,8 +219,7 @@
                       </q-icon>
                     </template>
                   </q-input>
-                  <q-input 
-                    hide-bottom-space label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visitor.visit.depart_time" mask="time" :rules="['time']">
+                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visitor.visit.depart_time" mask="time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -245,8 +235,7 @@
                 </div>
               </q-card-section>
               <q-card-section class="q-pt-md">
-                <q-input 
-                  hide-bottom-space label="Arrival Date" outlined v-model="visitor.visit.date">
+                <q-input label="Arrival Date" outlined v-model="visitor.visit.date">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -266,8 +255,8 @@
                   class="tw-mr-2 tw-mb-4"
                   type="submit"
                   label="Save" 
-                  color="primary" 
-                  v-close-popup 
+                  color="primary"
+                  :disable="editBtnIsLoading"
                 />
               </q-card-actions>
             </q-form>
@@ -284,6 +273,8 @@ import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { useRoute } from 'vue-router';
 import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail, validatePhone } from 'boot/utils';
+import { api } from 'boot/axios';
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'visitor-details',
@@ -297,9 +288,13 @@ export default defineComponent({
     const visitor = ref(null);
     const showEditVisitor = ref(false);
     const confirmDelete = ref(false);
+    const editBtnIsLoading = ref(false);
+    const admitBtnIsLoading = ref(false);
     const admitted = ref('admitted');
     const finished = ref('finished');
     const cancel = ref('cancelled');
+    const $q = useQuasar();
+
     const editVisitorPayload = reactive({
       title: '',
       first_name: '',
@@ -316,6 +311,7 @@ export default defineComponent({
     });
 
     function editVisitor() {
+      editBtnIsLoading.value = true;
       editVisitorPayload.title = visitor.value.title,
       editVisitorPayload.first_name = visitor.value.first_name,
       editVisitorPayload.last_name = visitor.value.last_name,
@@ -326,12 +322,34 @@ export default defineComponent({
       editVisitorPayload.visit.status = visitor.value.visit.status,
       editVisitorPayload.visit.admitted_time = visitor.value.visit.admitted_time,
       editVisitorPayload.visit.depart_time = visitor.value.visit.depart_time
-      if(editVisitorPayload){
-        data.editVisitor(route.params.id, editVisitorPayload);
-      };
+
+      api.patch(`/api/attendance/${route.params.id}`, editVisitorPayload)
+      .then(() => {
+        editBtnIsLoading.value = false;
+        $q.notify({
+          icon: 'done',
+          type: 'positive',
+          timeout: 7000,
+          position: 'top',
+          message: 'Visitor was successfully editted'
+        })
+        editBtnIsLoading.value = false;
+        showEditVisitor.value = false;
+      })
+      .catch(() => {
+        $q.notify({
+          icon: 'report_problem',
+          type: 'negative',
+          timeout: 7000,
+          position: 'top',
+          message: 'Failed to edit visitor'
+        })
+        editBtnIsLoading.value = false;
+      })
     }
 
     function admitVisitor() {
+      admitBtnIsLoading.value = true;
       const visitorAdmitPayload = reactive({
         title: visitor.value.title,
         first_name: visitor.value.first_name,
@@ -346,7 +364,28 @@ export default defineComponent({
           depart_time: visitor.value.visit.depart_time
         }
       })
-      data.admitVisitor(route.params.id, visitorAdmitPayload);
+      
+      api.patch(`/api/attendance/${route.params.id}`, visitorAdmitPayload)
+        .then(() => {
+          admitBtnIsLoading.value = false;
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 7000,
+            position: 'top',
+            message: 'Visitor has been admitted'
+          })
+        })
+        .catch(() => {
+          $q.notify({
+            icon: 'report_problem',
+            type: 'negative',
+            timeout: 7000,
+            position: 'top',
+            message: 'Failed to admit visitor'
+          })
+          admitBtnIsLoading.value = false;
+        })
     };
 
     function cancelVisitor() {
@@ -409,7 +448,8 @@ export default defineComponent({
       visitorLeave,
       cancelVisitor,
       emailValidator,
-      phoneValidator
+      phoneValidator,
+      editBtnIsLoading
      }
   }
 })
