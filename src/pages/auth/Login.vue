@@ -2,7 +2,7 @@
   <div class="q-pa-sm row justify-center">
     <div class="col-12 col-sm-7 col-md-4 col-xl-3 tw-rounded-lg tw-border-2 tw-text-gray-400 tw-mt-20">
       <q-card flat class="q-pb-sm w100">
-        <form>
+        <form @submit.prevent="loginUser()">
           <q-card-section class="text-center q-my-md">
             <div class="text-h5">Login your account.</div>
           </q-card-section>
@@ -11,11 +11,13 @@
               outlined
               auto-focus
               lazy-rules
-              type="text"
-              label="Username"
-              v-model="username"
+              type="email"
+              label="email"
+              v-model="email"
               :rules="[
-                val => !!val || 'Field is required']"
+                val => !!val || 'Field is required',
+                val => emailValidator(val)
+              ]"
             />
           </q-card-section>
           <q-card-section class="tw--mt-2">
@@ -42,10 +44,8 @@
               label="Login"
               type="submit"
               color="primary"
+              :disabled="emptyRequiredField || loginBtnIsLoading"
               class="full-width tw-text-base sm:tw-text-lg tw-rounded-full sm:tw-rounded-lg tw--mt-6 sm:tw--mt-0"
-              @click="loadData()"            
-              :disable="disableState"
-              :loading="loadingState"
             />
           </q-card-section>
         </form>
@@ -55,48 +55,81 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, toRefs } from 'vue';
+import { defineComponent, ref, reactive, toRefs, computed } from 'vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
+import { validateEmail } from 'boot/utils';
 
 export default defineComponent({
   name: 'Login',
+  
   setup() {
     const $q = useQuasar()
     const isPwd = ref(true);
-    const loginButton = ref(true);
-    const credentials = reactive({
-      username: '',
+    const loginBtnIsLoading = ref(false);
+    const $router = useRouter();
+
+    const loginPayload = reactive({
+      email: '',
       password: ''
     });
 
-    const buttonState = reactive({
-      loadingState: false,
-      disableState: false
+    function emailValidator(value) {
+      return validateEmail(value)
+    }
+
+    const emptyRequiredField = computed(() => {
+      return (
+        !loginPayload.email ||
+        !loginPayload.password 
+      )
     })
 
-    const loadData = () => {
-      api.post(`/`)
+    const loginUser = () => {
+      loginBtnIsLoading.value = true;
+      api.post(`/auth/token?email=${ email }&password=${ password }`)
         .then((response) => {
-          console.log(response.data)
-          $router.push('/dashboard')
+          if (response.status === 200) {
+            $q.localStorage.set('authToken', response.data.access_token);
+            loginBtnIsLoading.value = false;
+            if (hasPermission(response.data.access_token, 'can_view_super_admin_dashboard')) {
+              $router.push({ name: 'admin-visitor-details' })
+            } else {
+              $router.push({ name: 'visitor-details' })
+            }
+          }
         })
         .catch(() => {
-          $q.notify({
-            color: 'negative',
-            position: 'top',
-            message: 'Loading Failed',
-            icon: 'report_problem'
-          })
+          loginBtnIsLoading.value = false;
+          if (!error.response) {
+            $q.notify({
+              type: 'negative',
+              icon: 'mdi-network-strength-3-alert',
+              timeout: 8000,
+              position: 'top',
+              message: 'Network error!',
+            })
+          } else if (error.response.data.detail) {
+            $q.notify({
+              type: 'negative',
+              icon: 'mdi-network-strength-3-alert',
+              timeout: 8000,
+              position: 'top',
+              message: error.response.data.detail,
+            })
+            loginBtnIsLoading.value = false;
+          }
         })
     }
 
     return {
       isPwd,
-      loginButton,
-      ...toRefs(credentials),
-      ...toRefs(buttonState),
-      loadData
+      loginBtnIsLoading,
+      ...toRefs(loginPayload),
+      loginUser,
+      emptyRequiredField,
+      emailValidator
     }
   }
 

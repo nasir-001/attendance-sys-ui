@@ -110,6 +110,7 @@ export default defineComponent({
       status: false,
       message: ''
     });
+    
     const newUserPayload = reactive({
       email: '',
       password: '',
