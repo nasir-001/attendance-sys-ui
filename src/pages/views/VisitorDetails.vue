@@ -99,6 +99,8 @@
                 class="q-mx-sm tw-w-42 tw-font-semibold tw-mx-4" 
                 dense 
                 label="visitor departed" 
+                :loading="departBtnIsLoading"
+                :disable="departBtnIsLoading"
               />
             </q-form>
           </q-card-actions>
@@ -480,6 +482,7 @@ export default defineComponent({
           departBtnIsLoading.value = false;
         })
     };
+
     visitor.value = await data.attendance(route.params.id);
 
     return {
@@ -502,7 +505,8 @@ export default defineComponent({
       phoneValidator,
       editBtnIsLoading,
       admitBtnIsLoading,
-      cancelBtnIsLoading
+      cancelBtnIsLoading,
+      departBtnIsLoading
      }
   }
 })
