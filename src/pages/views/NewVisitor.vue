@@ -5,7 +5,7 @@
     <q-page>
       <back-button></back-button>
       <div v-if="showForm" class="q-pa-md q-mb-xl q-mt-lg tw-mx-2 sm:tw-w-4/6 md:tw-w-1/2 sm:tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
-        <q-form @submit.prevent="newVisitorData">
+        <q-form @submit.prevent="newVisitor">
           <q-card-section class="q-pt-none">
             <q-input
               hide-bottom-space
@@ -126,6 +126,8 @@
             label="Submit" 
             color="primary" 
             v-close-popup 
+            :loading="addBtnIsLoading"
+            :disable="emptyRequiredField || addBtnIsLoading"
           />
           </q-card-actions>
         </q-form>
@@ -138,10 +140,12 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive, ref, computed } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { validateEmail, validatePhone } from 'boot/utils';
+import { api } from 'boot/axios';
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'NewVisitor',
@@ -150,8 +154,9 @@ export default defineComponent({
   },
 
   async setup() {
-    const payloadData = useAttendanceService()
-    const showForm = ref(false)
+    const showForm = ref(false);
+    const addBtnIsLoading = ref(false);
+    const $q = useQuasar();
     
     const newVisitorPayload = reactive({
       title: '',
@@ -165,12 +170,45 @@ export default defineComponent({
       }
     })
 
-    const newVisitorData = () => {
-      try {
-        payloadData.newVisitor(newVisitorPayload)
-      } catch (error) {
-        console.log(error);
-      }
+    const emptyRequiredField = computed(() => {
+      return (
+        !newVisitorPayload.title ||
+        !newVisitorPayload.first_name ||
+        !newVisitorPayload.last_name ||
+        !newVisitorPayload.email ||
+        !newVisitorPayload.phone ||
+        !newVisitorPayload.gender ||
+        !newVisitorPayload.visit.date
+      )
+    })
+
+    function newVisitor () {
+      addBtnIsLoading.value = true;
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.post('/api/attendance/', newVisitorPayload)
+        .then(() => {
+          addBtnIsLoading.value = true;
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 7000,
+            position: 'top',
+            message: 'Visitor was successfully added'
+          })
+          // $router.push({ name: 'admin-visitor-details', params: { uuid: response.data.id } })
+        })
+        .catch((error) => {
+          addBtnIsLoading.value = false;
+          $q.notify({
+            icon: 'report_problem',
+            type: 'negative',
+            timeout: 7000,
+            position: 'top',
+            message: 'Failed to add visitor'
+          })          
+        })
     }
 
     function phoneValidator(value) {
@@ -191,10 +229,12 @@ export default defineComponent({
         'male', 'female'
       ],
       newVisitorPayload,
-      newVisitorData,
+      newVisitor,
       showForm,
       emailValidator,
-      phoneValidator
+      addBtnIsLoading,
+      phoneValidator,
+      emptyRequiredField
     }
   }
 })
