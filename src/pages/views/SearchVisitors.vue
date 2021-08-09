@@ -103,7 +103,8 @@ import { computed, defineComponent, ref, reactive} from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
 import BackButton from '../../components/BackButton.vue';
-import { getAvatarBackgroundColor, filterData } from 'boot/utils'
+import { getAvatarBackgroundColor, filterData } from 'boot/utils';
+import { api } from 'boot/axios';
 
 const columns = [
   {
@@ -134,6 +135,7 @@ export default defineComponent({
     const showTable = ref(false)
     const $q = useQuasar()
     const tableIsLoading = ref(false)
+    getVisitorList();
     
     const visibleColumns = computed(() => {
       return $q.screen.gt.xs
@@ -141,12 +143,29 @@ export default defineComponent({
         : ['image', 'first_name', 'last_name', 'status', 'view']
     })
 
-    try {
-      tableIsLoading.value = true
-      rows.value = await attendance.list();
-      tableIsLoading.value = false
-    } catch (error) {
-      tableIsLoading.value = true
+    function getAuthToken () {
+      $q.localStorage.getItem('authToken')
+    }
+
+    function getVisitorList() {
+      tableIsLoading.value = true;
+      // api.defaults.headers.common = {
+      //   Authorization: `Bearer ${getAuthToken()}`
+      // }
+      api.get('/api/attendance')
+        .then((response) => {
+          rows.value = response.data;
+          tableIsLoading.value = false;
+        })
+        .catch((error) => {
+          $q.notify({
+            icon: 'report_problem',
+            type: 'negative',
+            timeout: 5000,
+            position: 'top',
+            message: 'Failed to load visitors'
+          })
+        })
     }
 
     const showFilter = () => {

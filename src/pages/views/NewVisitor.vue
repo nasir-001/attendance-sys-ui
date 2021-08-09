@@ -141,7 +141,6 @@
 
 <script>
 import { defineComponent, reactive, ref, computed } from 'vue';
-import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { validateEmail, validatePhone } from 'boot/utils';
 import { api } from 'boot/axios';
@@ -181,6 +180,10 @@ export default defineComponent({
         !newVisitorPayload.visit.date
       )
     })
+
+    function getAuthToken () {
+      $q.localStorage.getItem('authToken')
+    }
 
     function newVisitor () {
       addBtnIsLoading.value = true;
