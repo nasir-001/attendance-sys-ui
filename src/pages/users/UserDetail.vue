@@ -174,7 +174,7 @@
                 outlined
                 label="User Group"
                 :options="groupOptions"
-                v-model="userOwnGroup"
+                v-model="userOwnGroup.label"
                 :rules="[val => !!val || 'Field is required']"
               />
               <q-card-actions align="right" class="q-pr-none">
@@ -268,10 +268,12 @@ export default defineComponent({
             }
           }
           if (editPayload.groups.length > 0) {
-            userOwnGroup = {
-              label: editPayload.groups[0].name,
-              value: editPayload.groups[0].uuid
-            }
+            // userOwnGroup = {
+            //   label: editPayload.groups[0].name,
+            //   value: editPayload.groups[0].uuid
+            // }
+            userOwnGroup.label = editPayload.groups[0].name
+            userOwnGroup.value = editPayload.groups[0].uuid
           }
           tableIsLoading.value = false;
         })
@@ -332,6 +334,7 @@ export default defineComponent({
     }
 
     function changeUserGroup () {
+      console.log("change");
       editBtnIsLoading.value = true;
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
