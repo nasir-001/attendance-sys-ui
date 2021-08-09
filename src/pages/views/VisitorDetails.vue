@@ -69,7 +69,9 @@
                   color="primary" 
                   class="q-mx-sm tw-w-32 tw-font-semibold" 
                   dense 
-                  label="admit visitor" 
+                  label="admit visitor"
+                  :disable="admitBtnIsLoading"
+                  :loading="admitBtnIsLoading"
                 />
               </q-form>
             </q-card-actions> 
@@ -81,7 +83,9 @@
                   color="negative" 
                   class="q-mx-sm tw-w-32 tw-font-semibold" 
                   dense 
-                  label="cancel visitor" 
+                  label="cancel visitor"
+                  :disable="cancelBtnIsLoading" 
+                  :loading="cancelBtnIsLoading"
                 />
               </q-form>
             </q-card-actions> 
@@ -257,6 +261,7 @@
                   label="Save" 
                   color="primary"
                   :disable="editBtnIsLoading"
+                  :loading="editBtnIsLoading"
                 />
               </q-card-actions>
             </q-form>
@@ -290,6 +295,8 @@ export default defineComponent({
     const confirmDelete = ref(false);
     const editBtnIsLoading = ref(false);
     const admitBtnIsLoading = ref(false);
+    const cancelBtnIsLoading = ref(false);
+    const departBtnIsLoading = ref(false);
     const admitted = ref('admitted');
     const finished = ref('finished');
     const cancel = ref('cancelled');
@@ -364,7 +371,7 @@ export default defineComponent({
           depart_time: visitor.value.visit.depart_time
         }
       })
-      
+
       api.patch(`/api/attendance/${route.params.id}`, visitorAdmitPayload)
         .then(() => {
           admitBtnIsLoading.value = false;
@@ -389,7 +396,8 @@ export default defineComponent({
     };
 
     function cancelVisitor() {
-      const visitorAdmitPayload = reactive({
+      cancelBtnIsLoading.value = true;
+      const visitorCancelPayload = reactive({
         title: visitor.value.title,
         first_name: visitor.value.first_name,
         last_name: visitor.value.last_name,
@@ -401,7 +409,28 @@ export default defineComponent({
           status: cancel.value
         }
       })
-      data.cancelVisitor(route.params.id, visitorAdmitPayload);
+
+      api.patch(`/api/attendance/${route.params.id}`, visitorCancelPayload)
+        .then(() => {
+          cancelBtnIsLoading.value = false;
+          $q.notify({
+            icon: 'done',
+            type: 'positive',
+            timeout: 7000,
+            position: 'top',
+            message: 'Visitor has been cancelled'
+          })
+        })
+        .catch(() => {
+          $q.notify({
+            icon: 'report_problem',
+            type: 'negative',
+            timeout: 7000,
+            position: 'top',
+            message: 'Failed to cancel visitor'
+          })
+          cancelBtnIsLoading.value = false;
+        })
     };
 
     function emailValidator(value) {
@@ -449,7 +478,9 @@ export default defineComponent({
       cancelVisitor,
       emailValidator,
       phoneValidator,
-      editBtnIsLoading
+      editBtnIsLoading,
+      admitBtnIsLoading,
+      cancelBtnIsLoading
      }
   }
 })
