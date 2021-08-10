@@ -1,6 +1,6 @@
 <template>
   <transition appear
-    enter-active-class="animated slideInLeft"
+    enter-active-class="animated slideInRight"
     leave-active-class="animated slideOutRight">
     <q-page>
       <back-button />

@@ -174,7 +174,7 @@
                 outlined
                 label="User Group"
                 :options="groupOptions"
-                v-model="userOwnGroup.label"
+                v-model="userOwnGroup"
                 :rules="[val => !!val || 'Field is required']"
               />
               <q-card-actions align="right" class="q-pr-none">
@@ -226,20 +226,24 @@ export default defineComponent({
     const editBtnIsLoading = ref(false);
     const $route = useRoute();
     const $q = useQuasar();
+
     const emailError = reactive({
       status: false,
       message: ''
     });
+
     const userEditPayload = reactive({
       firstname: '',
       lastname: '',
       middlename: '',
       email: '',
     });
+
     const userOwnGroup = reactive({
       label: '',
       value: ''
     });
+
     getUserDetail();
     getGroupList();
 
@@ -272,17 +276,19 @@ export default defineComponent({
             //   label: editPayload.groups[0].name,
             //   value: editPayload.groups[0].uuid
             // }
-            userOwnGroup.label = editPayload.groups[0].name
-            userOwnGroup.value = editPayload.groups[0].uuid
+            userOwnGroup.label = editPayload.groups[0].name;
+            userOwnGroup.value = editPayload.groups[0].uuid;
+            console.log(editPayload.groups[0].name);
+            console.log(editPayload.groups[0].uuid);
           }
           tableIsLoading.value = false;
         })
-        .catch((error) => {
-          if (error.response.status >= 400) {
-            notFound.value = true;
-            tableIsLoading.value = false;
-          }
-      })
+      //   .catch((error) => {
+      //     if (error.response.status >= 400) {
+      //       notFound.value = true;
+      //       tableIsLoading.value = false;
+      //     }
+      // })
     }
 
     function getGroupList () {
@@ -292,14 +298,14 @@ export default defineComponent({
       // }
       api.get('/api/groups')
         .then((response) => {
-          const options = [];
+          const options = ref([]);
           for (let i = 0; i < response.data.length; i++) {
-            options.push({
+            options.value.push({
               label: response.data[i].name,
               value: response.data[i].uuid
             })
           }
-          groupOptions.value = options;
+          groupOptions.value = options.value;
           tableIsLoading.value = false;
       })
     }
@@ -310,7 +316,7 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.put(`/api/users/${userObj.value.uuid}`, userEditPayload)
-        .then((response) => {
+        .then(() => {
           editBtnIsLoading.value = false;
           userEdit.value = false;
           $q.notify({
@@ -334,7 +340,6 @@ export default defineComponent({
     }
 
     function changeUserGroup () {
-      console.log("change");
       editBtnIsLoading.value = true;
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
@@ -351,14 +356,15 @@ export default defineComponent({
             position: 'top',
             message: 'User group changed successfully'
           })
-          .catch((error) => {
-            const errorObj = error.response;
-            if (errorObj.status === 404) {
-              emailError.status = true;
-              emailError.message = errorObj.data;
-            }
-            editBtnIsLoading.value = false;
-          })
+          // .catch((error) => {
+          //   const errorObj = error.response;
+          //   console.log(error.response);
+          //   if (errorObj.status === 404) {
+          //     emailError.status = true;
+          //     emailError.message = errorObj.data;
+          //   }
+          //   editBtnIsLoading.value = false;
+          // })
         })
     }
     
