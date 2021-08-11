@@ -1,203 +1,207 @@
 <template>
-  <q-page padding>
-    <div class="row q-pb-xl justify-center q-gutter-sm-md">
-      <!-- Title -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
-        <back-button />
-        <div class="row">
-          <div class="col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm">
-            {{ userObj.firstname }}
+  <transition appear
+    enter-active-class="animated slideInRight"
+    leave-active-class="animated slideOutLeft">
+    <q-page padding>
+      <div class="row q-pb-xl justify-center q-gutter-sm-md">
+        <!-- Title -->
+        <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
+          <back-button />
+          <div class="row">
+            <div class="col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm">
+              {{ userObj.firstname }}
+            </div>
+            <div class="col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs">
+              {{ userObj.firstname }}
+            </div>
+          <div class="col-12 col-sm-6 q-gutter-sm">
+            <q-btn
+              no-caps
+              color="primary"
+              label="Edit User Info"
+              @click="userEdit = true"
+              :disabled="tableIsLoading"
+              :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
+            />
+            <q-btn
+              no-caps
+              outline
+              color="primary"
+              label="Change User Group"
+              @click="groupEdit = true"
+              :disabled="tableIsLoading"
+              :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
+            />
           </div>
-          <div class="col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs">
-            {{ userObj.firstname }}
-          </div>
-        <div class="col-12 col-sm-6 q-gutter-sm">
-          <q-btn
-            no-caps
-            color="primary"
-            label="Edit User Info"
-            @click="userEdit = true"
-            :disabled="tableIsLoading"
-            :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
-          />
-          <q-btn
-            no-caps
-            outline
-            color="primary"
-            label="Change User Group"
-            @click="groupEdit = true"
-            :disabled="tableIsLoading"
-            :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
-          />
-        </div>
-        </div>
-      </div>
-
-      <!-- Not Found -->
-      <not-found-404 v-if="notFound" back />
-
-      <!-- Found -->
-      <div v-else class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl tw-mt-3 sm:tw-mt-0">
-        <!-- Loading Skeleton -->
-        <div v-if="tableIsLoading" class="row justify-center q-pb-xl">
-          <div class="col-12 q-gutter-sm q-pt-lg">
-            <q-skeleton animation="pulse" type="QInput" />
-            <q-skeleton animation="pulse" type="QInput" />
-            <q-skeleton animation="pulse" type="QInput" />
-            <q-skeleton animation="pulse" type="QInput" />
           </div>
         </div>
 
-        <!-- User Detail -->
-        <div v-else class="row">
-          <div class="col-12">
-            <q-input
-              readonly
-              outlined
-              type="text"
-              label="First Name"
-              :model-value="userObj.firstname"
-            />
-            <q-input
-              readonly
-              outlined
-              type="text"
-              label="Last Name"
-              :model-value="userObj.lastname"
-            />
-            <q-input
-              readonly
-              outlined
-              type="text"
-              label="Middle Name"
-              :model-value="userObj.middlename"
-            />
-            <q-input
-              readonly
-              outlined
-              type="text"
-              label="Email"
-              :model-value="userObj.email"
-            />
-            <q-input
-              readonly
-              outlined
-              type="text"
-              label="User Group"
-              v-if="userObj.groups.length > 0"
-              :model-value="userObj.groups[0].name"
-            />
+        <!-- Not Found -->
+        <not-found-404 v-if="notFound" back />
+
+        <!-- Found -->
+        <div v-else class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl tw-mt-3 sm:tw-mt-0">
+          <!-- Loading Skeleton -->
+          <div v-if="tableIsLoading" class="row justify-center q-pb-xl">
+            <div class="col-12 q-gutter-sm q-pt-lg">
+              <q-skeleton animation="pulse" type="QInput" />
+              <q-skeleton animation="pulse" type="QInput" />
+              <q-skeleton animation="pulse" type="QInput" />
+              <q-skeleton animation="pulse" type="QInput" />
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Edit user modal/dialog -->
-    <q-dialog v-model="userEdit" no-backdrop-dismiss>
-      <q-card style="width: 600px; max-width: 95vw;">
-        <q-card-section class="text-center">
-          <div class="text-h5">Edit User</div>
-          <div class="text-subtitle2">Edit user information</div>
-        </q-card-section>
-
-        <q-card-section>
-          <div class="q-pa-md">
-            <form @submit.prevent.stop="editUser" class="q-gutter-md q-py-md">
+          <!-- User Detail -->
+          <div v-else class="row">
+            <div class="col-12">
               <q-input
+                readonly
                 outlined
                 type="text"
                 label="First Name"
-                v-model="userEditPayload.firstname"
-                :rules="[val => !!val || 'Field is required']"
+                :model-value="userObj.firstname"
               />
               <q-input
+                readonly
                 outlined
                 type="text"
                 label="Last Name"
-                v-model="userEditPayload.lastname"
-                :rules="[val => !!val || 'Field is required']"
+                :model-value="userObj.lastname"
               />
               <q-input
+                readonly
                 outlined
                 type="text"
-                bottom-slots
-                label="Middle Name (Optional)"
-                v-model="userEditPayload.middlename"
+                label="Middle Name"
+                :model-value="userObj.middlename"
               />
               <q-input
+                readonly
                 outlined
-                type="email"
+                type="text"
                 label="Email"
-                :error="emailError.status"
-                @input="emailError.status = false"
-                v-model="userEditPayload.email"
-                :error-message="emailError.message"
-                :rules="[
-                  val => !!val || 'Field is required',
-                  val => emailValidator(val)
-                ]"
+                :model-value="userObj.email"
               />
-              <q-card-actions align="right" class="q-pb-lg q-pr-none">
-                <q-btn
-                  flat
-                  label="Cancel"
-                  class="q-px-md"
-                  color="primary"
-                  v-close-popup
-                />
-                <q-btn
-                  type="submit"
-                  class="q-px-md"
-                  color="primary"
-                  label="Edit user info"
-                  :disabled="editBtnIsLoading"
-                  :loading="editBtnIsLoading"
-                />
-              </q-card-actions>
-            </form>
-          </div>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <!-- Change user group modal/dialog -->
-    <q-dialog v-model="groupEdit" no-backdrop-dismiss>
-      <q-card style="width: 600px; max-width: 95vw;">
-        <q-card-section class="text-center">
-          <div class="text-h5">Change User Group</div>
-        </q-card-section>
-
-        <q-card-section>
-          <div class="q-pa-md">
-            <form @submit.prevent="changeUserGroup" class="q-gutter-md q-py-md">
-              <q-select
+              <q-input
+                readonly
                 outlined
+                type="text"
                 label="User Group"
-                :options="groupOptions"
-                v-model="userOwnGroup"
-                :rules="[val => !!val || 'Field is required']"
+                v-if="userObj.groups.length > 0"
+                :model-value="userObj.groups[0].name"
               />
-              <q-card-actions align="right" class="q-pr-none">
-                <q-btn
-                  flat
-                  label="Cancel"
-                  class="q-px-md"
-                  color="primary"
-                  v-close-popup
-                />
-                <q-btn
-                  type="submit"
-                  class="q-px-md"
-                  color="primary"
-                  label="Change user group"
-                />
-              </q-card-actions>
-            </form>
+            </div>
           </div>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-  </q-page>
+        </div>
+      </div>
+
+      <!-- Edit user modal/dialog -->
+      <q-dialog v-model="userEdit" no-backdrop-dismiss>
+        <q-card style="width: 600px; max-width: 95vw;">
+          <q-card-section class="text-center">
+            <div class="text-h5">Edit User</div>
+            <div class="text-subtitle2">Edit user information</div>
+          </q-card-section>
+
+          <q-card-section>
+            <div class="q-pa-md">
+              <form @submit.prevent.stop="editUser" class="q-gutter-md q-py-md">
+                <q-input
+                  outlined
+                  type="text"
+                  label="First Name"
+                  v-model="userEditPayload.firstname"
+                  :rules="[val => !!val || 'Field is required']"
+                />
+                <q-input
+                  outlined
+                  type="text"
+                  label="Last Name"
+                  v-model="userEditPayload.lastname"
+                  :rules="[val => !!val || 'Field is required']"
+                />
+                <q-input
+                  outlined
+                  type="text"
+                  bottom-slots
+                  label="Middle Name (Optional)"
+                  v-model="userEditPayload.middlename"
+                />
+                <q-input
+                  outlined
+                  type="email"
+                  label="Email"
+                  :error="emailError.status"
+                  @input="emailError.status = false"
+                  v-model="userEditPayload.email"
+                  :error-message="emailError.message"
+                  :rules="[
+                    val => !!val || 'Field is required',
+                    val => emailValidator(val)
+                  ]"
+                />
+                <q-card-actions align="right" class="q-pb-lg q-pr-none">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    class="q-px-md"
+                    color="primary"
+                    v-close-popup
+                  />
+                  <q-btn
+                    type="submit"
+                    class="q-px-md"
+                    color="primary"
+                    label="Edit user info"
+                    :disabled="editBtnIsLoading"
+                    :loading="editBtnIsLoading"
+                  />
+                </q-card-actions>
+              </form>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <!-- Change user group modal/dialog -->
+      <q-dialog v-model="groupEdit" no-backdrop-dismiss>
+        <q-card style="width: 600px; max-width: 95vw;">
+          <q-card-section class="text-center">
+            <div class="text-h5">Change User Group</div>
+          </q-card-section>
+
+          <q-card-section>
+            <div class="q-pa-md">
+              <form @submit.prevent="changeUserGroup" class="q-gutter-md q-py-md">
+                <q-select
+                  outlined
+                  label="User Group"
+                  :options="groupOptions"
+                  v-model="userOwnGroup"
+                  :rules="[val => !!val || 'Field is required']"
+                />
+                <q-card-actions align="right" class="q-pr-none">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    class="q-px-md"
+                    color="primary"
+                    v-close-popup
+                  />
+                  <q-btn
+                    type="submit"
+                    class="q-px-md"
+                    color="primary"
+                    label="Change user group"
+                  />
+                </q-card-actions>
+              </form>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </q-page>
+  </transition>
 </template>
 
 <script>

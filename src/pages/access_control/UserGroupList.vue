@@ -1,175 +1,179 @@
 <template>
-  <q-page padding>
-    <div class="row q-pb-xl justify-center q-gutter-sm-md">
-      <!-- Title -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
-        <back-button />
-        <div class="row">
-          <div
-            :class="[
-              $q.screen.lt.sm ? 'text-center' : '',
-              'col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm'
-            ]"
+  <transition appear
+    enter-active-class="animated slideInLeft"
+    leave-active-class="animated slideOutRight">
+    <q-page padding>
+      <div class="row q-pb-xl justify-center q-gutter-sm-md">
+        <!-- Title -->
+        <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
+          <back-button />
+          <div class="row">
+            <div
+              :class="[
+                $q.screen.lt.sm ? 'text-center' : '',
+                'col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm'
+              ]"
+            >
+              User Groups
+            </div>
+            <div
+              :class="[
+                $q.screen.lt.sm ? 'text-center' : '',
+                'col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs'
+              ]"
+            >
+              User Groups
+            </div>
+            <div class="col-12 col-sm-6">
+              <q-btn
+                no-caps
+                color="primary"
+                label="Add New Group"
+                @click="newGroup = true"
+                :disable="tableIsLoading"
+                :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Groups Table -->
+        <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
+          <q-table
+            row-key="name"
+            class="col-12"
+            :columns="columns"
+            :rows="groupsList"
+            :loading="tableIsLoading"
+            :rows-per-page-options="[10, 25, 50, 0]"
+            table-header-class="bg-blue-1 text-blue-10"
           >
-            User Groups
-          </div>
-          <div
-            :class="[
-              $q.screen.lt.sm ? 'text-center' : '',
-              'col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs'
-            ]"
-          >
-            User Groups
-          </div>
-          <div class="col-12 col-sm-6">
-            <q-btn
-              no-caps
-              color="primary"
-              label="Add New Group"
-              @click="newGroup = true"
-              :disable="tableIsLoading"
-              :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']"
-            />
-          </div>
+            <template v-slot:loading>
+              <q-spinner-tail
+                color="primary"
+                size="3em"
+                class="tw-mx-auto"
+              />
+            </template>
+
+            <template v-slot:body-cell-group="props">
+              <q-td
+                :props="props"
+                class="text-primary"
+                @click="$router.push({
+                  name: 'group-detail',
+                  params: { groupName: props.row.name }
+                })"
+              >
+                {{ props.row.name }}
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell-delete="props">
+              <q-td :props="props">
+                <q-btn
+                  flat
+                  dense
+                  round
+                  icon="delete"
+                  class="q-mr-md"
+                  color="negative"
+                  @click="makeDeletePayload(props.row.name)"
+                />
+              </q-td>
+            </template>
+          </q-table>
         </div>
       </div>
 
-      <!-- Groups Table -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
-        <q-table
-          row-key="name"
-          class="col-12"
-          :columns="columns"
-          :rows="groupsList"
-          :loading="tableIsLoading"
-          :rows-per-page-options="[10, 25, 50, 0]"
-          table-header-class="bg-blue-1 text-blue-10"
-        >
-          <template v-slot:loading>
-            <q-spinner-tail
-              color="primary"
-              size="3em"
-              class="tw-mx-auto"
+      <!-- New Group modal/dialog -->
+      <q-dialog v-model="newGroup" no-backdrop-dismiss>
+        <q-card style="width: 600px; max-width: 95vw;">
+          <q-card-section class="text-center">
+            <div class="text-h5">New Group</div>
+            <div class="text-subtitle2">Add new user group</div>
+          </q-card-section>
+
+          <q-card-section>
+            <div class="q-pa-md">
+              <form @submit.prevent="addNewGroup" class="q-gutter-md">
+                <q-input
+                  ref="name"
+                  outlined
+                  autofocus
+                  type="text"
+                  label="Name"
+                  bottom-slots
+                  :error="newGroupError.status"
+                  :error-message="newGroupError.message"
+                  v-model="newGroupPayload.name"
+                  :rules="[ val => !!val || 'This field is required.' ]"
+                  @input="newGroupError.status = false"
+                />
+                <q-input
+                  autogrow
+                  outlined
+                  label="Description"
+                  v-model="newGroupPayload.description"
+                />
+                <q-card-actions align="right" class="q-pt-lg q-pr-none">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    color="primary"
+                    class="q-px-md"
+                    v-close-popup
+                  />
+                  <q-btn
+                    type="submit"
+                    label="Add new"
+                    color="primary"
+                    class="q-px-md"
+                    :disabled="newGroupBtnLoading"
+                    :loading="newGroupBtnLoading"
+                  />
+                </q-card-actions>
+              </form>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <!-- Delete group modal/dialog -->
+      <q-dialog v-model="confirmGroupDelete" persistent>
+        <q-card class="q-pa-md">
+          <q-card-section>
+            <div class="text-h6 text-center">
+              Confirm Permanent Delete?
+            </div>
+          </q-card-section>
+          <q-card-section class="row items-center q-pb-md">
+            <span class="q-ml-sm text-body1">Are you sure you want to delete <strong>{{ deleteGroupPayload }}</strong>?</span>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn
+              flat
+              no-caps
+              label="Cancel"
+              color="grey-9"
+              class="q-px-md"
+              v-close-popup
             />
-          </template>
-
-          <template v-slot:body-cell-group="props">
-            <q-td
-              :props="props"
-              class="text-primary"
-              @click="$router.push({
-                name: 'group-detail',
-                params: { groupName: props.row.name }
-              })"
-            >
-              {{ props.row.name }}
-            </q-td>
-          </template>
-
-          <template v-slot:body-cell-delete="props">
-            <q-td :props="props">
-              <q-btn
-                flat
-                dense
-                round
-                icon="delete"
-                class="q-mr-md"
-                color="negative"
-                @click="makeDeletePayload(props.row.name)"
-              />
-            </q-td>
-          </template>
-        </q-table>
-      </div>
-    </div>
-
-    <!-- New Group modal/dialog -->
-    <q-dialog v-model="newGroup" no-backdrop-dismiss>
-      <q-card style="width: 600px; max-width: 95vw;">
-        <q-card-section class="text-center">
-          <div class="text-h5">New Group</div>
-          <div class="text-subtitle2">Add new user group</div>
-        </q-card-section>
-
-        <q-card-section>
-          <div class="q-pa-md">
-            <form @submit.prevent="addNewGroup" class="q-gutter-md">
-              <q-input
-                ref="name"
-                outlined
-                autofocus
-                type="text"
-                label="Name"
-                bottom-slots
-                :error="newGroupError.status"
-                :error-message="newGroupError.message"
-                v-model="newGroupPayload.name"
-                :rules="[ val => !!val || 'This field is required.' ]"
-                @input="newGroupError.status = false"
-              />
-              <q-input
-                autogrow
-                outlined
-                label="Description"
-                v-model="newGroupPayload.description"
-              />
-              <q-card-actions align="right" class="q-pt-lg q-pr-none">
-                <q-btn
-                  flat
-                  label="Cancel"
-                  color="primary"
-                  class="q-px-md"
-                  v-close-popup
-                />
-                <q-btn
-                  type="submit"
-                  label="Add new"
-                  color="primary"
-                  class="q-px-md"
-                  :disabled="newGroupBtnLoading"
-                  :loading="newGroupBtnLoading"
-                />
-              </q-card-actions>
-            </form>
-          </div>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <!-- Delete group modal/dialog -->
-    <q-dialog v-model="confirmGroupDelete" persistent>
-      <q-card class="q-pa-md">
-        <q-card-section>
-          <div class="text-h6 text-center">
-            Confirm Permanent Delete?
-          </div>
-        </q-card-section>
-        <q-card-section class="row items-center q-pb-md">
-          <span class="q-ml-sm text-body1">Are you sure you want to delete <strong>{{ deleteGroupPayload }}</strong>?</span>
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            no-caps
-            label="Cancel"
-            color="grey-9"
-            class="q-px-md"
-            v-close-popup
-          />
-          <q-btn
-            no-caps
-            unelevated
-            color="negative"
-            class="q-px-md"
-            label="Delete Group"
-            @click="deleteGroup"
-            :loading="deleteBtnIsLoading"
-            :disabled="deleteBtnIsLoading"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-  </q-page>
+            <q-btn
+              no-caps
+              unelevated
+              color="negative"
+              class="q-px-md"
+              label="Delete Group"
+              @click="deleteGroup"
+              :loading="deleteBtnIsLoading"
+              :disabled="deleteBtnIsLoading"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </q-page>
+  </transition>
 </template>
 
 <script>

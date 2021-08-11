@@ -1,90 +1,94 @@
 <template>
-  <q-page padding>
-    <div class="row q-pb-xl justify-center q-gutter-sm-md">
-      <!-- Title -->
-      <div class="col-12 col-sm-8 col-xl-6 q-mx-xl-xl">
-        <back-button />
-        <div class="row">
-          <div class="col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm">
-            Add New User
-          </div>
-          <div class="col-12 col-sm-6 text-h4 q-pb-sm q-pl-sm gt-xs">
-            Add New User
+  <transition appear
+    enter-active-class="animated slideInLeft"
+    leave-active-class="animated slideOutRight">
+    <q-page padding>
+      <div class="row q-pb-xl justify-center q-gutter-sm-md">
+        <!-- Title -->
+        <div class="col-12 col-sm-8 col-xl-6 q-mx-xl-xl">
+          <back-button />
+          <div class="row">
+            <div class="col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm">
+              Add New User
+            </div>
+            <div class="col-12 col-sm-6 text-h4 q-pb-sm q-pl-sm gt-xs">
+              Add New User
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-12 col-sm-8 col-xl-6 q-mx-xl-xl">
-        <div class="q-gutter-y-md q-gutter-sm-md q-pb-lg">
-          <q-input
-            outlined
-            type="text"
-            label="First Name"
-            hide-bottom-space
-            v-model="newUserPayload.firstname"
-            :rules="[val => !!val || 'Field is required']"
-          />
-          <q-input
-            outlined
-            type="text"
-            label="Last Name"
-            hide-bottom-space
-            v-model="newUserPayload.lastname"
-            :rules="[val => !!val || 'Field is required']"
-          />
-          <q-input
-            outlined
-            type="text"
-            bottom-slots
-            hide-bottom-space
-            label="Middle Name (Optional)"
-            v-model="newUserPayload.middlename"
-          />
-          <q-input
-            outlined
-            type="email"
-            label="Email"
-            hide-bottom-space
-            :error="emailError.status"
-            @focus="emailError.status = false"
-            v-model="newUserPayload.email"
-            :error-message="emailError.message"
-            :rules="[
-              val => !!val || 'Field is required',
-              val => emailValidator(val)
-            ]"
-          />
-          <q-input
-            outlined
-            lazy-rules
-            label="Password"
-            hide-bottom-space
-            v-model="newUserPayload.password"
-            :type="isPwd ? 'password' : 'text'"
-            :rules="[val => !!val || 'Field is required']"
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd = !isPwd"
-              />
-            </template>
-          </q-input>
-          <div :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']">
-            <q-btn
-              color="primary"
-              padding="sm xl"
-              @click="createUser"
-              label="Add new user"
-              :loading="addBtnIsLoading"
-              :class="[$q.screen.lt.sm ? 'full-width q-ml-sm' : '']"
-              :disabled="emptyRequiredField || addBtnIsLoading"
+        <div class="col-12 col-sm-8 col-xl-6 q-mx-xl-xl">
+          <div class="q-gutter-y-md q-gutter-sm-md q-pb-lg">
+            <q-input
+              outlined
+              type="text"
+              label="First Name"
+              hide-bottom-space
+              v-model="newUserPayload.firstname"
+              :rules="[val => !!val || 'Field is required']"
             />
+            <q-input
+              outlined
+              type="text"
+              label="Last Name"
+              hide-bottom-space
+              v-model="newUserPayload.lastname"
+              :rules="[val => !!val || 'Field is required']"
+            />
+            <q-input
+              outlined
+              type="text"
+              bottom-slots
+              hide-bottom-space
+              label="Middle Name (Optional)"
+              v-model="newUserPayload.middlename"
+            />
+            <q-input
+              outlined
+              type="email"
+              label="Email"
+              hide-bottom-space
+              :error="emailError.status"
+              @focus="emailError.status = false"
+              v-model="newUserPayload.email"
+              :error-message="emailError.message"
+              :rules="[
+                val => !!val || 'Field is required',
+                val => emailValidator(val)
+              ]"
+            />
+            <q-input
+              outlined
+              lazy-rules
+              label="Password"
+              hide-bottom-space
+              v-model="newUserPayload.password"
+              :type="isPwd ? 'password' : 'text'"
+              :rules="[val => !!val || 'Field is required']"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
+            <div :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']">
+              <q-btn
+                color="primary"
+                padding="sm xl"
+                @click="createUser"
+                label="Add new user"
+                :loading="addBtnIsLoading"
+                :class="[$q.screen.lt.sm ? 'full-width q-ml-sm' : '']"
+                :disabled="emptyRequiredField || addBtnIsLoading"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </q-page>
+    </q-page>
+  </transition>
 </template>
 
 <script>

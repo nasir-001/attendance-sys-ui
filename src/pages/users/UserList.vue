@@ -1,64 +1,68 @@
 <template>
-  <q-page padding>
-    <div class="row q-pb-xl justify-center q-gutter-sm-md">
-      <!-- Title -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
-        <back-button />
-        <div class="row">
-          <div
-            :class="[
-              $q.screen.lt.sm ? 'text-center' : '',
-              'col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm'
-            ]"
-          >
-            Users List
-          </div>
-          <div
-            :class="[
-              $q.screen.lt.sm ? 'text-center' : '',
-              'col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs'
-            ]"
-          >
-            Users List
+  <transition appear
+    enter-active-class="animated slideInLeft"
+    leave-active-class="animated slideOutRight">
+    <q-page padding>
+      <div class="row q-pb-xl justify-center q-gutter-sm-md">
+        <!-- Title -->
+        <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl">
+          <back-button />
+          <div class="row">
+            <div
+              :class="[
+                $q.screen.lt.sm ? 'text-center' : '',
+                'col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm'
+              ]"
+            >
+              Users List
+            </div>
+            <div
+              :class="[
+                $q.screen.lt.sm ? 'text-center' : '',
+                'col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs'
+              ]"
+            >
+              Users List
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Users Table -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
-        <q-table
-          row-key="email"
-          class="col-12"
-          :columns="columns"
-          :rows="userList"
-          :loading="tableIsLoading"
-          :rows-per-page-options="[10, 25, 50, 0]"
-          table-header-class="bg-blue-1 text-blue-10"
-        >
-          <template v-slot:loading>
-            <q-spinner-tail
-              color="primary"
-              size="3em"
-              class="tw-mx-auto"
-            />
-          </template>
-          
-          <template v-slot:body-cell-firstname="props">
-            <q-td
-              :props="props"
-              class="text-primary"
-              @click="$router.push({
-                name: 'user-detail',
-                params: { uuid: props.row.uuid }
-              })"
-            >
-              {{ props.row.firstname }}
-            </q-td>
-          </template>
-        </q-table>
+        <!-- Users Table -->
+        <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
+          <q-table
+            row-key="email"
+            class="col-12"
+            :columns="columns"
+            :rows="userList"
+            :loading="tableIsLoading"
+            :rows-per-page-options="[10, 25, 50, 0]"
+            table-header-class="bg-blue-1 text-blue-10"
+          >
+            <template v-slot:loading>
+              <q-spinner-tail
+                color="primary"
+                size="3em"
+                class="tw-mx-auto"
+              />
+            </template>
+            
+            <template v-slot:body-cell-firstname="props">
+              <q-td
+                :props="props"
+                class="text-primary"
+                @click="$router.push({
+                  name: 'user-detail',
+                  params: { uuid: props.row.uuid }
+                })"
+              >
+                {{ props.row.firstname }}
+              </q-td>
+            </template>
+          </q-table>
+        </div>
       </div>
-    </div>
-  </q-page>
+    </q-page>
+  </transition>
 </template>
 
 <script>

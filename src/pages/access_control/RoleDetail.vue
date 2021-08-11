@@ -1,135 +1,139 @@
 <template>
-  <q-page padding>
-    <div class="row q-pb-xl justify-center q-gutter-sm-md">
-      <!-- Title -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl" v-if="!notFound">
-        <back-button />
-        <div class="row">
-          <div
-            :class="[
-              $q.screen.lt.sm ? 'text-center' : '',
-              'col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm'
-            ]"
-          >
-            {{ roleObj.name }}
-          </div>
-          <div
-            :class="[
-              $q.screen.lt.sm ? 'text-center' : '',
-              'col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs'
-            ]"
-          >
-            {{ roleObj.name }}
-          </div>
-          <div class="col-12 col-sm-6">
-            <q-btn
-              no-caps
-              color="primary"
-              @click="addPerm = true"
-              :disabled="tableIsLoading"
-              label="Add Permission to Role"
-              :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']"
-            />
+  <transition appear
+    enter-active-class="animated slideInRight"
+    leave-active-class="animated slideOutleft">
+    <q-page padding>
+      <div class="row q-pb-xl justify-center q-gutter-sm-md">
+        <!-- Title -->
+        <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-mx-xl-xl" v-if="!notFound">
+          <back-button />
+          <div class="row">
+            <div
+              :class="[
+                $q.screen.lt.sm ? 'text-center' : '',
+                'col-12 col-sm-6 text-h5 q-pb-md q-pl-sm lt-sm'
+              ]"
+            >
+              {{ roleObj.name }}
+            </div>
+            <div
+              :class="[
+                $q.screen.lt.sm ? 'text-center' : '',
+                'col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs'
+              ]"
+            >
+              {{ roleObj.name }}
+            </div>
+            <div class="col-12 col-sm-6">
+              <q-btn
+                no-caps
+                color="primary"
+                @click="addPerm = true"
+                :disabled="tableIsLoading"
+                label="Add Permission to Role"
+                :class="[$q.screen.lt.sm ? 'full-width' : 'float-right']"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Permiions Table -->
-      <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
-        <not-found-404 back v-if="notFound" />
-        <q-table
-          row-key="name"
-          class="col-12"
-          :columns="columns"
-          :loading="tableIsLoading"
-          :rows="roleObj.permissions"
-          :rows-per-page-options="[10, 25, 50, 0]"
-          table-header-class="bg-blue-1 text-blue-10"
-        >
-          <template v-slot:loading>
-            <q-spinner-tail
-              color="primary"
-              size="3em"
-              class="tw-mx-auto"
-            />
-          </template>
-          <template v-slot:body-cell-remove="props">
-            <q-td :props="props">
-              <q-btn
-                flat
-                dense
-                round
-                class="q-mr-md"
-                color="negative"
-                @click="removePermFromRole(props.row.name)"
-                icon="delete"
-              >
-                <q-tooltip :delay="1000" anchor="bottom middle" self="top middle" :offset="[10, 10]">
-                  Remove permission
-                </q-tooltip>
-              </q-btn>
-            </q-td>
-          </template>
-        </q-table>
-      </div>
-    </div>
-
-    <!-- Add permission modal/dialog -->
-    <q-dialog v-model="addPerm" no-backdrop-dismiss>
-      <q-card style="width: 600px; max-width: 95vw;">
-        <q-card-section class="text-center">
-          <div class="text-h5">Add Permission</div>
-          <div class="text-subtitle2">Add permission to Role</div>
-        </q-card-section>
-
-        <q-card-section>
-          <div class="q-pa-md">
-            <form @submit.prevent="addPermToRole" class="q-gutter-md">
-              <q-select
-                ref="name"
-                outlined
-                use-input
-                type="text"
-                label="Name"
-                bottom-slots
-                @filter="filterFn"
-                :options="options"
-                :error="permError.status"
-                :error-message="permError.message"
-                v-model="addPermPayload"
-                :rules="[ val => !!val || 'This field is required.' ]"
-                @input="permError.status = false"
-              >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-              <q-card-actions align="right" class="q-pt-lg q-pr-none">
+        <!-- Permiions Table -->
+        <div class="col-12 col-sm-10 col-lg-8 col-xl-6 q-pt-lg q-pt-sm-none">
+          <not-found-404 back v-if="notFound" />
+          <q-table
+            row-key="name"
+            class="col-12"
+            :columns="columns"
+            :loading="tableIsLoading"
+            :rows="roleObj.permissions"
+            :rows-per-page-options="[10, 25, 50, 0]"
+            table-header-class="bg-blue-1 text-blue-10"
+          >
+            <template v-slot:loading>
+              <q-spinner-tail
+                color="primary"
+                size="3em"
+                class="tw-mx-auto"
+              />
+            </template>
+            <template v-slot:body-cell-remove="props">
+              <q-td :props="props">
                 <q-btn
                   flat
-                  label="Cancel"
-                  color="primary"
-                  class="q-px-md"
-                  v-close-popup
-                />
-                <q-btn
-                  type="submit"
-                  color="primary"
-                  class="q-px-md"
-                  label="Add permission"
-                  :disabled="addPermBtnLoading || !addPermPayload"
-                  :loading="addPermBtnLoading"
-                />
-              </q-card-actions>
-            </form>
-          </div>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-  </q-page>
+                  dense
+                  round
+                  class="q-mr-md"
+                  color="negative"
+                  @click="removePermFromRole(props.row.name)"
+                  icon="delete"
+                >
+                  <q-tooltip :delay="1000" anchor="bottom middle" self="top middle" :offset="[10, 10]">
+                    Remove permission
+                  </q-tooltip>
+                </q-btn>
+              </q-td>
+            </template>
+          </q-table>
+        </div>
+      </div>
+
+      <!-- Add permission modal/dialog -->
+      <q-dialog v-model="addPerm" no-backdrop-dismiss>
+        <q-card style="width: 600px; max-width: 95vw;">
+          <q-card-section class="text-center">
+            <div class="text-h5">Add Permission</div>
+            <div class="text-subtitle2">Add permission to Role</div>
+          </q-card-section>
+
+          <q-card-section>
+            <div class="q-pa-md">
+              <form @submit.prevent="addPermToRole" class="q-gutter-md">
+                <q-select
+                  ref="name"
+                  outlined
+                  use-input
+                  type="text"
+                  label="Name"
+                  bottom-slots
+                  @filter="filterFn"
+                  :options="options"
+                  :error="permError.status"
+                  :error-message="permError.message"
+                  v-model="addPermPayload"
+                  :rules="[ val => !!val || 'This field is required.' ]"
+                  @input="permError.status = false"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+                <q-card-actions align="right" class="q-pt-lg q-pr-none">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    color="primary"
+                    class="q-px-md"
+                    v-close-popup
+                  />
+                  <q-btn
+                    type="submit"
+                    color="primary"
+                    class="q-px-md"
+                    label="Add permission"
+                    :disabled="addPermBtnLoading || !addPermPayload"
+                    :loading="addPermBtnLoading"
+                  />
+                </q-card-actions>
+              </form>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </q-page>
+  </transition>
 </template>
 
 <script>

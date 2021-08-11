@@ -1,7 +1,7 @@
 <template>
   <transition appear
-    enter-active-class="animated slideInLeft"
-    leave-active-class="animated slideOutRight">
+    enter-active-class="animated slideInRight"
+    leave-active-class="animated slideOutLeft">
     <q-page>
       <back-button></back-button>
       <div v-if="showForm" class="q-pa-md q-mb-xl q-mt-lg tw-mx-2 sm:tw-w-4/6 md:tw-w-1/2 sm:tw-mx-auto tw-shadow-xl tw-rounded-3xl hover:tw-shadow-2xl">
