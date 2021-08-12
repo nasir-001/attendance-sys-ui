@@ -219,6 +219,8 @@ export default defineComponent({
     BackButton,
     NotFound404
   },
+
+  
   
   setup() {
     const userObj = ref({});
@@ -243,7 +245,7 @@ export default defineComponent({
       email: '',
     });
 
-    const userOwnGroup = reactive({
+    const userOwnGroup = ref({
       label: '',
       value: ''
     });
@@ -280,8 +282,8 @@ export default defineComponent({
             //   label: editPayload.groups[0].name,
             //   value: editPayload.groups[0].uuid
             // }
-            userOwnGroup.label = editPayload.groups[0].name;
-            userOwnGroup.value = editPayload.groups[0].uuid;
+            userOwnGroup.value.label = editPayload.groups[0].name;
+            userOwnGroup.value.value = editPayload.groups[0].uuid;
           }
           tableIsLoading.value = false;
         })
@@ -300,14 +302,14 @@ export default defineComponent({
       // }
       api.get('/api/groups')
         .then((response) => {
-          const options = ref([]);
+          const options = [];
           for (let i = 0; i < response.data.length; i++) {
-            options.value.push({
+            options.push({
               label: response.data[i].name,
               value: response.data[i].uuid
             })
           }
-          groupOptions.value = options.value;
+          groupOptions.value = options;
           tableIsLoading.value = false;
       })
     }
@@ -346,7 +348,7 @@ export default defineComponent({
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
-      api.post(`/api/users/${userObj.value.uuid}/groups`, { groups: [userOwnGroup.label] })
+      api.post(`/api/users/${userObj.value.uuid}/groups`, { groups: [userOwnGroup.value.label] })
         .then(() => {
           getUserDetail();
           editBtnIsLoading.value = false;
