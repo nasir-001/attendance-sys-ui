@@ -14,25 +14,25 @@
             <div class="col-12 col-sm-6 text-h4 q-pb-md q-pl-sm gt-xs">
               {{ userObj.firstname }}
             </div>
-          <div class="col-12 col-sm-6 q-gutter-sm">
-            <q-btn
-              no-caps
-              color="primary"
-              label="Edit User Info"
-              @click="userEdit = true"
-              :disabled="tableIsLoading"
-              :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
-            />
-            <q-btn
-              no-caps
-              outline
-              color="primary"
-              label="Change User Group"
-              @click="groupEdit = true"
-              :disabled="tableIsLoading"
-              :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
-            />
-          </div>
+            <div class="col-12 col-sm-6 q-gutter-sm">
+              <q-btn
+                no-caps
+                color="primary"
+                label="Edit User Info"
+                @click="userEdit = true"
+                :disabled="tableIsLoading"
+                :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
+              />
+              <q-btn
+                no-caps
+                outline
+                color="primary"
+                label="Change User Group"
+                @click="groupEdit = true"
+                :disabled="tableIsLoading"
+                :class="[$q.screen.lt.sm ? 'q-mt-sm' : 'float-right']"
+              />
+            </div>
           </div>
         </div>
 
@@ -282,8 +282,6 @@ export default defineComponent({
             // }
             userOwnGroup.label = editPayload.groups[0].name;
             userOwnGroup.value = editPayload.groups[0].uuid;
-            console.log(editPayload.groups[0].name);
-            console.log(editPayload.groups[0].uuid);
           }
           tableIsLoading.value = false;
         })
