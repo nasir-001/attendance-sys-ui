@@ -219,8 +219,6 @@ export default defineComponent({
     BackButton,
     NotFound404
   },
-
-  
   
   setup() {
     const userObj = ref({});
