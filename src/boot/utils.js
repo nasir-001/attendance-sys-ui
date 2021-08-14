@@ -40,7 +40,7 @@ function getAvatarBackgroundColor(username) {
 function filterData(rows, terms) {
   for (const term in terms) {
     rows = rows.filter(row =>
-      (row[term] + '').toLowerCase().indexOf(terms[term].toLowerCase()) !== -1
+      (row.visitor[term] + '').toLowerCase().indexOf(terms[term].toLowerCase()) !== -1
     );
   };
   return rows;

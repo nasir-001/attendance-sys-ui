@@ -6,7 +6,7 @@
   >
     <q-page>
       <back-button></back-button>
-      <div class="q-pa-md tw-w-full xl:tw-w-5/6 tw-mx-auto">
+      <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
         <div class="tw-flex tw-justify-start">
           <div>
             <q-btn
@@ -29,7 +29,6 @@
             </q-input>
           </div>
         </div> 
-
         <q-table
           :rows="rows"
           bordered
@@ -41,7 +40,7 @@
           class="my-sticky-header-table"
           title-class="text-blue-10"
           table-header-class="text-blue-10"
-          title="All Visitors"
+          title="Expected Visitors"
           :filter="filter"
           :filter-method="filterData"
           :loading="tableIsLoading"
@@ -57,50 +56,58 @@
             <q-tr :props="props">
               <q-td key="image" :props="props">
                 <div class="tw-flex tw-justify-start tw-ml-3">
-                  <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
-                    <p class="tw-text-xl tw--mt-1 tw-pt-3 sm:tw-pt-4 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
+                  <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.visitor.first_name)}">
+                    <p class="tw-text-xl tw--mt-1 tw-pt-3 sm:tw-pt-4 tw-text-gray-300">{{ props.row.visitor.first_name[0].toUpperCase() }}{{ props.row.visitor.last_name[0].toUpperCase() }}</p>
                   </div>
-                  <q-badge v-if="props.row.visit.status === 'admitted'" color="positive" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                  <q-badge v-if="props.row.visit.status === 'cancelled'" color="negative" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                  <q-badge v-if="props.row.visit.status === 'pending'" color="warning" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                  <q-badge v-if="props.row.visit.status === 'finished'" color="primary" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                  <q-badge v-if="props.row.status === 'admitted'" color="positive" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                  <q-badge v-if="props.row.status === 'cancelled'" color="negative" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                  <q-badge v-if="props.row.status === 'pending'" color="warning" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                  <q-badge v-if="props.row.status === 'finished'" color="primary" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
                 </div>
               </q-td>
               <q-td key="title" :props="props">
-                <p class="sm:tw-ml-4">{{ props.row.title }}</p>
+                {{ props.row.visitor.title }}
               </q-td>
               <q-td key="first_name" :props="props">
-                {{ props.row.first_name }}
+                {{ props.row.visitor.first_name }}
               </q-td>
               <q-td key="last_name" :props="props">
-                {{ props.row.last_name }}
+                {{ props.row.visitor.last_name }}
               </q-td>
               <q-td key="phone" :props="props">
-                {{ props.row.phone }}
+                {{ props.row.visitor.phone }}
               </q-td>
               <q-td key="email" :props="props">
-                {{ props.row.email }}
+                {{ props.row.visitor.email }}
               </q-td>
               <q-td key="status" :props="props">
-                <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'admitted'" color="positive" label="Admitted" />
-                <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'cancelled'" color="negative" label="Cancelled" />
-                <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'pending' " color="warning" label="Pending" /> 
-                <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finished' " color="primary" label="Departed" /> 
+                <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
+                <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'cancelled'" color="negative" label="Cancelled" />
+                <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'pending' " color="warning" label="Pending" /> 
+                <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'finished' " color="primary" label="Departed" /> 
               </q-td>
-              <q-td key="view" :props="props" class="tw-mr-4">
+              <q-td key="view" :props="props">
                 <q-btn 
-                  :to="{ name: 'admin-visitor-details', params: { id: props.row.id } }" 
                   label="View" 
                   dense 
                   color="primary" 
-                  class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" 
+                  class="tw-text-xs tw-py-2 tw-px-3 sm:tw-mr-2" 
+                  :to="{ name: 'admin-visitor-details', params: { id: props.row.id } }" 
                 />
                 <!-- check for the use permission and display the button -->
                 <!-- <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" /> -->
               </q-td>
             </q-tr>
-          </template>
+          </template>  
         </q-table>
+        <q-btn
+          round
+          class="tw-float-right tw-mt-4 tw-bottom-2"
+          color="primary"
+          size="16px"
+          icon="add"
+          :to="{ name: 'admin-new-visitor' }"
+        />
       </div>
     </q-page>
   </transition>
