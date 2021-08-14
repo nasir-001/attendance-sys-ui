@@ -54,35 +54,35 @@
           <q-tr :props="props">
             <q-td key="image" :props="props">
               <div class="tw-flex tw-justify-start tw-ml-3">
-                <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.first_name)}">
-                  <p class="tw-text-xl tw--mt-1 tw-pt-3 sm:tw-pt-4 tw-text-gray-300">{{ props.row.first_name[0].toUpperCase() }}{{ props.row.last_name[0].toUpperCase() }}</p>
+                <div class="tw--ml-3 sm:tw--ml-2 tw-text-center tw-font-thin tw-font-mono tw-w-12 tw-h-12 tw-overflow-hidden tw-shadow-lg md:tw-w-14 md:tw-h-14 tw-object-cover tw-rounded-full hover:tw-shadow-md" :style="{'background-color': getAvatarBackgroundColor(props.row.visitor.first_name)}">
+                  <p class="tw-text-xl tw--mt-1 tw-pt-3 sm:tw-pt-4 tw-text-gray-300">{{ props.row.visitor.first_name[0].toUpperCase() }}{{ props.row.visitor.last_name[0].toUpperCase() }}</p>
                 </div>
-                <q-badge v-if="props.row.visit.status === 'admitted'" color="positive" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                <q-badge v-if="props.row.visit.status === 'cancelled'" color="negative" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                <q-badge v-if="props.row.visit.status === 'pending'" color="warning" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
-                <q-badge v-if="props.row.visit.status === 'finished'" color="primary" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                <q-badge v-if="props.row.status === 'admitted'" color="positive" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                <q-badge v-if="props.row.status === 'cancelled'" color="negative" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                <q-badge v-if="props.row.status === 'pending'" color="warning" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
+                <q-badge v-if="props.row.status === 'finished'" color="primary" class="sm:tw--mr-10 sm:tw-w-4 sm:tw-h-4 tw-mt-8 sm:tw-mt-10 tw--ml-4 tw-rounded-full tw-border-2"></q-badge>
               </div>
             </q-td>
             <q-td key="title" :props="props">
-              {{ props.row.title }}
+              {{ props.row.visitor.title }}
             </q-td>
             <q-td key="first_name" :props="props">
-              {{ props.row.first_name }}
+              {{ props.row.visitor.first_name }}
             </q-td>
             <q-td key="last_name" :props="props">
-              {{ props.row.last_name }}
+              {{ props.row.visitor.last_name }}
             </q-td>
             <q-td key="phone" :props="props">
-              {{ props.row.phone }}
+              {{ props.row.visitor.phone }}
             </q-td>
             <q-td key="email" :props="props">
-              {{ props.row.email }}
+              {{ props.row.visitor.email }}
             </q-td>
             <q-td key="status" :props="props">
-              <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'admitted'" color="positive" label="Admitted" />
-              <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status === 'cancelled'" color="negative" label="Cancelled" />
-              <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'pending' " color="warning" label="Pending" /> 
-              <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.visit.status == 'finished' " color="primary" label="Departed" /> 
+              <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'admitted'" color="positive" label="Admitted" />
+              <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status === 'cancelled'" color="negative" label="Cancelled" />
+              <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'pending' " color="warning" label="Pending" /> 
+              <q-badge class="tw-py-1 tw-px-1 sm:tw-py-1.5 sm:tw-px-2 tw-right-0 tw-uppercase" v-if="props.row.status == 'finished' " color="primary" label="Departed" /> 
             </q-td>
             <q-td key="view" :props="props">
               <q-btn 
@@ -164,6 +164,7 @@ export default defineComponent({
       api.get('/api/attendance')
         .then((response) => {
           rows.value = response.data;
+          console.log(rows);
           tableIsLoading.value = false;
         })
         .catch((error) => {
