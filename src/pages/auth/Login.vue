@@ -1,6 +1,6 @@
 <template>
   <transition appear
-    enter-active-class="animated slideInUp">
+    enter-active-class="animated slideInDown">
     <div class="q-pa-sm row justify-center">
       <div class="col-12 col-sm-7 col-md-4 col-xl-3 tw-rounded-lg tw-border-2 tw-text-gray-400 tw-mt-20">
         <q-card flat class="q-pb-sm w100">

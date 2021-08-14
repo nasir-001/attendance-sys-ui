@@ -106,7 +106,7 @@ module.exports = configure(function (ctx) {
     // https://v2.quasar.dev/options/animations
     animations: [
       'slideInLeft',
-      'slideInUp',
+      'slideInDown',
       'slideInRight',
       'slideOutLeft'
     ],
