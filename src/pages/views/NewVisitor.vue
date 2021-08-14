@@ -13,7 +13,7 @@
               auto-focus
               lazy-rules
               type="text"
-              v-model="newVisitorPayload.title"
+              v-model="newVisitorPayload.visitor.title"
               label="Title"
               :rules="[
                 val => !!val || 'Field is required']"
@@ -26,7 +26,7 @@
               auto-focus
               lazy-rules
               type="text"
-              v-model="newVisitorPayload.first_name"
+              v-model="newVisitorPayload.visitor.first_name"
               label="First Name"
               :rules="[
                 val => !!val || 'Field is required']"
@@ -39,7 +39,7 @@
               auto-focus
               lazy-rules
               type="text"
-              v-model="newVisitorPayload.last_name"
+              v-model="newVisitorPayload.visitor.last_name"
               label="Last Name"
               :rules="[
                 val => !!val || 'Field is required']"
@@ -52,7 +52,7 @@
               auto-focus
               lazy-rules
               type="text"
-              v-model="newVisitorPayload.email"
+              v-model="newVisitorPayload.visitor.email"
               label="Email"
               :rules="[
                 val => !!val || 'Field is required',
@@ -67,7 +67,7 @@
               auto-focus
               lazy-rules
               type="number"
-              v-model="newVisitorPayload.phone"
+              v-model="newVisitorPayload.visitor.phone"
               mask="phone"
               label="Phone"
               maxlength="11"
@@ -80,7 +80,7 @@
           <q-card-section class="q-pt-none">
             <q-select 
               outlined
-              v-model="newVisitorPayload.gender"
+              v-model="newVisitorPayload.visitor.gender"
               :options="gender" 
               label="Gender"
               :rules="[
@@ -93,7 +93,7 @@
               hide-bottom-space 
               label="Arrival Date" 
               outlined 
-              v-model="newVisitorPayload.visit.date"
+              v-model="newVisitorPayload.date"
               :rules="[
                 val => !!val || 'Field is required'
               ]"
@@ -103,7 +103,7 @@
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                     <q-date 
                       today-btn
-                      v-model="newVisitorPayload.visit.date"
+                      v-model="newVisitorPayload.date"
                     >
                       <div class="row items-center justify-end">
                         <q-btn 
@@ -158,26 +158,26 @@ export default defineComponent({
     const $q = useQuasar();
     
     const newVisitorPayload = reactive({
-      title: '',
-      first_name: '',
-      last_name: '',
-      email: '',
-      phone: '',
-      gender: '',
-      visit: {
-        date: ''
+      date: '',
+      visitor: {
+        title: '',
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone: '',
+        gender: '',
       }
     })
 
     const emptyRequiredField = computed(() => {
       return (
-        !newVisitorPayload.title ||
-        !newVisitorPayload.first_name ||
-        !newVisitorPayload.last_name ||
-        !newVisitorPayload.email ||
-        !newVisitorPayload.phone ||
-        !newVisitorPayload.gender ||
-        !newVisitorPayload.visit.date
+        !newVisitorPayload.visitor.title ||
+        !newVisitorPayload.visitor.first_name ||
+        !newVisitorPayload.visitor.last_name ||
+        !newVisitorPayload.visitor.email ||
+        !newVisitorPayload.visitor.phone ||
+        !newVisitorPayload.visitor.gender ||
+        !newVisitorPayload.date
       )
     })
 
