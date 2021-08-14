@@ -25,7 +25,7 @@
               <div v-if="visit.status === 'finished' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
             </div>
             <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
-              <q-btn @click="showEditVisit = true" flat dense color="primary" icon="edit" />
+              <q-btn @click="showEditVisitor = true" flat dense color="primary" icon="edit" />
             </div>
           </div>
           <div>
@@ -334,12 +334,12 @@ export default defineComponent({
       editVisitorPayload.status = visit.value.status,
       editVisitorPayload.admitted_time = visit.value.admitted_time,
       editVisitorPayload.depart_time = visit.value.depart_time,
-      editVisitorPayload.visitor.title = visit.value.title,
-      editVisitorPayload.visitor.first_name = visit.value.first_name,
-      editVisitorPayload.visitor.last_name = visit.value.last_name,
-      editVisitorPayload.visitor.email = visit.value.email,
-      editVisitorPayload.visitor.phone = visit.value.phone,
-      editVisitorPayload.visitor.gender = visit.value.gender,
+      editVisitorPayload.visitor.title = visit.value.visitor.title,
+      editVisitorPayload.visitor.first_name = visit.value.visitor.first_name,
+      editVisitorPayload.visitor.last_name = visit.value.visitor.last_name,
+      editVisitorPayload.visitor.email = visit.value.visitor.email,
+      editVisitorPayload.visitor.phone = visit.value.visitor.phone,
+      editVisitorPayload.visitor.gender = visit.value.visitor.gender,
 
       api.patch(`/api/attendance/${route.params.id}`, editVisitorPayload)
       .then(() => {
