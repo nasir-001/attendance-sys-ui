@@ -13,16 +13,16 @@
           <div class="tw-flex tw-pt-5 tw-ml-8 sm:tw-ml-12 tw-justify-center">
             <div class="sm:tw--ml-2 tw-text-center tw-font-mono tw-w-20 
               tw-h-20 tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
-              :style="{'background-color': getAvatarBackgroundColor(visit.first_name)}">
+              :style="{'background-color': getAvatarBackgroundColor(visit.visitor.first_name)}">
               <p class="tw-text-2xl tw-pt-6 md:tw-pt-12 tw-text-gray-300">
-                {{ visit.first_name[0].toUpperCase() }}{{ visit.last_name[0].toUpperCase() }}
+                {{ visit.visitor.first_name[0].toUpperCase() }}{{ visit.visitor.last_name[0].toUpperCase() }}
               </p>
             </div>
             <div class="tw--ml-6">
-              <div v-if="visit.visit.status === 'admitted' " class="bg-positive tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-              <div v-if="visit.visit.status === 'cancelled' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-              <div v-if="visit.visit.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-              <div v-if="visit.visit.status === 'finished' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+              <div v-if="visit.status === 'admitted' " class="bg-positive tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+              <div v-if="visit.status === 'cancelled' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+              <div v-if="visit.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
+              <div v-if="visit.status === 'finished' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
             </div>
             <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
               <q-btn @click="showEditVisit = true" flat dense color="primary" icon="edit" />
@@ -30,25 +30,25 @@
           </div>
           <div>
             <div class="tw-text-center tw-text-gray-600 md:tw-pt-2 tw-text-lg md:tw-text-xl tw-font-semibold tw-uppercase">
-              {{ visit.title }}
+              {{ visit.visitor.title }}
             </div>
             <div class="tw-text-center tw-text-gray-500 tw-text-base md:tw-text-lg tw-font-semibold tw-pt-1 tw-uppercase tw-font-mono tw-tracking-wide">
-              {{ visit.first_name }} {{ visit.last_name }}
+              {{ visit.visitor.first_name }} {{ visit.visitor.last_name }}
             </div>
-            <div v-if="visit.email" class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
-              <q-icon name="mail" /> {{ visit.email }} 
+            <div v-if="visit.visitor.email" class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
+              <q-icon name="mail" /> {{ visit.visitor.email }} 
             </div>
-            <div v-if="visit.visit.status === 'admitted' " class="row justify-center q-mt-sm">
+            <div v-if="visit.status === 'admitted' " class="row justify-center q-mt-sm">
               <div class="text-green-7 tw-font-mono">
                 <q-badge color="primary">
-                  {{ visit.visit.admitted_time }}
+                  {{ visit.admitted_time }}
                 </q-badge>
               </div>
             </div>
-            <div v-if="visit.visit.status === 'finished' " class="row justify-center q-mt-sm">
+            <div v-if="visit.status === 'finished' " class="row justify-center q-mt-sm">
               <div class="text-green-7 tw-font-semibold q-mx-sm tw-font-mono">
                 <q-badge color="primary">
-                  {{ visit.visit.admitted_time }}
+                  {{ visit.admitted_time }}
                 </q-badge>
               </div>
               <div class="text-grey-7">
@@ -56,7 +56,7 @@
               </div>
               <div class="text-blue-7 tw-font-semibold q-mx-sm tw-font-mono">
                 <q-badge color="primary">
-                  {{ visit.visit.depart_time }}
+                  {{ visit.depart_time }}
                 </q-badge>
               </div>
             </div>
@@ -65,7 +65,7 @@
             <q-card-actions class="">
               <q-form @submit.prevent="admitVisitor">
                 <q-btn 
-                  v-if="visit.visit.status === 'pending' "
+                  v-if="visit.status === 'pending' "
                   type="submit"
                   color="primary" 
                   class="q-mx-sm tw-w-32 tw-font-semibold" 
@@ -79,7 +79,7 @@
             <q-card-actions class="">
               <q-form @submit.prevent="cancelVisitor">
                 <q-btn 
-                  v-if="visit.visit.status === 'pending' "
+                  v-if="visit.status === 'pending' "
                   type="submit"
                   color="negative" 
                   class="q-mx-sm tw-w-32 tw-font-semibold" 
@@ -94,7 +94,7 @@
           <q-card-actions class="tw--mt-20 tw-pb-8">
             <q-form class="tw-mx-auto" @submit.prevent="visitorLeave">
               <q-btn 
-                v-if="visit.visit.status === 'admitted' " 
+                v-if="visit.status === 'admitted' " 
                 type="submit"
                 color="primary" 
                 class="q-mx-sm tw-w-42 tw-font-semibold tw-mx-4" 
@@ -122,7 +122,7 @@
                   auto-focus
                   lazy-rules
                   type="text"
-                  v-model="visit.title"
+                  v-model="visit.visitor.title"
                   label="Title"
                   :rules="[
                     val => !!val || 'Field is required']"
@@ -134,7 +134,7 @@
                   auto-focus
                   lazy-rules
                   type="text"
-                  v-model="visit.first_name"
+                  v-model="visit.visitor.first_name"
                   label="First Name"
                   :rules="[
                     val => !!val || 'Field is required']"
@@ -146,7 +146,7 @@
                   auto-focus
                   lazy-rules
                   type="text"
-                  v-model="visit.last_name"
+                  v-model="visit.visitor.last_name"
                   label="Last Name"
                   :rules="[
                     val => !!val || 'Field is required']"
@@ -158,7 +158,7 @@
                   auto-focus
                   lazy-rules
                   type="text"
-                  v-model="visit.email"
+                  v-model="visit.visitor.email"
                   label="Email"
                   :rules="[
                     val => !!val || 'Field is required',
@@ -172,7 +172,7 @@
                   auto-focus
                   lazy-rules
                   type="number"
-                  v-model="visit.phone"
+                  v-model="visit.visitor.phone"
                   label="Phone"
                   :rules="[
                     val => !!val || 'Field is required',
@@ -183,7 +183,7 @@
               <q-card-section class="q-pt-none">
               <q-select 
                 outlined 
-                v-model="visit.gender"
+                v-model="visit.visitor.gender"
                 :options="gender" 
                 label="Gender"
               />
@@ -191,17 +191,17 @@
               <q-card-section class="q-pt-md">
                 <q-select 
                   outlined 
-                  v-model="visit.visit.status" 
+                  v-model="visit.status" 
                   :options="options" 
                   label="Status"
                 />
               </q-card-section>
-              <q-card-section v-if="visit.visit.status === 'admitted'" class="q-pt-md">
-                <q-input label="Admitted time" outlined v-model="visit.visit.admitted_time" mask="time" :rules="['time']">
+              <q-card-section v-if="visit.status === 'admitted'" class="q-pt-md">
+                <q-input label="Admitted time" outlined v-model="visit.admitted_time" mask="time" :rules="['time']">
                   <template v-slot:append>
                     <q-icon name="access_time" class="cursor-pointer">
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
-                        <q-time now-btn flat v-model="visit.visit.admitted_time">
+                        <q-time now-btn flat v-model="visit.admitted_time">
                           <div class="row items-center justify-end">
                             <q-btn v-close-popup label="Save" color="danger" flat />
                           </div>
@@ -211,13 +211,13 @@
                   </template>
                 </q-input>
               </q-card-section>
-              <q-card-section v-if="visit.visit.status === 'finished'" class="q-pt-md">
+              <q-card-section v-if="visit.status === 'finished'" class="q-pt-md">
                 <div class="tw-flex tw-justify-end tw--mb-4">
-                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visit.visit.admitted_time" mask="time" :rules="['time']">
+                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visit.admitted_time" mask="time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
-                          <q-time now-btn flat v-model="visit.visit.admitted_time">
+                          <q-time now-btn flat v-model="visit.admitted_time">
                             <div class="row items-center justify-end">
                               <q-btn v-close-popup label="Save" color="danger" flat />
                             </div>
@@ -226,11 +226,11 @@
                       </q-icon>
                     </template>
                   </q-input>
-                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visit.visit.depart_time" mask="time" :rules="['time']">
+                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visit.depart_time" mask="time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
-                          <q-time now-btn flat v-model="visit.visit.depart_time">
+                          <q-time now-btn flat v-model="visit.depart_time">
                             <div class="row items-center justify-end">
                               <q-btn v-close-popup label="Save" color="danger" flat />
                             </div>
@@ -242,11 +242,11 @@
                 </div>
               </q-card-section>
               <q-card-section class="q-pt-md">
-                <q-input label="Arrival Date" outlined v-model="visit.visit.date">
+                <q-input label="Arrival Date" outlined v-model="visit.date">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                        <q-date v-model="visit.visit.date">
+                        <q-date v-model="visit.date">
                           <div class="row items-center justify-end">
                             <q-btn v-close-popup label="Save" color="primary" flat />
                           </div>
@@ -372,7 +372,7 @@ export default defineComponent({
         date: visit.value.date,
         status: admitted.value,
         admitted_time: timeToReturn(),
-        depart_time: visitor.value.visit.depart_time,
+        depart_time: visit.value.depart_time,
         visitor: {
           title: visit.value.visitor.title,
           first_name: visit.value.visitor.first_name,
