@@ -11,6 +11,7 @@
             <q-card-section>
               <q-input
                 outlined
+                hide-bottom-space
                 auto-focus
                 lazy-rules
                 type="email"
@@ -26,6 +27,7 @@
               <q-input
                 class="sm:tw--mt-0 tw-overflow-hidden"
                 outlined
+                hide-bottom-space
                 lazy-rules
                 label="Password"
                 v-model="password"
