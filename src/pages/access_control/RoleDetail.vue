@@ -205,10 +205,10 @@ export default defineComponent({
       if (!roleObj.value.name) {
         tableIsLoading.value = true;
       }
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.get('/api/permissions/')
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.get('/permissions/')
         .then((response) => {
           permsList.value = response.data
         })
@@ -218,10 +218,10 @@ export default defineComponent({
       if (!roleObj.value) {
         tableIsLoading.value = true;
       }
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.get(`/api/roles/${route.params.roleName}`)
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.get(`/roles/${route.params.roleName}`)
         .then((response) => {
           roleObj.value = response.data;
           tableIsLoading.value = false;
@@ -236,10 +236,10 @@ export default defineComponent({
 
     function addPermToRole () {
       addPermBtnLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.put(`/api/roles/${roleObj.value.name}`, { permissions: [addPermPayload.value] })
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.put(`/roles/${roleObj.value.name}`, { permissions: [addPermPayload.value] })
         .then(() => {
           $q.notify({
             icon: 'done',
@@ -257,10 +257,10 @@ export default defineComponent({
     }
 
     function removePermFromRole (perm) {
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.delete(`/api/roles/${roleObj.value.name}/permissions`, { data: { permissions: [perm] } })
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.delete(`/roles/${roleObj.value.name}/permissions`, { data: { permissions: [perm] } })
         .then((response) => {
           $q.notify({
             icon: 'done',

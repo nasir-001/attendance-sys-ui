@@ -142,12 +142,13 @@ export default defineComponent({
 
     function createUser () {
       addBtnIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.post('/api/users', newUserPayload)
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.post('/users', newUserPayload)
         .then(() => {
           addBtnIsLoading.value = true;
+          // console.log($q.localStorage.getItem('authToken'));
           $q.notify({
             icon: 'done',
             type: 'positive',

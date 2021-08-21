@@ -210,10 +210,10 @@ export default defineComponent({
 
     function getPermissionsList() {
       tableIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.get('/api/permissions')
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.get('/permissions')
         .then((response) => {
           permissionsList.value = response.data;
           tableIsLoading.value = false;

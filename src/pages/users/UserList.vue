@@ -69,6 +69,7 @@
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { api } from 'boot/axios';
+import { useQuasar } from 'quasar';
 
 const tableCols = [
   { name: 'firstname', label: 'FIRST NAME', field: 'firstname', align: 'left', classes: 'cursor-pointer', sortable: true },
@@ -85,6 +86,7 @@ export default defineComponent({
   setup() {
     const userList = ref([]);
     const tableIsLoading = ref(false);
+    const $q = useQuasar();
     getUserList();
 
     function getAuthToken () {
@@ -93,10 +95,10 @@ export default defineComponent({
 
     function getUserList () {
       tableIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.get('/api/users')
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.get('/users')
         .then((response) => {
           userList.value = response.data;
           tableIsLoading.value = false;

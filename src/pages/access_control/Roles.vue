@@ -225,10 +225,10 @@ export default defineComponent({
       if (rolesList.value.length === 0) {
         tableIsLoading.value = true;
       }
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.get(`/api/roles`)
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.get(`/roles`)
         .then((response) => {
           rolesList.value = response.data;
           tableIsLoading.value = false;
