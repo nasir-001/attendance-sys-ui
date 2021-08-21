@@ -203,9 +203,10 @@ export default defineComponent({
             position: 'top',
             message: 'Visitor was successfully added'
           })
-          $router.push({ name: 'admin-visitor-details', params: { uuid: response.data.uuid } })
+          $router.push({ name: 'admin-visitor-details', params: { id: response.data.uuid } })
         })
         .catch((error) => {
+          console.log(error);
           addBtnIsLoading.value = false;
           $q.notify({
             icon: 'report_problem',
