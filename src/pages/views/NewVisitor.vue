@@ -101,7 +101,8 @@
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                    <q-date 
+                    <q-date
+                      mask="YYYY-MM-DD" 
                       today-btn
                       v-model="newVisitorPayload.date"
                     >
@@ -145,6 +146,7 @@ import BackButton from '../../components/BackButton.vue';
 import { validateEmail, validatePhone } from 'boot/utils';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'NewVisitor',
@@ -156,6 +158,7 @@ export default defineComponent({
     const showForm = ref(false);
     const addBtnIsLoading = ref(false);
     const $q = useQuasar();
+    const $router = useRouter();
     
     const newVisitorPayload = reactive({
       date: '',
@@ -191,7 +194,7 @@ export default defineComponent({
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
       api.post('/visit/create/', newVisitorPayload)
-        .then(() => {
+        .then((response) => {
           addBtnIsLoading.value = true;
           $q.notify({
             icon: 'done',
@@ -200,7 +203,7 @@ export default defineComponent({
             position: 'top',
             message: 'Visitor was successfully added'
           })
-          // $router.push({ name: 'admin-visitor-details', params: { uuid: response.data.id } })
+          $router.push({ name: 'admin-visitor-details', params: { uuid: response.data.uuid } })
         })
         .catch((error) => {
           addBtnIsLoading.value = false;
@@ -229,7 +232,7 @@ export default defineComponent({
 
     return {
       gender: [
-        'male', 'female'
+        'm', 'f'
       ],
       newVisitorPayload,
       newVisitor,

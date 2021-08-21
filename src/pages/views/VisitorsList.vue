@@ -164,7 +164,6 @@ export default defineComponent({
       api.get('/visit/all/today')
         .then((response) => {
           rows.value = response.data;
-          console.log(rows);
           tableIsLoading.value = false;
         })
         .catch((error) => {

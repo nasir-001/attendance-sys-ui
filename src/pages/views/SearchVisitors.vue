@@ -166,7 +166,7 @@ export default defineComponent({
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
-      api.get('/api/attendance')
+      api.get('/visit/all')
         .then((response) => {
           rows.value = response.data;
           tableIsLoading.value = false;
