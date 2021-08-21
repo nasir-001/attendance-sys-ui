@@ -240,7 +240,7 @@ export default defineComponent({
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
-      api.post(`/api/roles/`, newRolePayload)
+      api.post(`/roles/`, newRolePayload)
         .then(() => {
           newRolePayload.name = '';
           newRolePayload.description = '';
@@ -266,7 +266,7 @@ export default defineComponent({
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
-      api.delete(`/api/roles/${deleteRolePayload.value}`)
+      api.delete(`/roles/${deleteRolePayload.value}`)
         .then(() => {
           deleteRolePayload.value = '';
           deleteBtnIsLoading.value = false;
