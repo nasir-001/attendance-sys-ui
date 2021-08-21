@@ -279,7 +279,7 @@
 import { defineComponent, ref, reactive } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail, validatePhone } from 'boot/utils';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
@@ -304,6 +304,7 @@ export default defineComponent({
     const finished = ref('finished');
     const cancel = ref('cancelled');
     const $q = useQuasar();
+    const $router = useRouter()
 
     function emailValidator(value) {
       return validateEmail(value)
@@ -369,21 +370,11 @@ export default defineComponent({
     function admitVisitor() {
       admitBtnIsLoading.value = true;
       const visitorAdmitPayload = reactive({
-        date: visit.value.date,
         status: admitted.value,
         admitted_time: timeToReturn(),
-        depart_time: visit.value.depart_time,
-        visitor: {
-          title: visit.value.visitor.title,
-          first_name: visit.value.visitor.first_name,
-          last_name: visit.value.visitor.last_name,
-          email: visit.value.visitor.email,
-          phone: visit.value.visitor.phone,
-          gender: visit.value.visitor.gender
-        }
       })
 
-      api.patch(`/api/attendance/${route.params.id}`, visitorAdmitPayload)
+      api.put(`/visit/${route.params.id}`, visitorAdmitPayload)
         .then(() => {
           admitBtnIsLoading.value = false;
           $q.notify({
@@ -393,6 +384,7 @@ export default defineComponent({
             position: 'top',
             message: 'Visitor has been admitted'
           })
+          $router.push({ name: 'admin-visitors-list' })
         })
         .catch(() => {
           $q.notify({
@@ -410,18 +402,10 @@ export default defineComponent({
       cancelBtnIsLoading.value = true;
       const visitorCancelPayload = reactive({
         date: visit.value.date,
-        status: cancel.value    ,
-        visitor: {
-          title: visit.value.visitor.title,
-          first_name: visit.value.visitor.first_name,
-          last_name: visit.value.visitor.last_name,
-          email: visit.value.visitor.email,
-          phone: visit.value.visitor.phone,
-          gender: visit.value.visitor.gender,
-        }
+        status: cancel.value
       })
 
-      api.patch(`/api/attendance/${route.params.id}`, visitorCancelPayload)
+      api.put(`/visit/${route.params.id}`, visitorCancelPayload)
         .then(() => {
           cancelBtnIsLoading.value = false;
           $q.notify({
@@ -431,6 +415,7 @@ export default defineComponent({
             position: 'top',
             message: 'Visitor has been cancelled'
           })
+          $router.push({ name: 'admin-visitors-list' })
         })
         .catch(() => {
           $q.notify({
@@ -447,21 +432,11 @@ export default defineComponent({
     function visitorLeave() {
       departBtnIsLoading.value = true;
       const visitorLeavePayload = reactive({
-        date: visit.value.date,
         status: finished.value,
-        admitted_time: visit.value.admitted_time,
         depart_time: timeToReturn(),
-        visitor: {
-          title: visit.value.visitor.title,
-          first_name: visit.value.visitor.first_name,
-          last_name: visit.value.visitor.last_name,
-          email: visit.value.visitor.email,
-          phone: visit.value.visitor.phone,
-          gender: visit.value.visitor.gender,
-        }
       })
 
-      api.patch(`/api/attendance/${route.params.id}`, visitorLeavePayload)
+      api.put(`/visit/${route.params.id}`, visitorLeavePayload)
         .then(() => {
           departBtnIsLoading.value = false;
           $q.notify({
@@ -471,6 +446,7 @@ export default defineComponent({
             position: 'top',
             message: 'Visitor has been departed'
           })
+          $router.push({ name: 'admin-visitors-list' })
         })
         .catch(() => {
           $q.notify({

@@ -190,7 +190,7 @@ export default defineComponent({
       // api.defaults.headers.common = {
       //   Authorization: `Bearer ${getAuthToken()}`
       // }
-      api.post('/api/attendance/', newVisitorPayload)
+      api.post('/visit/create/', newVisitorPayload)
         .then(() => {
           addBtnIsLoading.value = true;
           $q.notify({

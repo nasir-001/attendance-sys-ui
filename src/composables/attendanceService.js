@@ -15,8 +15,8 @@ export function useAttendanceService() {
     })
   }
   return {
-    async attendance(id) {
-      const response = await api.get(`/api/attendance/${id}`)
+    async attendance(uuid) {
+      const response = await api.get(`/visit/${uuid}`)
         .catch(() => {
           trigerNotification('negative', 'Failed to view visitor', 'report_problem')
         })

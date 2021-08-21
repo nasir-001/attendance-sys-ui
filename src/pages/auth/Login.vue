@@ -63,8 +63,8 @@
 import { defineComponent, ref, reactive, toRefs, computed } from 'vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
-import { useRouter } from 'vue-router';
 import { validateEmail } from 'boot/utils';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Login',
@@ -73,12 +73,9 @@ export default defineComponent({
     const $q = useQuasar()
     const isPwd = ref(true);
     const loginBtnIsLoading = ref(false);
-    const $router = useRouter();
-
-    const loginPayload = reactive({
-      email: '',
-      password: ''
-    });
+    const email = ref('');
+    const password = ref('');
+    const $router = useRouter()
 
     function emailValidator(value) {
       return validateEmail(value)
@@ -86,26 +83,27 @@ export default defineComponent({
 
     const emptyRequiredField = computed(() => {
       return (
-        !loginPayload.email ||
-        !loginPayload.password 
+        !email.value ||
+        !password.value 
       )
     })
 
     const loginUser = () => {
       loginBtnIsLoading.value = true;
-      api.post(`/auth/token?email=${ email }&password=${ password }`)
+      api.post(`/auth/token?email=${ email.value }&password=${ password.value }`)
         .then((response) => {
           if (response.status === 200) {
-            $q.localStorage.set('authToken', response.data.access_token);
+            $q.localStorage.set('authToken', response.data.access_token)
             loginBtnIsLoading.value = false;
-            if (hasPermission(response.data.access_token, 'can_view_super_admin_dashboard')) {
-              $router.push({ name: 'admin-visitor-details' })
-            } else {
-              $router.push({ name: 'visitor-details' })
-            }
+            $router.push({ name: 'admin-visitors-list' })
+            // if (hasPermission(response.data.access_token, 'can_view_super_admin_dashboard')) {
+            //   $router.push({ name: 'admin-visitor-details' })
+            // } else {
+            //   $router.push({ name: 'visitor-details' })
+            // }
           }
         })
-        .catch(() => {
+        .catch((error) => {
           loginBtnIsLoading.value = false;
           if (!error.response) {
             $q.notify({
@@ -131,7 +129,8 @@ export default defineComponent({
     return {
       isPwd,
       loginBtnIsLoading,
-      ...toRefs(loginPayload),
+      password,
+      email,
       loginUser,
       emptyRequiredField,
       emailValidator
