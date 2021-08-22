@@ -201,19 +201,22 @@ export default defineComponent({
     const confirmGroupDelete = ref(false);
     const deleteBtnIsLoading = ref(false);
     const $q = useQuasar();
+    
     const newGroupError = reactive({
       status: false,
       message: ''
     })
+
     const newGroupPayload = reactive({
       name: '',
       description: ''
     })
+
     const deleteGroupPayload = ref('')
     getGroupsList();
 
     function getAuthToken () {
-      $q.localStorage.getItem('authToken');
+      return $q.localStorage.getItem('authToken');
     }
 
     function getGroupsList () {

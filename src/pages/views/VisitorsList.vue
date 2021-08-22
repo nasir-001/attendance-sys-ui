@@ -153,14 +153,14 @@ export default defineComponent({
     });
 
     function getAuthToken () {
-      $q.localStorage.getItem('authToken')
+      return $q.localStorage.getItem('authToken')
     }
 
     function getVisitorList() {
       tableIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.get('/visit/all/today')
         .then((response) => {
           rows.value = response.data;

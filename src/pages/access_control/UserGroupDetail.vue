@@ -225,16 +225,16 @@ export default defineComponent({
     }
 
     function getAuthToken () {
-      $q.localStorage.getItem('authToken')
+      return $q.localStorage.getItem('authToken')
     }
 
     function getAllRoles () {
       if (!groupObj.value) {
         tableIsLoading.value = true;
       }
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.get('/api/roles')
         .then((response) => {
           rolesList.value = response.data;
@@ -245,9 +245,9 @@ export default defineComponent({
       if (!groupObj.value.name) {
         tableIsLoading.value = true;
       }
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.get(`/api/groups/${route.params.groupName}`)
         .then((response) => {
           groupObj.value = response.data;
@@ -263,9 +263,9 @@ export default defineComponent({
 
     function addRoleToGroup () {
       addRoleBtnLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.put(`/api/groups/${groupObj.value.name}`, { roles: [addRolePayload.value] })
         .then(() => {
           $q.notify({
@@ -284,9 +284,9 @@ export default defineComponent({
     }
 
     function removeRoleFromGroup (role) {
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.delete(`/api/groups/${groupObj.value.name}/roles`, { data: { roles: [role] } })
         .then(() => {
           $q.notify({

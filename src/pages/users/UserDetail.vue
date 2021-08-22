@@ -256,16 +256,16 @@ export default defineComponent({
     }
     
     function getAuthToken () {
-      $q.localStorage.getItem('authToken')
+      return $q.localStorage.getItem('authToken')
     }
 
     function getUserDetail () {
       if (userObj.value.firstname === undefined) {
         tableIsLoading.value = true;
       }
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.get(`/api/users/${$route.params.uuid}`)
         .then((response) => {
           userObj.value = response.data;
@@ -276,28 +276,24 @@ export default defineComponent({
             }
           }
           if (editPayload.groups.length > 0) {
-            // userOwnGroup = {
-            //   label: editPayload.groups[0].name,
-            //   value: editPayload.groups[0].uuid
-            // }
             userOwnGroup.value.label = editPayload.groups[0].name;
             userOwnGroup.value.value = editPayload.groups[0].uuid;
           }
           tableIsLoading.value = false;
         })
-      //   .catch((error) => {
-      //     if (error.response.status >= 400) {
-      //       notFound.value = true;
-      //       tableIsLoading.value = false;
-      //     }
-      // })
+        .catch((error) => {
+          if (error.response.status >= 400) {
+            notFound.value = true;
+            tableIsLoading.value = false;
+          }
+      })
     }
 
     function getGroupList () {
       tableIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.get('/api/groups')
         .then((response) => {
           const options = [];
@@ -314,9 +310,9 @@ export default defineComponent({
     
     function editUser () {
       editBtnIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.put(`/api/users/${userObj.value.uuid}`, userEditPayload)
         .then(() => {
           editBtnIsLoading.value = false;
@@ -343,9 +339,9 @@ export default defineComponent({
 
     function changeUserGroup () {
       editBtnIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.post(`/api/users/${userObj.value.uuid}/groups`, { groups: [userOwnGroup.value.label] })
         .then(() => {
           getUserDetail();
@@ -358,15 +354,15 @@ export default defineComponent({
             position: 'top',
             message: 'User group changed successfully'
           })
-          // .catch((error) => {
-          //   const errorObj = error.response;
-          //   console.log(error.response);
-          //   if (errorObj.status === 404) {
-          //     emailError.status = true;
-          //     emailError.message = errorObj.data;
-          //   }
-          //   editBtnIsLoading.value = false;
-          // })
+          .catch((error) => {
+            const errorObj = error.response;
+            console.log(error.response);
+            if (errorObj.status === 404) {
+              emailError.status = true;
+              emailError.message = errorObj.data;
+            }
+            editBtnIsLoading.value = false;
+          })
         })
     }
     

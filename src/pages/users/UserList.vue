@@ -90,7 +90,7 @@ export default defineComponent({
     getUserList();
 
     function getAuthToken () {
-      $q.localStorage.getItem('authToken')
+      return $q.localStorage.getItem('authToken')
     }
 
     function getUserList () {
