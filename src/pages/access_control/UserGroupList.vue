@@ -220,10 +220,10 @@ export default defineComponent({
       if (groupsList.value.length === 0) {
         tableIsLoading.value = true;
       }
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.get('/api/groups')
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.get('/groups')
         .then((response) => {
           groupsList.value = response.data;
           tableIsLoading.value = false;
@@ -232,10 +232,10 @@ export default defineComponent({
 
     function addNewGroup () {
       newGroupBtnLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.post('/api/groups', newGroupPayload)
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.post('/groups', newGroupPayload)
         .then(() => {
           newGroupPayload.name = '';
           newGroupPayload.description = '';
@@ -264,10 +264,10 @@ export default defineComponent({
 
     function deleteGroup () {
       deleteBtnIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.delete(`/api/groups/${deleteGroupPayload.value}`)
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.delete(`/groups/${deleteGroupPayload.value}`)
         .then(() => {
           deleteBtnIsLoading.value = false;
           getGroupsList();
