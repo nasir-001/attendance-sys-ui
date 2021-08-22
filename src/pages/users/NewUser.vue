@@ -148,7 +148,6 @@ export default defineComponent({
       api.post('/users', newUserPayload)
         .then(() => {
           addBtnIsLoading.value = true;
-          // console.log($q.localStorage.getItem('authToken'));
           $q.notify({
             icon: 'done',
             type: 'positive',

@@ -92,7 +92,7 @@
                   dense 
                   color="primary" 
                   class="tw-text-xs tw-py-2 tw-px-3 sm:tw-mr-2" 
-                  :to="{ name: 'admin-visitor-details', params: { id: props.row.id } }" 
+                  :to="{ name: 'admin-visitor-details', params: { id: props.row.uuid } }" 
                 />
                 <!-- check for the use permission and display the button -->
                 <!-- <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" /> -->

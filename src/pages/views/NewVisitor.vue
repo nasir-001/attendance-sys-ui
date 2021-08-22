@@ -190,9 +190,9 @@ export default defineComponent({
 
     function newVisitor () {
       addBtnIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.post('/visit/create/', newVisitorPayload)
         .then((response) => {
           addBtnIsLoading.value = true;

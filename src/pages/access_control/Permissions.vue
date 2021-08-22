@@ -204,8 +204,8 @@ export default defineComponent({
       description: ''
     })
 
-    function getAuthToken() {
-      return $q.localStorage.getItem('authToken')
+    function getAuthToken () {
+      $q.localStorage.getItem('authToken')
     }
 
     function getPermissionsList() {
