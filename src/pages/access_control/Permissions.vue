@@ -183,6 +183,7 @@ export default defineComponent({
   },
 
   async setup() {
+    const $q = useQuasar();    
     const tableIsLoading = ref(false);
     const rows = ref([]);
     const newPerm = ref(false);
@@ -192,7 +193,10 @@ export default defineComponent({
     const deleteBtnIsLoading = ref(false);
     getPermissionsList()
     const permissionsList = ref([]);
-    const $q = useQuasar();
+    
+    function getAuthToken () {
+      return $q.localStorage.getItem('authToken')
+    }
 
     const permError = reactive({
       status: false,
@@ -203,10 +207,6 @@ export default defineComponent({
       name: '',
       description: ''
     })
-
-    function getAuthToken () {
-      return $q.localStorage.getItem('authToken')
-    }
 
     function getPermissionsList() {
       tableIsLoading.value = true;
@@ -222,7 +222,7 @@ export default defineComponent({
 
     function addNewPermission() {
       newPermBtnLoading.value = true;
-      api.post('/permissions/', newPermission)
+      api.post('/permissions', newPermission)
         .then(() => {
           newPermission.name = '';
           newPermission.description = '';
