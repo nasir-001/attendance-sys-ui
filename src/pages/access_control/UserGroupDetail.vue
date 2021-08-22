@@ -235,7 +235,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.get('/api/roles')
+      api.get('/roles')
         .then((response) => {
           rolesList.value = response.data;
         })
@@ -248,7 +248,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.get(`/api/groups/${route.params.groupName}`)
+      api.get(`/groups/${route.params.groupName}`)
         .then((response) => {
           groupObj.value = response.data;
           tableIsLoading.value = false;
@@ -266,7 +266,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.put(`/api/groups/${groupObj.value.name}`, { roles: [addRolePayload.value] })
+      api.put(`/groups/${groupObj.value.name}`, { roles: [addRolePayload.value] })
         .then(() => {
           $q.notify({
             icon: 'done',
@@ -287,7 +287,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.delete(`/api/groups/${groupObj.value.name}/roles`, { data: { roles: [role] } })
+      api.delete(`/groups/${groupObj.value.name}/roles`, { data: { roles: [role] } })
         .then(() => {
           $q.notify({
             icon: 'done',
