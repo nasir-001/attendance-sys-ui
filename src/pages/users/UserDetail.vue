@@ -266,7 +266,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.get(`/api/users/${$route.params.uuid}`)
+      api.get(`/users/${$route.params.uuid}`)
         .then((response) => {
           userObj.value = response.data;
           const editPayload = JSON.parse(JSON.stringify(response.data))
@@ -294,7 +294,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.get('/api/groups')
+      api.get('/groups')
         .then((response) => {
           const options = [];
           for (let i = 0; i < response.data.length; i++) {
@@ -313,7 +313,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.put(`/api/users/${userObj.value.uuid}`, userEditPayload)
+      api.put(`/users/${userObj.value.uuid}`, userEditPayload)
         .then(() => {
           editBtnIsLoading.value = false;
           userEdit.value = false;
@@ -342,7 +342,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.post(`/api/users/${userObj.value.uuid}/groups`, { groups: [userOwnGroup.value.label] })
+      api.post(`/users/${userObj.value.uuid}/groups`, { groups: [userOwnGroup.value.label] })
         .then(() => {
           getUserDetail();
           editBtnIsLoading.value = false;
