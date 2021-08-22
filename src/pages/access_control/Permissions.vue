@@ -222,7 +222,7 @@ export default defineComponent({
 
     function addNewPermission() {
       newPermBtnLoading.value = true;
-      api.post('/api/permissions/', newPermission)
+      api.post('/permissions/', newPermission)
         .then(() => {
           newPermission.name = '';
           newPermission.description = '';
@@ -251,10 +251,10 @@ export default defineComponent({
 
     function deletePermission() {
       deleteBtnIsLoading.value = true;
-      // api.defaults.headers.common = {
-      //   Authorization: `Bearer ${getAuthToken()}`
-      // }
-      api.delete(`/api/permissions/${deletePermPayload.value}`)
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
+      api.delete(`/permissions/${deletePermPayload.value}`)
         .then(() => {
           deleteBtnIsLoading.value = false;
           getPermissionsList()
