@@ -314,37 +314,54 @@ export default defineComponent({
       return validatePhone(value)
     }
 
-    const editVisitorPayload = reactive({      
+    // const editVisitorPayload = reactive({      
+    //   date: '',
+    //   status: '',
+    //   admitted_time: '',
+    //   depart_time: '',
+    //   visitor: {
+    //     title: '',
+    //     first_name: '',
+    //     last_name: '',
+    //     email: '',
+    //     phone: '',
+    //     gender: ''
+    //   }
+    // });
+
+    const editVisitorPayload = reactive({
+      title: '',
+      first_name: '',
+      last_name: '',
+      email: '',
+      phone: '',
+      gender: ''
+    })
+
+    const editVisitPayload = reactive({
       date: '',
       status: '',
       admitted_time: '',
       depart_time: '',
-      visitor: {
-        title: '',
-        first_name: '',
-        last_name: '',
-        email: '',
-        phone: '',
-        gender: ''
-      }
-    });
+    })
 
     function editVisitor() {
       editBtnIsLoading.value = true;      
-      editVisitorPayload.date = visit.value.date,
-      editVisitorPayload.status = visit.value.status,
-      editVisitorPayload.admitted_time = visit.value.admitted_time,
-      editVisitorPayload.depart_time = visit.value.depart_time,
-      editVisitorPayload.visitor.title = visit.value.visitor.title,
-      editVisitorPayload.visitor.first_name = visit.value.visitor.first_name,
-      editVisitorPayload.visitor.last_name = visit.value.visitor.last_name,
-      editVisitorPayload.visitor.email = visit.value.visitor.email,
-      editVisitorPayload.visitor.phone = visit.value.visitor.phone,
-      editVisitorPayload.visitor.gender = visit.value.visitor.gender,
+      editVisitPayload.date = visit.value.date,
+      editVisitPayload.status = visit.value.status,
+      editVisitPayload.admitted_time = visit.value.admitted_time,
+      editVisitPayload.depart_time = visit.value.depart_time,
+      editVisitorPayload.title = visit.value.visitor.title,
+      editVisitorPayload.first_name = visit.value.visitor.first_name,
+      editVisitorPayload.last_name = visit.value.visitor.last_name,
+      editVisitorPayload.email = visit.value.visitor.email,
+      editVisitorPayload.phone = visit.value.visitor.phone,
+      editVisitorPayload.gender = visit.value.visitor.gender,
 
-      api.patch(`/api/attendance/${route.params.id}`, editVisitorPayload)
+      api.put(`/visit/${route.params.id}`, editVisitorPayload)
       .then(() => {
         editBtnIsLoading.value = false;
+        api.put(`/visit/${route.params.id}/visit/${route.params.uuid}`, editVisitPayload)
         $q.notify({
           icon: 'done',
           type: 'positive',
@@ -467,7 +484,7 @@ export default defineComponent({
         'pending', 'admitted', 'cancelled', 'finished'
       ],
       gender: [
-        'male', 'female'
+        'm', 'f'
       ],
       visit,
       getAvatarBackgroundColor,
