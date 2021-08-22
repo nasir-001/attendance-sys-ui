@@ -82,6 +82,8 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
 const linksData = [
   {
@@ -150,10 +152,13 @@ export default defineComponent({
 
   setup () {
     const leftDrawerOpen = ref(false);
-    const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value 
+    const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value ;
+    const $q = useQuasar();
+    const $router = useRouter();
 
     function logout() {
-      console.log("logout");
+      $q.localStorage.remove('authToken')
+      $router.push({ name: 'login' })
     }
 
     return {
