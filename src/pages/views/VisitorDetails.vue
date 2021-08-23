@@ -119,6 +119,7 @@
               <q-card-section class="q-pt-none">
                 <q-input
                   outlined
+                  hide-bottom-space
                   auto-focus
                   lazy-rules
                   type="text"
@@ -131,6 +132,7 @@
               <q-card-section class="q-pt-none">
                 <q-input
                   outlined
+                  hide-bottom-space
                   auto-focus
                   lazy-rules
                   type="text"
@@ -143,6 +145,7 @@
               <q-card-section class="q-pt-none">
                 <q-input
                   outlined
+                  hide-bottom-space
                   auto-focus
                   lazy-rules
                   type="text"
@@ -155,6 +158,7 @@
               <q-card-section class="q-pt-none">
                 <q-input
                   outlined
+                  hide-bottom-space
                   auto-focus
                   lazy-rules
                   type="text"
@@ -169,6 +173,7 @@
               <q-card-section class="q-pt-none">
                 <q-input
                   outlined
+                  hide-bottom-space
                   auto-focus
                   lazy-rules
                   type="number"
@@ -182,21 +187,23 @@
               </q-card-section>
               <q-card-section class="q-pt-none">
               <q-select 
-                outlined 
+                outlined
+                hide-bottom-space 
                 v-model="visit.visitor.gender"
                 :options="gender" 
                 label="Gender"
               />
               </q-card-section>
-              <q-card-section class="q-pt-md">
+              <q-card-section class="q-pt-md tw--mt-4">
                 <q-select 
-                  outlined 
+                  outlined
+                  hide-bottom-space 
                   v-model="visit.status" 
                   :options="options" 
                   label="Status"
                 />
               </q-card-section>
-              <q-card-section v-if="visit.status === 'admitted'" class="q-pt-md">
+              <q-card-section v-if="visit.status === 'admitted'" class="q-pt-md tw--mt-4">
                 <q-input label="Admitted time" outlined v-model="visit.admitted_time" mask="time" :rules="['time']">
                   <template v-slot:append>
                     <q-icon name="access_time" class="cursor-pointer">
@@ -211,7 +218,7 @@
                   </template>
                 </q-input>
               </q-card-section>
-              <q-card-section v-if="visit.status === 'finished'" class="q-pt-md">
+              <q-card-section v-if="visit.status === 'finished'" class="q-pt-md tw--mt-4">
                 <div class="tw-flex tw-justify-end tw--mb-4">
                   <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visit.admitted_time" mask="time" :rules="['time']">
                     <template v-slot:append>
@@ -242,7 +249,7 @@
                 </div>
               </q-card-section>
               <q-card-section class="q-pt-md">
-                <q-input label="Arrival Date" outlined v-model="visit.date">
+                <q-input label="Arrival Date" outlined v-model="visit.date" class="tw--mt-4">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">

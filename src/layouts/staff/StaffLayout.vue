@@ -21,7 +21,7 @@
             class="tw-text-xs sm:tw-text-sm"
           >
             <q-icon name="logout" /> 
-            Logout 
+            Logout
           </q-btn>
         </div>
       </q-toolbar>
