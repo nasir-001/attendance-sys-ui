@@ -306,6 +306,10 @@ export default defineComponent({
     const $q = useQuasar();
     const $router = useRouter()
 
+    function getAuthToken () {
+      return $q.localStorage.getItem('authToken')
+    }
+
     function emailValidator(value) {
       return validateEmail(value)
     }
@@ -341,7 +345,10 @@ export default defineComponent({
       editVisitorPayload.visitor.email = visit.value.visitor.email,
       editVisitorPayload.visitor.phone = visit.value.visitor.phone,
       editVisitorPayload.visitor.gender = visit.value.visitor.gender,
-
+      
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.put(`/visit/${route.params.id}`, editVisitorPayload)
       .then(() => {
         editBtnIsLoading.value = false;
@@ -374,6 +381,9 @@ export default defineComponent({
         admitted_time: timeToReturn(),
       })
 
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.put(`/visit/${route.params.id}`, visitorAdmitPayload)
         .then(() => {
           admitBtnIsLoading.value = false;
@@ -405,6 +415,9 @@ export default defineComponent({
         status: cancel.value
       })
 
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.put(`/visit/${route.params.id}`, visitorCancelPayload)
         .then(() => {
           cancelBtnIsLoading.value = false;
@@ -436,6 +449,9 @@ export default defineComponent({
         depart_time: timeToReturn(),
       })
 
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${getAuthToken()}`
+      }
       api.put(`/visit/${route.params.id}`, visitorLeavePayload)
         .then(() => {
           departBtnIsLoading.value = false;
