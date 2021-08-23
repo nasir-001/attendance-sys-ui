@@ -88,7 +88,8 @@ import { useRouter } from 'vue-router';
 const linksData = [
   {
     title: 'Manage Visitors',
-    icon: 'groups',
+    icon: 'emoji_transportation',
+    showOpenExpansionStr: 'admin/visit/',
     children: [
       {
         title: 'Visitors List',

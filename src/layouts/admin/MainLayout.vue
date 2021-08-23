@@ -89,6 +89,7 @@ const linksData = [
   {
     title: 'Manage Visitors',
     icon: 'emoji_transportation',
+    showOpenExpansionStr: 'admin/visit/',
     children: [
       {
         title: 'New Visitor',
@@ -127,6 +128,7 @@ const linksData = [
   {
     title: 'Access Control',
     icon: 'mdi-account-key-outline',
+    showOpenExpansionStr: 'admin/acl/',
     children: [
       {
         title: 'User Permissions',
