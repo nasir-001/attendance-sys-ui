@@ -26,5 +26,23 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
   })
 
+  Router.beforeEach((to, from, next) => {
+    const isLoggedIn = () => {
+      return localStorage.getItem('authToken')
+    }
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      if (!isLoggedIn()) {
+        next({
+          path: '/login',
+          query: { redirect: to.fullPath }
+        })
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
+  })
+
   return Router
 })

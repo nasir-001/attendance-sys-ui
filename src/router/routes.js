@@ -10,22 +10,38 @@ const routes = [
         path: 'visitors',
         name: 'admin-visitors-list',
         component: () => import('pages/views/VisitorsList'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
       },
       {
         path: 'new-visitor',
         name: 'admin-new-visitor',
         component: () => import('pages/views/NewVisitor'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
       }, 
       {
         path: 'search-visitors',
         name: 'admin-search-visitors',
         component: () => import('pages/views/SearchVisitors'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
       },
       {
         path: 'visitors/:id',
         name: 'admin-visitor-details',
         props: true,
         component: () => import('pages/views/VisitorDetails'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
       }
     ]
   },
@@ -38,12 +54,20 @@ const routes = [
         path: 'visitors',
         name: 'visitors-list',
         component: () => import('pages/views/VisitorsList'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
       },
       {
         path: 'visitors/:id',
         name: 'visitor-details',
         props: true,
         component: () => import('pages/views/VisitorDetails'),
+        meta: {
+          requiresAuth: true,
+          requiresSuperAdmin: true
+        }
       }
     ]
   },

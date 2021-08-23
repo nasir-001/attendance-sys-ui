@@ -99,7 +99,7 @@ module.exports = configure(function (ctx) {
         'Notify',
         'Meta',
         'Dialog',
-        'LocalStorage'
+        'LocalStorage',
       ]
     },
 
