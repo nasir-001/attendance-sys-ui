@@ -324,6 +324,7 @@ export default defineComponent({
             position: 'top',
             message: 'User modified successfully'
           })
+          getUserDetail();
         })
         .catch((error) => {
           const errorObj = error.response;

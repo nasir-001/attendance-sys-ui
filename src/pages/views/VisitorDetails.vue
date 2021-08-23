@@ -342,7 +342,7 @@ export default defineComponent({
       editVisitorPayload.visitor.phone = visit.value.visitor.phone,
       editVisitorPayload.visitor.gender = visit.value.visitor.gender,
 
-      api.put(`/api/attendance/${route.params.id}`, editVisitorPayload)
+      api.put(`/visit/${route.params.id}`, editVisitorPayload)
       .then(() => {
         editBtnIsLoading.value = false;
         $q.notify({
