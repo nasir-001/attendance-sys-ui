@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import dayjs from 'dayjs';
 import CustomParseFormat from 'dayjs/plugin/CustomParseFormat';
+import jwt_decode from 'jwt-decode';
 
 function validateEmail (val) {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -54,6 +55,15 @@ function timeToReturn() {
     return time.value.getHours() + ":" + time.value.getMinutes() + "-am";
   };
 };
+
+
+function  hasPermission (token, permission) {
+  // eslint-disable-next-line
+  const authPayload = jwt_decode(token)
+  const hasperm = authPayload.data.permissions.indexOf(permission)
+  return hasperm > -1
+}
+
 
 export {
   validateEmail,
