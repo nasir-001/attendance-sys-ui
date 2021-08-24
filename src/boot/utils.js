@@ -71,5 +71,6 @@ export {
   timeToReturn,
   getAvatarBackgroundColor,
   formatedDate,
-  filterData
+  filterData,
+  hasPermission
 }
