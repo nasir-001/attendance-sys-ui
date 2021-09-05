@@ -3,8 +3,8 @@
     enter-active-class="animated slideInRight"
     leave-active-class="animated slideOutRight">
     <q-page>
-      <back-button />
       <div class="q-mt-lg tw-mx-3 sm:tw-w-4/6 md:tw-w-1/2 xl:tw-w-1/3 tw-mt-5 sm:tw-mx-auto">
+      <back-button />
         <!-- visitor detail -->
         <q-card class="tw-pt-5 tw-rounded-3xl tw-shadow-xl hover:tw-shadow-2xl">
           <q-card-section class="text-grey-7 tw-font-mono">
@@ -56,7 +56,7 @@
               </div>
               <div class="text-blue-7 tw-font-semibold q-mx-sm tw-font-mono">
                 <q-badge color="primary">
-                  {{ visit.depart_time }}
+                  {{ visit.depert_time }}
                 </q-badge>
               </div>
             </div>
@@ -204,7 +204,7 @@
                 />
               </q-card-section>
               <q-card-section v-if="visit.status === 'admitted'" class="q-pt-md tw--mt-4">
-                <q-input label="Admitted time" outlined v-model="visit.admitted_time" mask="time" :rules="['time']">
+                <q-input label="Admitted time" outlined v-model="visit.admitted_time" :rules="['time']">
                   <template v-slot:append>
                     <q-icon name="access_time" class="cursor-pointer">
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -220,7 +220,7 @@
               </q-card-section>
               <q-card-section v-if="visit.status === 'finished'" class="q-pt-md tw--mt-4">
                 <div class="tw-flex tw-justify-end tw--mb-4">
-                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visit.admitted_time" mask="time" :rules="['time']">
+                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visit.admitted_time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -233,11 +233,11 @@
                       </q-icon>
                     </template>
                   </q-input>
-                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visit.depart_time" mask="time" :rules="['time']">
+                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visit.depert_time" :rules="['time']">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
-                          <q-time now-btn flat v-model="visit.depart_time">
+                          <q-time now-btn flat v-model="visit.depert_time">
                             <div class="row items-center justify-end">
                               <q-btn v-close-popup label="Save" color="danger" flat />
                             </div>
@@ -329,7 +329,7 @@ export default defineComponent({
       date: '',
       status: '',
       admitted_time: '',
-      depart_time: '',
+      depert_time: '',
       visitor: {
         title: '',
         first_name: '',
@@ -345,7 +345,7 @@ export default defineComponent({
       editVisitorPayload.date = visit.value.date,
       editVisitorPayload.status = visit.value.status,
       editVisitorPayload.admitted_time = visit.value.admitted_time,
-      editVisitorPayload.depart_time = visit.value.depart_time,
+      editVisitorPayload.depert_time = visit.value.depert_time,
       editVisitorPayload.visitor.title = visit.value.visitor.title,
       editVisitorPayload.visitor.first_name = visit.value.visitor.first_name,
       editVisitorPayload.visitor.last_name = visit.value.visitor.last_name,
@@ -453,7 +453,7 @@ export default defineComponent({
       departBtnIsLoading.value = true;
       const visitorLeavePayload = reactive({
         status: finished.value,
-        depart_time: timeToReturn(),
+        depert_time: timeToReturn(),
       })
 
       api.defaults.headers.common = {

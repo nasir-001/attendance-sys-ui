@@ -4,9 +4,9 @@
     enter-active-class="animated slideInLeft"
     leave-active-class="animated slideOutRight"
   >
-    <q-page>
-      <back-button></back-button>
-      <div class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
+    <q-page class="q-pa-md q-mt-lg tw-w-full xl:tw-w-5/6 tw-mx-auto">
+      <div>
+        <back-button />
         <div class="tw-flex tw-justify-start">
           <div>
             <q-btn

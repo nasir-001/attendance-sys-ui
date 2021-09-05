@@ -47,14 +47,20 @@ function filterData(rows, terms) {
   return rows;
 };
 
-function timeToReturn() {
-  const time = ref(new Date())
-  if(time.value.getHours() >= 12){
-    return time.value.getHours() + ":" + time.value.getMinutes() + "-pm";
-  } else {
-    return time.value.getHours() + ":" + time.value.getMinutes() + "-am";
-  };
+function timeToReturn(time) {
+  dayjs.extend(CustomParseFormat);
+  time = dayjs(time).format('HH:mm:ss');
+  return time
 };
+
+// function timeToReturn() {
+//   const time = ref(new Date())
+//   if(time.value.getHours() >= 12){
+//     return time.value.getHours() + ":" + time.value.getMinutes() + "-pm";
+//   } else {
+//     return time.value.getHours() + ":" + time.value.getMinutes() + "-am";
+//   };
+// };
 
 
 function  hasPermission (token, permission) {

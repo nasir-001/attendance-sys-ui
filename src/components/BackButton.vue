@@ -3,7 +3,7 @@
     flat
     padding="sm"
     color="primary"
-    class="q-my-sm tw-mx-4"
+    class="q-my-sm"
     @click="goBack"
   >
     <q-icon
