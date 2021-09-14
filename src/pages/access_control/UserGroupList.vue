@@ -180,6 +180,7 @@
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { api } from 'boot/axios';
+import { getMetaData } from 'boot/utils';
 import { useQuasar } from 'quasar';
 
 const tableCols = [
@@ -189,6 +190,7 @@ const tableCols = [
 
 export default defineComponent({
   name: 'UserGroupList',
+  mixins: [getMetaData('User Group List')],
   components: {
     BackButton
   },

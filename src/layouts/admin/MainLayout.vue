@@ -85,6 +85,7 @@ import { defineComponent, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 
+
 const linksData = [
   {
     title: 'Manage Visitors',

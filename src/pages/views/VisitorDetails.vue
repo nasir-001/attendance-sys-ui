@@ -289,10 +289,12 @@ import BackButton from '../../components/BackButton.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail, validatePhone } from 'boot/utils';
 import { api } from 'boot/axios';
+import { getMetaData } from 'boot/utils';
 import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'visitor-details',
+  mixins: [getMetaData('Visitor Detail')],
   components: {
     BackButton
   },

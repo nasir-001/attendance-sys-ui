@@ -102,6 +102,7 @@ const linksData = [
 
 export default defineComponent({
   name: 'StaffLayout',
+
   setup () {
     const leftDrawerOpen = ref(false);
     const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value;

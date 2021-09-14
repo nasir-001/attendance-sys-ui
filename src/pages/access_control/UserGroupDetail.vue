@@ -167,6 +167,7 @@
 import { defineComponent, ref, reactive, computed } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { api } from 'boot/axios';
+import { getMetaData } from 'boot/utils';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
 import NotFound404 from '../../components/NotFound404.vue';
@@ -178,6 +179,7 @@ const tableCols = [
 
 export default defineComponent({
   name: 'UserGroupDetail',
+  mixins: [getMetaData('User Group Detail')],
   components: {
     BackButton,
     NotFound404

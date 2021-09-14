@@ -207,7 +207,7 @@
 <script>
 import { defineComponent, ref, reactive } from 'vue';
 import BackButton from '../../components/BackButton.vue';
-import { validateEmail } from 'boot/utils';
+import { validateEmail, getMetaData } from 'boot/utils';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
@@ -215,6 +215,7 @@ import NotFound404 from '../../components/NotFound404.vue';
 
 export default defineComponent({
   name: 'UserDetail',
+  mixins: [getMetaData('User Detail')],
   components: {
     BackButton,
     NotFound404

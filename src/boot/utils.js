@@ -1,4 +1,5 @@
-import { ref } from 'vue';
+import packageInfo from '../../package.json';
+import { createMetaMixin } from 'quasar';
 import dayjs from 'dayjs';
 import CustomParseFormat from 'dayjs/plugin/CustomParseFormat';
 import jwt_decode from 'jwt-decode';
@@ -31,6 +32,14 @@ function formatedDate(date) {
   dayjs.extend(CustomParseFormat);
   date = dayjs(date).format('DD-MMMM');
   return date;
+}
+
+function getMetaData(pageTitle) {
+  const metaData = {
+    title: `${pageTitle}`,
+    titleTemplate: title => `${title} | ${packageInfo.productName}`
+  }
+  return createMetaMixin(metaData);
 }
 
 function getAvatarBackgroundColor(username) {
@@ -78,5 +87,6 @@ export {
   getAvatarBackgroundColor,
   formatedDate,
   filterData,
-  hasPermission
+  hasPermission,
+  getMetaData
 }

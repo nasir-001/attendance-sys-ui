@@ -141,6 +141,7 @@ import { defineComponent, ref, reactive, computed } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import NotFound404 from '../../components/NotFound404.vue';
 import { api } from 'boot/axios';
+import { getMetaData } from 'boot/utils';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
 
@@ -151,6 +152,7 @@ const tableCols = [
 
 export default defineComponent({
   name: 'RoleDetail',
+  mixins: [getMetaData('Role Detail')],
   components: {
     BackButton,
     NotFound404

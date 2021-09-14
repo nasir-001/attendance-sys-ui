@@ -93,7 +93,7 @@
 
 <script>
 import { defineComponent, ref, reactive, computed } from 'vue';
-import { validateEmail } from 'boot/utils';
+import { validateEmail, getMetaData } from 'boot/utils';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
@@ -101,6 +101,7 @@ import BackButton from '../../components/BackButton.vue';
 
 export default defineComponent({
   name: 'NewUser',
+  mixins: [getMetaData('Create User')],
   components: {
     BackButton
   },

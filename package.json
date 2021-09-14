@@ -2,7 +2,7 @@
   "name": "attendance",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "productName": "Attendance System",
   "author": "Nasir <nasirlawal001@gmail.com>",
   "private": true,
   "scripts": {

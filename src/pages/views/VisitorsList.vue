@@ -115,6 +115,7 @@ import { computed, defineComponent, ref, reactive} from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import { useQuasar } from 'quasar';
 import { api } from 'boot/axios';
+import { getMetaData } from 'boot/utils';
 import { getAvatarBackgroundColor, filterData } from 'boot/utils';
 
 const columns = [
@@ -135,6 +136,7 @@ const columns = [
 
 export default defineComponent({
   name: 'VisitorsList',
+  mixins: [getMetaData('Visitors List')],
 
   async setup () {
     const attendance = useAttendanceService()

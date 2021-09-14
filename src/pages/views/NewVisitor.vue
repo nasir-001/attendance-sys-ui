@@ -145,11 +145,13 @@ import { defineComponent, reactive, ref, computed } from 'vue';
 import BackButton from '../../components/BackButton.vue';
 import { validateEmail, validatePhone } from 'boot/utils';
 import { api } from 'boot/axios';
+import { getMetaData } from 'boot/utils';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'NewVisitor',
+  mixins: [getMetaData('Create Visitor')],
   components: {
     BackButton
   },

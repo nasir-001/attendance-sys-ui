@@ -63,11 +63,12 @@
 import { defineComponent, ref, reactive, toRefs, computed } from 'vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
-import { validateEmail, hasPermission  } from 'boot/utils';
+import { validateEmail, hasPermission, getMetaData } from 'boot/utils';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Login',
+  mixins: [getMetaData('Login')],
   
   setup() {
     const $q = useQuasar()

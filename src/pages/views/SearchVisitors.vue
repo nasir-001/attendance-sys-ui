@@ -120,6 +120,7 @@ import { useQuasar } from 'quasar';
 import BackButton from '../../components/BackButton.vue';
 import { getAvatarBackgroundColor, filterData } from 'boot/utils';
 import { api } from 'boot/axios';
+import { getMetaData } from 'boot/utils';
 
 const columns = [
   {
@@ -139,6 +140,7 @@ const columns = [
 
 export default defineComponent({
   name: 'SearchVisitors',
+  mixins: [getMetaData('Search Visitors')],
   components: {
     BackButton
   },
