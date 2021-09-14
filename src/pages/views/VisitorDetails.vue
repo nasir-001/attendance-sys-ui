@@ -294,7 +294,7 @@ import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'visitor-details',
-  mixins: [getMetaData('Visitor Detail')],
+  mixins: [getMetaData('Visitor')],
   components: {
     BackButton
   },

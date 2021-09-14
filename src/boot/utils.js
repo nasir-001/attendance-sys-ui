@@ -34,6 +34,12 @@ function formatedDate(date) {
   return date;
 }
 
+function formatedTime(time) {
+  dayjs.extend(CustomParseFormat);
+  time = dayjs.extend(time).format('hh:mm a');
+  return time;
+}
+
 function getMetaData(pageTitle) {
   const metaData = {
     title: `${pageTitle}`,
@@ -73,7 +79,6 @@ function timeToReturn(time) {
 
 
 function  hasPermission (token, permission) {
-  // eslint-disable-next-line
   const authPayload = jwt_decode(token)
   const hasperm = authPayload.data.permissions.indexOf(permission)
   return hasperm > -1
@@ -88,5 +93,6 @@ export {
   formatedDate,
   filterData,
   hasPermission,
-  getMetaData
+  getMetaData,
+  formatedTime
 }
