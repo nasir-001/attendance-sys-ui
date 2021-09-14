@@ -204,11 +204,11 @@
                 />
               </q-card-section>
               <q-card-section v-if="visit.status === 'admitted'" class="q-pt-md tw--mt-4">
-                <q-input label="Admitted time" outlined v-model="visit.admitted_time" :rules="['time']">
+                <q-input label="Admitted time" outlined v-model="visit.admitted_time">
                   <template v-slot:append>
                     <q-icon name="access_time" class="cursor-pointer">
                       <q-popup-proxy transition-show="scale" transition-hide="scale">
-                        <q-time now-btn flat v-model="visit.admitted_time">
+                        <q-time mask="HH:mm:ss" now-btn flat v-model="visit.admitted_time">
                           <div class="row items-center justify-end">
                             <q-btn v-close-popup label="Save" color="danger" flat />
                           </div>
@@ -220,11 +220,11 @@
               </q-card-section>
               <q-card-section v-if="visit.status === 'finished'" class="q-pt-md tw--mt-4">
                 <div class="tw-flex tw-justify-end tw--mb-4">
-                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visit.admitted_time" :rules="['time']">
+                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visit.admitted_time">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
-                          <q-time now-btn flat v-model="visit.admitted_time">
+                          <q-time mask="HH:mm:ss" now-btn flat v-model="visit.admitted_time">
                             <div class="row items-center justify-end">
                               <q-btn v-close-popup label="Save" color="danger" flat />
                             </div>
@@ -233,11 +233,11 @@
                       </q-icon>
                     </template>
                   </q-input>
-                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visit.depert_time" :rules="['time']">
+                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visit.depert_time">
                     <template v-slot:append>
                       <q-icon name="access_time" class="cursor-pointer">
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
-                          <q-time now-btn flat v-model="visit.depert_time">
+                          <q-time mask="HH:mm:ss" now-btn flat v-model="visit.depert_time">
                             <div class="row items-center justify-end">
                               <q-btn v-close-popup label="Save" color="danger" flat />
                             </div>
@@ -356,7 +356,7 @@ export default defineComponent({
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
       }
-      api.put(`/visit/${route.params.id}`, editVisitorPayload)
+      api.put(`/visit/${route.params.id}/${visit.value.visitor.uuid}`, editVisitorPayload)
       .then(() => {
         editBtnIsLoading.value = false;
         $q.notify({

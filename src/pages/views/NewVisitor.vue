@@ -224,8 +224,7 @@ export default defineComponent({
 
     function emailValidator(value) {
       return validateEmail(value)
-    }
-    
+    }    
 
     setTimeout(() => {
       showForm.value = !showForm.value;
