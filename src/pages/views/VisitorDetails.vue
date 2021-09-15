@@ -190,7 +190,7 @@
                 outlined
                 hide-bottom-space 
                 v-model="visit.visitor.gender"
-                :options="gender" 
+                :options="sex" 
                 label="Gender"
               />
               </q-card-section>
@@ -342,6 +342,17 @@ export default defineComponent({
       }
     });
 
+    const sex = [
+      {
+        label: 'male',
+        value: 'm'
+      },
+      {
+        label: 'female',
+        value: 'f'
+      }
+    ]
+
     function editVisitor() {
       editBtnIsLoading.value = true;      
       editVisitorPayload.date = visit.value.date,
@@ -353,7 +364,7 @@ export default defineComponent({
       editVisitorPayload.visitor.last_name = visit.value.visitor.last_name,
       editVisitorPayload.visitor.email = visit.value.visitor.email,
       editVisitorPayload.visitor.phone = visit.value.visitor.phone,
-      editVisitorPayload.visitor.gender = visit.value.visitor.gender,
+      editVisitorPayload.visitor.gender = visit.value.visitor.gender.value,
       
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
@@ -491,9 +502,9 @@ export default defineComponent({
       options: [
         'pending', 'admitted', 'cancelled', 'finished'
       ],
-      gender: [
-        'male', 'female'
-      ],
+      // gender: [
+      //   'male', 'female'
+      // ],
       visit,
       getAvatarBackgroundColor,
       showEditVisitor,
@@ -509,7 +520,8 @@ export default defineComponent({
       admitBtnIsLoading,
       cancelBtnIsLoading,
       departBtnIsLoading,
-      formattedTime
+      formattedTime,
+      sex
      }
   }
 })
