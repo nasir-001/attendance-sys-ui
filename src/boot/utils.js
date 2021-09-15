@@ -34,10 +34,9 @@ function formatedDate(date) {
   return date;
 }
 
-function formatedTime(time) {
-  dayjs.extend(CustomParseFormat);
-  time = dayjs.extend(time).format('hh:mm a');
-  return time;
+function formattedTime(time) {
+  const formattedTime = dayjs('1/1/1 ' + time).format('hh:mm a')
+  return formattedTime;
 }
 
 function getMetaData(pageTitle) {
@@ -94,5 +93,5 @@ export {
   filterData,
   hasPermission,
   getMetaData,
-  formatedTime
+  formattedTime
 }

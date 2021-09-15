@@ -41,14 +41,14 @@
             <div v-if="visit.status === 'admitted' " class="row justify-center q-mt-sm">
               <div class="text-green-7 tw-font-mono">
                 <q-badge color="primary">
-                  {{ visit.admitted_time }}
+                  {{ formattedTime(visit.admitted_time) }}
                 </q-badge>
               </div>
             </div>
             <div v-if="visit.status === 'finished' " class="row justify-center q-mt-sm">
               <div class="text-green-7 tw-font-semibold q-mx-sm tw-font-mono">
                 <q-badge color="primary">
-                  {{ visit.admitted_time }}
+                  {{ formattedTime(visit.admitted_time) }}
                 </q-badge>
               </div>
               <div class="text-grey-7">
@@ -56,7 +56,7 @@
               </div>
               <div class="text-blue-7 tw-font-semibold q-mx-sm tw-font-mono">
                 <q-badge color="primary">
-                  {{ visit.depert_time }}
+                  {{ formattedTime(visit.depert_time) }}
                 </q-badge>
               </div>
             </div>
@@ -287,7 +287,7 @@ import { defineComponent, ref, reactive } from 'vue';
 import { useAttendanceService } from '../../composables/attendanceService';
 import BackButton from '../../components/BackButton.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { timeToReturn, getAvatarBackgroundColor, formatedDate, validateEmail, validatePhone } from 'boot/utils';
+import { timeToReturn, getAvatarBackgroundColor, formatedDate, formattedTime, validateEmail, validatePhone } from 'boot/utils';
 import { api } from 'boot/axios';
 import { getMetaData } from 'boot/utils';
 import { useQuasar } from 'quasar';
@@ -508,7 +508,8 @@ export default defineComponent({
       editBtnIsLoading,
       admitBtnIsLoading,
       cancelBtnIsLoading,
-      departBtnIsLoading
+      departBtnIsLoading,
+      formattedTime
      }
   }
 })
