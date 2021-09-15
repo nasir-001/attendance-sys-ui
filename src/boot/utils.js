@@ -35,7 +35,7 @@ function formatedDate(date) {
 }
 
 function formattedTime(time) {
-  const formattedTime = dayjs('1/1/1 ' + time).format('hh:mm a')
+  const formattedTime = dayjs('1/1/1 ' + time).format('hh:mm A')
   return formattedTime;
 }
 
