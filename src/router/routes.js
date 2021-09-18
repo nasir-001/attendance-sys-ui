@@ -53,7 +53,7 @@ const routes = [
       {
         path: 'visitors',
         name: 'visitors-list',
-        component: () => import('pages/views/admin/VisitorsList'),
+        component: () => import('pages/views/security/VisitorsList'),
         meta: {
           requiresAuth: true,
           requiresSuperAdmin: true
@@ -63,7 +63,7 @@ const routes = [
         path: 'visitors/:id',
         name: 'visitor-details',
         props: true,
-        component: () => import('pages/views/admin/VisitorDetails'),
+        component: () => import('pages/views/security/VisitorDetails'),
         meta: {
           requiresAuth: true,
           requiresSuperAdmin: true

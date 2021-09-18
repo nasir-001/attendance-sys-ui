@@ -10,8 +10,8 @@
           <q-card-section class="text-grey-7 tw-font-mono">
             {{ formatedDate(visit.date) }}
           </q-card-section>
-          <div class="tw-flex tw-pt-5 tw-ml-8 sm:tw-ml-12 tw-justify-center">
-            <div class="sm:tw--ml-2 tw-text-center tw-font-mono tw-w-20 
+          <div class="tw-flex tw-pt-5 tw-justify-center">
+            <div class="tw-text-center tw-font-mono tw-w-20 
               tw-h-20 tw-shadow-lg md:tw-w-32 md:tw-h-32 tw-rounded-full hover:tw-shadow-md" 
               :style="{'background-color': getAvatarBackgroundColor(visit.visitor.first_name)}">
               <p class="tw-text-2xl tw-pt-6 md:tw-pt-12 tw-text-gray-300">
@@ -23,9 +23,6 @@
               <div v-if="visit.status === 'cancelled' " class="bg-negative tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
               <div v-if="visit.status === 'pending' " class="bg-warning tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
               <div v-if="visit.status === 'finished' " class="bg-primary tw-mt-16 md:tw-mt-24 tw-border-white tw-border-2 tw-w-4 tw-h-4 md:tw-h-5 md:tw-w-5 tw-rounded-full"></div>
-            </div>
-            <div class="tw-mt-16 md:tw-mt-24 tw-ml-2">
-              <q-btn @click="showEditVisitor = true" flat dense color="primary" icon="edit" />
             </div>
           </div>
           <div>
