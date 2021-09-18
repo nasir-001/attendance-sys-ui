@@ -92,8 +92,6 @@
                 class="tw-text-xs tw-py-2 tw-px-3 sm:tw-mr-2" 
                 :to="{ name: 'admin-visitor-details', params: { id: props.row.uuid } }" 
               />
-              <!-- check for the use permission and display the button -->
-              <!-- <q-btn :to="{ name: 'visitor-details', params: { id: props.row.id } }" label="View" dense color="primary" class="tw-text-xs tw-py-2 tw-px-3 tw--mr-2" /> -->
             </q-td>
           </q-tr>
         </template>  
@@ -112,11 +110,12 @@
 
 <script>
 import { computed, defineComponent, ref, reactive} from 'vue';
-import { useAttendanceService } from '../../composables/attendanceService';
+import { useAttendanceService } from '../../../composables/attendanceService';
 import { useQuasar } from 'quasar';
 import { api } from 'boot/axios';
 import { getMetaData } from 'boot/utils';
 import { getAvatarBackgroundColor, filterData } from 'boot/utils';
+import jwt_decode from 'jwt-decode';
 
 const columns = [
   {
@@ -128,8 +127,6 @@ const columns = [
   { name: 'title', label: 'TITLE', align: 'left', },
   { name: 'first_name', label: 'FIRST NAME', align: 'left', },
   { name: 'last_name', label: 'LAST NAME', align: 'left', },
-  { name: 'phone', label: 'PHONE', align: 'center', },
-  { name: 'email', label: 'EMAIL', align: 'center', },
   { name: 'status', label: 'STATUS', align: 'center', },
   { name: 'view', label: '', align: 'right', }
 ];
@@ -156,6 +153,13 @@ export default defineComponent({
 
     function getAuthToken () {
       return $q.localStorage.getItem('authToken')
+    }
+
+    function hasPermission (token, permission) {
+      // eslint-disable-next-line
+      const authPayload = jwt_decode(token)
+      const hasperm = authPayload.data.permissions.indexOf(permission)
+      return hasperm > -1
     }
 
     function getVisitorList() {
@@ -204,7 +208,8 @@ export default defineComponent({
       filterData,
       filter,
       showTable,
-      tableIsLoading
+      tableIsLoading,
+      hasPermission
     }
   }
 })

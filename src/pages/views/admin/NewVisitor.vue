@@ -45,50 +45,7 @@
                 val => !!val || 'Field is required']"
             />
           </q-card-section>
-          <q-card-section class="q-pt-none">
-            <q-input
-              hide-bottom-space
-              outlined
-              auto-focus
-              lazy-rules
-              type="text"
-              v-model="newVisitorPayload.visitor.email"
-              label="Email"
-              :rules="[
-                val => !!val || 'Field is required',
-                val => emailValidator(val)
-              ]"
-            />
-          </q-card-section>
-          <q-card-section class="q-pt-none">
-            <q-input
-              hide-bottom-space
-              outlined
-              auto-focus
-              lazy-rules
-              type="number"
-              v-model="newVisitorPayload.visitor.phone"
-              mask="phone"
-              label="Phone"
-              maxlength="11"
-              :rules="[
-                val => !!val || 'Field is required',
-                val => phoneValidator(val)
-              ]"
-            />
-          </q-card-section>
-          <q-card-section class="q-pt-none">
-            <q-select 
-              outlined
-              v-model="newVisitorPayload.visitor.gender"
-              :options="gender" 
-              label="Gender"
-              :rules="[
-                val => !!val || 'Field is required'
-              ]"
-            />
-          </q-card-section>
-          <q-card-section class="tw--mt-8">
+          <q-card-section class="tw--mt-4">
             <q-input
               hide-bottom-space 
               label="Arrival Date" 
@@ -142,7 +99,7 @@
 
 <script>
 import { defineComponent, reactive, ref, computed } from 'vue';
-import BackButton from '../../components/BackButton.vue';
+import BackButton from '../../../components/BackButton.vue';
 import { validateEmail, validatePhone } from 'boot/utils';
 import { api } from 'boot/axios';
 import { getMetaData } from 'boot/utils';
@@ -174,14 +131,22 @@ export default defineComponent({
       }
     })
 
+    const sex = [
+      {
+        label: 'male',
+        value: 'm'
+      },
+      {
+        label: 'female',
+        value: 'f'
+      }
+    ]
+
     const emptyRequiredField = computed(() => {
       return (
         !newVisitorPayload.visitor.title ||
         !newVisitorPayload.visitor.first_name ||
         !newVisitorPayload.visitor.last_name ||
-        !newVisitorPayload.visitor.email ||
-        !newVisitorPayload.visitor.phone ||
-        !newVisitorPayload.visitor.gender ||
         !newVisitorPayload.date
       )
     })
@@ -224,22 +189,15 @@ export default defineComponent({
       return validatePhone(value)
     }
 
-    function emailValidator(value) {
-      return validateEmail(value)
-    }    
-
     setTimeout(() => {
       showForm.value = !showForm.value;
     }, 500);
 
     return {
-      gender: [
-        'm', 'f'
-      ],
+      sex,
       newVisitorPayload,
       newVisitor,
       showForm,
-      emailValidator,
       addBtnIsLoading,
       phoneValidator,
       emptyRequiredField

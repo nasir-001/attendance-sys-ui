@@ -115,9 +115,9 @@
 
 <script>
 import { computed, defineComponent, ref, reactive} from 'vue';
-import { useAttendanceService } from '../../composables/attendanceService';
+import { useAttendanceService } from '../../../composables/attendanceService';
 import { useQuasar } from 'quasar';
-import BackButton from '../../components/BackButton.vue';
+import BackButton from '../../../components/BackButton.vue';
 import { getAvatarBackgroundColor, filterData } from 'boot/utils';
 import { api } from 'boot/axios';
 import { getMetaData } from 'boot/utils';
@@ -132,8 +132,6 @@ const columns = [
   { name: 'title', label: 'TITLE', align: 'left', },
   { name: 'first_name', label: 'FIRST NAME', align: 'left', },
   { name: 'last_name', label: 'LAST NAME', align: 'left', },
-  { name: 'phone', label: 'PHONE', align: 'center', },
-  { name: 'email', label: 'EMAIL', align: 'center', },
   { name: 'status', label: 'STATUS', align: 'center', },
   { name: 'view', label: '', align: 'right', }
 ]

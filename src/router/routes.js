@@ -4,12 +4,12 @@ const routes = [
     path: '/admin',
     name: 'dashborad',
     component: () => import('src/layouts/admin/MainLayout.vue'),
-    redirect: { name: 'visitors-list' },
+    redirect: { name: 'admin-visitors-list' },
     children: [
       {
         path: 'visitors',
         name: 'admin-visitors-list',
-        component: () => import('pages/views/VisitorsList'),
+        component: () => import('pages/views/admin/VisitorsList'),
         meta: {
           requiresAuth: true,
           requiresSuperAdmin: true
@@ -18,7 +18,7 @@ const routes = [
       {
         path: 'new-visitor',
         name: 'admin-new-visitor',
-        component: () => import('pages/views/NewVisitor'),
+        component: () => import('pages/views/admin/NewVisitor'),
         meta: {
           requiresAuth: true,
           requiresSuperAdmin: true
@@ -27,7 +27,7 @@ const routes = [
       {
         path: 'search-visitors',
         name: 'admin-search-visitors',
-        component: () => import('pages/views/SearchVisitors'),
+        component: () => import('pages/views/admin/SearchVisitors'),
         meta: {
           requiresAuth: true,
           requiresSuperAdmin: true
@@ -37,7 +37,7 @@ const routes = [
         path: 'visitors/:id',
         name: 'admin-visitor-details',
         props: true,
-        component: () => import('pages/views/VisitorDetails'),
+        component: () => import('pages/views/admin/VisitorDetails'),
         meta: {
           requiresAuth: true,
           requiresSuperAdmin: true
@@ -53,7 +53,7 @@ const routes = [
       {
         path: 'visitors',
         name: 'visitors-list',
-        component: () => import('pages/views/VisitorsList'),
+        component: () => import('pages/views/admin/VisitorsList'),
         meta: {
           requiresAuth: true,
           requiresSuperAdmin: true
@@ -63,7 +63,7 @@ const routes = [
         path: 'visitors/:id',
         name: 'visitor-details',
         props: true,
-        component: () => import('pages/views/VisitorDetails'),
+        component: () => import('pages/views/admin/VisitorDetails'),
         meta: {
           requiresAuth: true,
           requiresSuperAdmin: true

@@ -43,7 +43,7 @@
                 </template>
               </q-input>
             </q-card-section>
-            <q-card-section class="tw--mt-2 tw-mb-6">
+            <q-card-section class="tw-mb-6">
               <q-btn
                 label="Login"
                 type="submit"
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, toRefs, computed } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 import { validateEmail, hasPermission, getMetaData } from 'boot/utils';
@@ -96,12 +96,11 @@ export default defineComponent({
           if (response.status === 200) {
             $q.localStorage.set('authToken', response.data.access_token)
             loginBtnIsLoading.value = false;
-            $router.push({ name: 'admin-visitors-list' })
-            // if (hasPermission(response.data.access_token, 'can_view_super_admin_dashboard')) {
-            //   $router.push({ name: 'admin-visitor-details' })
-            // } else {
-            //   $router.push({ name: 'visitor-details' })
-            // }
+            if (hasPermission(response.data.access_token, 'can_view_super_admin_dashboard')) {
+              $router.push({ name: 'admin-visitors-list' })
+            } else {
+              $router.push({ name: 'visitors-list' })
+            }
           }
         })
         .catch((error) => {

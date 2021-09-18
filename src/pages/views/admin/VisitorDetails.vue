@@ -35,9 +35,6 @@
             <div class="tw-text-center tw-text-gray-500 tw-text-base md:tw-text-lg tw-font-semibold tw-pt-1 tw-uppercase tw-font-mono tw-tracking-wide">
               {{ visit.visitor.first_name }} {{ visit.visitor.last_name }}
             </div>
-            <div v-if="visit.visitor.email" class="tw-text-center tw-text-gray-400 tw-text-md tw-font-semibold tw-pt-1 tw-font-mono tw-tracking-wide">
-              <q-icon name="mail" /> {{ visit.visitor.email }} 
-            </div>
             <div v-if="visit.status === 'admitted' " class="row justify-center q-mt-sm">
               <div class="text-green-7 tw-font-mono">
                 <q-badge color="primary">
@@ -155,45 +152,6 @@
                     val => !!val || 'Field is required']"
                 />
               </q-card-section>
-              <q-card-section class="q-pt-none">
-                <q-input
-                  outlined
-                  hide-bottom-space
-                  auto-focus
-                  lazy-rules
-                  type="text"
-                  v-model="visit.visitor.email"
-                  label="Email"
-                  :rules="[
-                    val => !!val || 'Field is required',
-                    val => emailValidator(val)
-                  ]"
-                />
-              </q-card-section>
-              <q-card-section class="q-pt-none">
-                <q-input
-                  outlined
-                  hide-bottom-space
-                  auto-focus
-                  lazy-rules
-                  type="number"
-                  v-model="visit.visitor.phone"
-                  label="Phone"
-                  :rules="[
-                    val => !!val || 'Field is required',
-                    val => phoneValidator(val)  
-                  ]"
-                />
-              </q-card-section>
-              <q-card-section class="q-pt-none">
-              <q-select 
-                outlined
-                hide-bottom-space 
-                v-model="visit.visitor.gender"
-                :options="sex" 
-                label="Gender"
-              />
-              </q-card-section>
               <q-card-section class="q-pt-md tw--mt-4">
                 <q-select 
                   outlined
@@ -284,8 +242,8 @@
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
-import { useAttendanceService } from '../../composables/attendanceService';
-import BackButton from '../../components/BackButton.vue';
+import { useAttendanceService } from '../../../composables/attendanceService';
+import BackButton from '../../../components/BackButton.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { timeToReturn, getAvatarBackgroundColor, formatedDate, formattedTime, validateEmail, validatePhone } from 'boot/utils';
 import { api } from 'boot/axios';
@@ -319,10 +277,6 @@ export default defineComponent({
       return $q.localStorage.getItem('authToken')
     }
 
-    function emailValidator(value) {
-      return validateEmail(value)
-    }
-
     function phoneValidator(value) {
       return validatePhone(value)
     }
@@ -335,23 +289,9 @@ export default defineComponent({
       visitor: {
         title: '',
         first_name: '',
-        last_name: '',
-        email: '',
-        phone: '',
-        gender: ''
+        last_name: ''
       }
     });
-
-    const sex = [
-      {
-        label: 'male',
-        value: 'm'
-      },
-      {
-        label: 'female',
-        value: 'f'
-      }
-    ]
 
     function editVisitor() {
       editBtnIsLoading.value = true;      
@@ -361,10 +301,7 @@ export default defineComponent({
       editVisitorPayload.depert_time = visit.value.depert_time,
       editVisitorPayload.visitor.title = visit.value.visitor.title,
       editVisitorPayload.visitor.first_name = visit.value.visitor.first_name,
-      editVisitorPayload.visitor.last_name = visit.value.visitor.last_name,
-      editVisitorPayload.visitor.email = visit.value.visitor.email,
-      editVisitorPayload.visitor.phone = visit.value.visitor.phone,
-      editVisitorPayload.visitor.gender = visit.value.visitor.gender.value,
+      editVisitorPayload.visitor.last_name = visit.value.visitor.last_name
       
       api.defaults.headers.common = {
         Authorization: `Bearer ${getAuthToken()}`
@@ -502,9 +439,6 @@ export default defineComponent({
       options: [
         'pending', 'admitted', 'cancelled', 'finished'
       ],
-      // gender: [
-      //   'male', 'female'
-      // ],
       visit,
       getAvatarBackgroundColor,
       showEditVisitor,
@@ -514,14 +448,12 @@ export default defineComponent({
       admitVisitor,
       visitorLeave,
       cancelVisitor,
-      emailValidator,
       phoneValidator,
       editBtnIsLoading,
       admitBtnIsLoading,
       cancelBtnIsLoading,
       departBtnIsLoading,
-      formattedTime,
-      sex
+      formattedTime
      }
   }
 })

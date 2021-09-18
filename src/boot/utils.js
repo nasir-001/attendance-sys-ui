@@ -77,7 +77,7 @@ function timeToReturn(time) {
 // };
 
 
-function  hasPermission (token, permission) {
+function hasPermission (token, permission) {
   const authPayload = jwt_decode(token)
   const hasperm = authPayload.data.permissions.indexOf(permission)
   return hasperm > -1
