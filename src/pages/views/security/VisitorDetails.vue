@@ -100,138 +100,6 @@
             </q-form>
           </q-card-actions>
         </q-card>
-
-        <!-- Edit visitor modal/dialog -->
-        <q-dialog persistent v-model="showEditVisitor">
-          <q-card class="tw-w-full sm:tw-w-3/6">
-            <q-card-section class="row">
-              <div class="text-h6 text-primary tw--mt-1">Edit Visitor</div>
-              <q-space />
-              <q-btn flat v-close-popup dense round label="close" color="negative" />
-            </q-card-section>
-            <q-form @submit.prevent="editVisitor">
-              <q-card-section class="q-pt-none">
-                <q-input
-                  outlined
-                  hide-bottom-space
-                  auto-focus
-                  lazy-rules
-                  type="text"
-                  v-model="visit.visitor.title"
-                  label="Title"
-                  :rules="[
-                    val => !!val || 'Field is required']"
-                />
-              </q-card-section>
-              <q-card-section class="q-pt-none">
-                <q-input
-                  outlined
-                  hide-bottom-space
-                  auto-focus
-                  lazy-rules
-                  type="text"
-                  v-model="visit.visitor.first_name"
-                  label="First Name"
-                  :rules="[
-                    val => !!val || 'Field is required']"
-                />
-              </q-card-section>
-              <q-card-section class="q-pt-none">
-                <q-input
-                  outlined
-                  hide-bottom-space
-                  auto-focus
-                  lazy-rules
-                  type="text"
-                  v-model="visit.visitor.last_name"
-                  label="Last Name"
-                  :rules="[
-                    val => !!val || 'Field is required']"
-                />
-              </q-card-section>
-              <q-card-section class="q-pt-md tw--mt-4">
-                <q-select 
-                  outlined
-                  hide-bottom-space 
-                  v-model="visit.status" 
-                  :options="options" 
-                  label="Status"
-                />
-              </q-card-section>
-              <q-card-section v-if="visit.status === 'admitted'" class="q-pt-md tw--mt-4">
-                <q-input label="Admitted time" outlined v-model="visit.admitted_time">
-                  <template v-slot:append>
-                    <q-icon name="access_time" class="cursor-pointer">
-                      <q-popup-proxy transition-show="scale" transition-hide="scale">
-                        <q-time mask="HH:mm:ss" now-btn flat v-model="visit.admitted_time">
-                          <div class="row items-center justify-end">
-                            <q-btn v-close-popup label="Save" color="danger" flat />
-                          </div>
-                        </q-time>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
-              </q-card-section>
-              <q-card-section v-if="visit.status === 'finished'" class="q-pt-md tw--mt-4">
-                <div class="tw-flex tw-justify-end tw--mb-4">
-                  <q-input label="Admitted time" outlined class="tw-w-full tw-mr-1" v-model="visit.admitted_time">
-                    <template v-slot:append>
-                      <q-icon name="access_time" class="cursor-pointer">
-                        <q-popup-proxy transition-show="scale" transition-hide="scale">
-                          <q-time mask="HH:mm:ss" now-btn flat v-model="visit.admitted_time">
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Save" color="danger" flat />
-                            </div>
-                          </q-time>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                  <q-input label="Depart time" outlined class="tw-w-full tw-ml-1" v-model="visit.depert_time">
-                    <template v-slot:append>
-                      <q-icon name="access_time" class="cursor-pointer">
-                        <q-popup-proxy transition-show="scale" transition-hide="scale">
-                          <q-time mask="HH:mm:ss" now-btn flat v-model="visit.depert_time">
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Save" color="danger" flat />
-                            </div>
-                          </q-time>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                </div>
-              </q-card-section>
-              <q-card-section class="q-pt-md">
-                <q-input label="Arrival Date" outlined v-model="visit.date" class="tw--mt-4">
-                  <template v-slot:append>
-                    <q-icon name="event" class="cursor-pointer">
-                      <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                        <q-date v-model="visit.date">
-                          <div class="row items-center justify-end">
-                            <q-btn v-close-popup label="Save" color="primary" flat />
-                          </div>
-                        </q-date>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
-              </q-card-section>
-
-              <q-card-actions align="right">
-                <q-btn
-                  class="tw-mr-2 tw-mb-4"
-                  type="submit"
-                  label="Save" 
-                  color="primary"
-                  :disable="editBtnIsLoading"
-                  :loading="editBtnIsLoading"
-                />
-              </q-card-actions>
-            </q-form>
-          </q-card>
-        </q-dialog>
       </div>
     </q-page>
   </transition>
@@ -258,7 +126,6 @@ export default defineComponent({
     const route = useRoute();
     const data = useAttendanceService();
     const visit = ref(null);
-    const showEditVisitor = ref(false);
     const confirmDelete = ref(false);
     const editBtnIsLoading = ref(false);
     const admitBtnIsLoading = ref(false);
@@ -276,56 +143,6 @@ export default defineComponent({
 
     function phoneValidator(value) {
       return validatePhone(value)
-    }
-
-    const editVisitorPayload = reactive({      
-      date: '',
-      status: '',
-      admitted_time: '',
-      depert_time: '',
-      visitor: {
-        title: '',
-        first_name: '',
-        last_name: ''
-      }
-    });
-
-    function editVisitor() {
-      editBtnIsLoading.value = true;      
-      editVisitorPayload.date = visit.value.date,
-      editVisitorPayload.status = visit.value.status,
-      editVisitorPayload.admitted_time = visit.value.admitted_time,
-      editVisitorPayload.depert_time = visit.value.depert_time,
-      editVisitorPayload.visitor.title = visit.value.visitor.title,
-      editVisitorPayload.visitor.first_name = visit.value.visitor.first_name,
-      editVisitorPayload.visitor.last_name = visit.value.visitor.last_name
-      
-      api.defaults.headers.common = {
-        Authorization: `Bearer ${getAuthToken()}`
-      }
-      api.put(`/visit/${route.params.id}/${visit.value.visitor.uuid}`, editVisitorPayload)
-      .then(() => {
-        editBtnIsLoading.value = false;
-        $q.notify({
-          icon: 'done',
-          type: 'positive',
-          timeout: 7000,
-          position: 'top',
-          message: 'Visitor was successfully editted'
-        })
-        editBtnIsLoading.value = false;
-        showEditVisitor.value = false;
-      })
-      .catch(() => {
-        $q.notify({
-          icon: 'report_problem',
-          type: 'negative',
-          timeout: 7000,
-          position: 'top',
-          message: 'Failed to edit visitor'
-        })
-        editBtnIsLoading.value = false;
-      })
     }
 
     function admitVisitor() {
@@ -438,10 +255,8 @@ export default defineComponent({
       ],
       visit,
       getAvatarBackgroundColor,
-      showEditVisitor,
       confirmDelete,
       formatedDate,
-      editVisitor,
       admitVisitor,
       visitorLeave,
       cancelVisitor,
