@@ -147,7 +147,7 @@ export default defineComponent({
         Authorization: `Bearer ${getAuthToken()}`
       }
       api.post('/users', newUserPayload)
-        .then(() => {
+        .then((response) => {
           addBtnIsLoading.value = true;
           $q.notify({
             icon: 'done',

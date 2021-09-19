@@ -355,17 +355,17 @@ export default defineComponent({
             timeout: 5000,
             position: 'top',
             message: 'User group changed successfully'
-          })
-          .catch((error) => {
-            const errorObj = error.response;
-            console.log(error.response);
-            if (errorObj.status === 404) {
-              emailError.status = true;
-              emailError.message = errorObj.data;
-            }
-            editBtnIsLoading.value = false;
-          })
         })
+        .catch((error) => {
+          const errorObj = error.response;
+          console.log(error.response);
+          if (errorObj.status === 404) {
+            emailError.status = true;
+            emailError.message = errorObj.data;
+          }
+          editBtnIsLoading.value = false;
+        })
+      })
     }
     
     return {

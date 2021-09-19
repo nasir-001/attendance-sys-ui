@@ -255,6 +255,7 @@ export default defineComponent({
             position: 'top',
             message: 'Role added successfully'
           })
+          getRolesList()
         })
         .catch((error) => {
           newRoleError.message = error.response.data.detail
