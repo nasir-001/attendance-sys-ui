@@ -165,7 +165,7 @@ export default defineComponent({
             position: 'top',
             message: 'Visitor has been admitted'
           })
-          $router.push({ name: 'admin-visitors-list' })
+          $router.push({ name: 'visitors-list' })
         })
         .catch(() => {
           $q.notify({
@@ -199,7 +199,7 @@ export default defineComponent({
             position: 'top',
             message: 'Visitor has been cancelled'
           })
-          $router.push({ name: 'admin-visitors-list' })
+          $router.push({ name: 'visitors-list' })
         })
         .catch(() => {
           $q.notify({
@@ -233,7 +233,7 @@ export default defineComponent({
             position: 'top',
             message: 'Visitor has been departed'
           })
-          $router.push({ name: 'admin-visitors-list' })
+          $router.push({ name: 'visitors-list' })
         })
         .catch(() => {
           $q.notify({
